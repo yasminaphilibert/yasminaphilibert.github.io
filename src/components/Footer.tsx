@@ -23,12 +23,12 @@ const Footer = ({ bgColor = "#FF69B4" }: FooterProps) => {
           >
             About
           </Link>
-          <a 
-            href="mailto:hello@mstudio.com" 
+          <Link 
+            to="/contact" 
             className="text-sm text-black/70 hover:text-black transition-colors"
           >
             Contact
-          </a>
+          </Link>
         </nav>
       </div>
     </footer>
