@@ -8,27 +8,30 @@ import project3 from "@/assets/project-3.jpg";
 const projects = [
   {
     title: "Chromatic Visions",
-    category: "Visual Identity & Art Direction",
+    category: "Visual Identity",
     location: "Los Angeles, CA",
     year: "2024",
     image: project1,
     slug: "chromatic-visions",
+    infoColor: "#6BCB77", // green
   },
   {
     title: "Noir Typography",
-    category: "Graphic Design & Branding",
+    category: "Graphic Design",
     location: "New York, NY",
     year: "2023",
     image: project2,
     slug: "noir-typography",
+    infoColor: "#7B5EA7", // purple
   },
   {
     title: "Resonance Studio",
-    category: "Sound Engineering & Production",
+    category: "Sound Engineering",
     location: "London, UK",
     year: "2022",
     image: project3,
     slug: "resonance-studio",
+    infoColor: "#E8A87C", // warm orange
   },
 ];
 
@@ -37,18 +40,14 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="section-spacing">
-        <div className="container-custom">
-          <div className="space-y-16 md:space-y-24">
-            {projects.map((project, index) => (
-              <ProjectCard
-                key={project.slug}
-                {...project}
-                index={index}
-              />
-            ))}
-          </div>
-        </div>
+      <main>
+        {projects.map((project, index) => (
+          <ProjectCard
+            key={project.slug}
+            {...project}
+            index={index}
+          />
+        ))}
       </main>
 
       <Footer />
