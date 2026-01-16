@@ -24,6 +24,12 @@ const Header = () => {
           {/* Navigation - Right */}
           <nav className="flex items-center gap-6 md:gap-8">
             <Link 
+              to="/work" 
+              className="text-sm font-medium text-primary-foreground underline underline-offset-4 hover:opacity-70 transition-opacity duration-200"
+            >
+              My Work
+            </Link>
+            <Link 
               to="/about" 
               className="text-sm font-medium text-primary-foreground underline underline-offset-4 hover:opacity-70 transition-opacity duration-200"
             >
