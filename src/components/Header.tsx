@@ -35,12 +35,12 @@ const Header = () => {
             >
               About
             </Link>
-            <a 
-              href="mailto:hello@mstudio.com" 
+            <Link 
+              to="/contact" 
               className="text-sm font-medium text-primary-foreground underline underline-offset-4 hover:opacity-70 transition-opacity duration-200"
             >
               Get in touch
-            </a>
+            </Link>
           </nav>
         </div>
       </div>
