@@ -13,7 +13,7 @@ const projects = [
     year: "2024",
     image: project1,
     slug: "chromatic-visions",
-    infoColor: "#6BCB77", // green
+    infoColor: "#6BCB77",
   },
   {
     title: "Noir Typography",
@@ -22,7 +22,7 @@ const projects = [
     year: "2023",
     image: project2,
     slug: "noir-typography",
-    infoColor: "#7B5EA7", // purple
+    infoColor: "#7B5EA7",
   },
   {
     title: "Resonance Studio",
@@ -31,7 +31,7 @@ const projects = [
     year: "2022",
     image: project3,
     slug: "resonance-studio",
-    infoColor: "#E8A87C", // warm orange
+    infoColor: "#E8A87C",
   },
 ];
 
@@ -50,7 +50,7 @@ const Index = () => {
         ))}
       </main>
 
-      <Footer />
+      <Footer bgColor="#6BCB77" />
     </div>
   );
 };
