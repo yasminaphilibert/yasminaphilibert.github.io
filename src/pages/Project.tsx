@@ -1,8 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import project1 from "@/assets/project-1.jpg";
 import project2 from "@/assets/project-2.jpg";
 import project3 from "@/assets/project-3.jpg";
@@ -13,63 +11,69 @@ const projectsData: Record<string, {
   location: string;
   year: string;
   image: string;
-  description: string[];
+  infoColor: string;
+  description: string;
+  additionalInfo: string;
+  galleryImages: string[];
 }> = {
   "chromatic-visions": {
     title: "Chromatic Visions",
-    category: "Visual Identity & Art Direction",
+    category: "Visual Identity",
     location: "Los Angeles, CA",
     year: "2024",
     image: project1,
-    description: [
-      "A comprehensive visual identity project exploring the intersection of color theory and brand storytelling. The project involved creating a complete visual system that could adapt across digital and physical touchpoints.",
-      "Working closely with the client, we developed a flexible color palette that shifts based on context while maintaining brand recognition. The identity system includes custom typography treatments, iconography, and a modular grid system.",
-      "The result is a living brand that evolves with its audience while staying true to its core values of creativity and innovation."
-    ]
+    infoColor: "#6BCB77",
+    description: "A comprehensive visual identity project exploring the intersection of color theory and brand storytelling. The project involved creating a complete visual system that could adapt across digital and physical touchpoints while maintaining brand recognition.",
+    additionalInfo: "Chromatic Visions was recognized with the 'Best Visual Identity' award at Design Week LA 2024.",
+    galleryImages: [project2, project3]
   },
   "noir-typography": {
     title: "Noir Typography",
-    category: "Graphic Design & Branding",
+    category: "Graphic Design",
     location: "New York, NY",
     year: "2023",
     image: project2,
-    description: [
-      "An exploration of contrast and negative space through typography-driven design. This project pushed the boundaries of readability while maintaining visual impact.",
-      "The monochromatic approach was elevated through strategic use of neon accents, creating a visual language that feels both timeless and contemporary.",
-      "Delivered as a complete brand package including print collateral, digital assets, and environmental graphics for the client's flagship location."
-    ]
+    infoColor: "#7B5EA7",
+    description: "An exploration of contrast and negative space through typography-driven design. This project pushed the boundaries of readability while maintaining visual impact through strategic use of monochromatic palettes and neon accents.",
+    additionalInfo: "Featured in Communication Arts Typography Annual 2023.",
+    galleryImages: [project1, project3]
   },
   "resonance-studio": {
     title: "Resonance Studio",
-    category: "Sound Engineering & Production",
+    category: "Sound Engineering",
     location: "London, UK",
     year: "2022",
     image: project3,
-    description: [
-      "A complete audio engineering project for an independent recording studio, encompassing acoustic design consultation and full production services.",
-      "The project involved mixing and mastering over 40 tracks across multiple genres, from intimate acoustic sessions to full orchestral arrangements.",
-      "Beyond the technical work, we developed the studio's sonic identity—a signature sound that artists now seek out for its warmth and clarity."
-    ]
+    infoColor: "#E8A87C",
+    description: "A complete audio engineering project for an independent recording studio, encompassing acoustic design consultation and full production services. The project involved mixing and mastering over 40 tracks across multiple genres.",
+    additionalInfo: "Resonance Studio's signature sound has been sought by artists worldwide since launch.",
+    galleryImages: [project1, project2]
   }
 };
+
+const projectOrder = ["chromatic-visions", "noir-typography", "resonance-studio"];
 
 const Project = () => {
   const { slug } = useParams<{ slug: string }>();
   const project = slug ? projectsData[slug] : null;
+  
+  // Find next project
+  const currentIndex = slug ? projectOrder.indexOf(slug) : -1;
+  const nextSlug = projectOrder[(currentIndex + 1) % projectOrder.length];
+  const nextProject = projectsData[nextSlug];
 
   if (!project) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
-        <main className="section-spacing">
-          <div className="container-custom">
+        <main className="py-20">
+          <div className="max-w-7xl mx-auto px-6">
             <p className="text-muted-foreground">Project not found.</p>
             <Link to="/" className="text-foreground underline underline-offset-4 mt-4 inline-block">
               Return home
             </Link>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -78,69 +82,120 @@ const Project = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="section-spacing">
-        <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Link 
-              to="/" 
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span className="text-sm">Back to projects</span>
-            </Link>
-          </motion.div>
+      <main>
+        {/* Hero Image */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="w-full"
+        >
+          <img 
+            src={project.image} 
+            alt={project.title}
+            className="w-full h-[50vh] md:h-[70vh] object-cover"
+          />
+        </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-          >
-            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-8">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium">
-                {project.title}
-              </h1>
-              <div className="flex flex-col md:items-end gap-1">
-                <span className="text-muted-foreground">{project.location}</span>
-                <span className="text-muted-foreground">{project.year}</span>
+        {/* Project Info Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="w-full px-6 py-12 md:px-12 md:py-16 rounded-b-[2rem]"
+          style={{ backgroundColor: project.infoColor }}
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-12 gap-8 md:gap-12">
+              {/* Category - Left */}
+              <div className="md:col-span-2">
+                <span className="text-sm text-black/70">{project.category}</span>
+              </div>
+
+              {/* Title & Description - Center */}
+              <div className="md:col-span-6">
+                <h1 className="font-display text-3xl md:text-4xl font-medium text-black mb-6">
+                  {project.title}
+                </h1>
+                <p className="text-xl md:text-2xl text-black/80 leading-relaxed">
+                  {project.description}
+                </p>
+              </div>
+
+              {/* Location, Year & Additional Info - Right */}
+              <div className="md:col-span-4 space-y-8">
+                <div>
+                  <p className="text-sm text-black/70">{project.location}</p>
+                  <p className="text-sm text-black/70">{project.year}</p>
+                </div>
+                <p className="text-sm text-black/90">
+                  {project.additionalInfo}
+                </p>
               </div>
             </div>
-            
-            <p className="text-muted-foreground mb-12">{project.category}</p>
-          </motion.div>
+          </div>
+        </motion.section>
 
+        {/* Gallery Images */}
+        {project.galleryImages.map((img, index) => (
           <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="overflow-hidden rounded-[1.25rem] mb-16"
+            key={index}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="w-full"
           >
             <img 
-              src={project.image} 
-              alt={project.title}
-              className="w-full h-auto"
+              src={img} 
+              alt={`${project.title} gallery ${index + 1}`}
+              className="w-full h-[50vh] md:h-[70vh] object-cover"
             />
           </motion.div>
+        ))}
 
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="max-w-2xl space-y-6"
+        {/* Navigation Footer */}
+        <div className="flex w-full">
+          {/* Back to Projects */}
+          <Link 
+            to="/" 
+            className="w-1/3 md:w-1/4 bg-foreground text-background px-6 py-8 md:px-12 md:py-10 rounded-br-[2rem] flex items-center"
           >
-            {project.description.map((paragraph, index) => (
-              <p key={index} className="text-lg text-muted-foreground leading-relaxed">
-                {paragraph}
-              </p>
-            ))}
-          </motion.div>
-        </div>
-      </main>
+            <span className="font-display text-lg md:text-2xl font-medium">
+              Back to projects
+            </span>
+          </Link>
 
-      <Footer />
+          {/* Next Project */}
+          <Link 
+            to={`/project/${nextSlug}`}
+            className="flex-1 px-6 py-8 md:px-12 md:py-10 rounded-b-[2rem] flex items-center justify-between"
+            style={{ backgroundColor: nextProject.infoColor === project.infoColor ? "#7B5EA7" : nextProject.infoColor }}
+          >
+            <div className="flex items-center gap-4 md:gap-8">
+              <span className="font-display text-lg md:text-2xl font-medium text-white">
+                Next: {nextProject.title}
+              </span>
+            </div>
+            <div className="text-right">
+              <p className="text-sm text-white/80">{nextProject.location}</p>
+              <p className="text-sm text-white/80">{nextProject.year}</p>
+            </div>
+          </Link>
+        </div>
+
+        {/* Footer */}
+        <footer 
+          className="w-full px-6 py-12 md:px-12 md:py-16 rounded-t-[2rem]"
+          style={{ backgroundColor: project.infoColor }}
+        >
+          <div className="max-w-7xl mx-auto">
+            <p className="text-sm text-black/70">
+              © 2018–{new Date().getFullYear()}. Marcus Chen
+            </p>
+          </div>
+        </footer>
+      </main>
     </div>
   );
 };
