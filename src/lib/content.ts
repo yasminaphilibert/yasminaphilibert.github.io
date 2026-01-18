@@ -1,9 +1,7 @@
-import matter from 'gray-matter';
-
 // Import all markdown files at build time using Vite's glob import
-const serviceFiles = import.meta.glob('/content/services/*.md', { as: 'raw', eager: true });
-const projectFiles = import.meta.glob('/content/projects/**/*.md', { as: 'raw', eager: true });
-const configFile = import.meta.glob('/content/config.md', { as: 'raw', eager: true });
+const serviceFiles = import.meta.glob('/src/content/services/*.md', { as: 'raw', eager: true });
+const projectFiles = import.meta.glob('/src/content/projects/**/*.md', { as: 'raw', eager: true });
+const configFile = import.meta.glob('/src/content/config.md', { as: 'raw', eager: true });
 
 // Type definitions
 export interface ServiceContent {
@@ -40,10 +38,79 @@ export interface SiteConfig {
   };
 }
 
-// Parse markdown content
-function parseMarkdown<T>(content: string): { data: T; content: string } {
-  const { data, content: body } = matter(content);
-  return { data: data as T, content: body.trim() };
+// Simple browser-compatible frontmatter parser
+function parseFrontmatter(content: string): { data: Record<string, unknown>; content: string } {
+  const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+  const match = content.match(frontmatterRegex);
+  
+  if (!match) {
+    return { data: {}, content: content.trim() };
+  }
+  
+  const frontmatterStr = match[1];
+  const body = match[2];
+  
+  // Parse YAML-like frontmatter
+  const data: Record<string, unknown> = {};
+  let currentKey = '';
+  let inArray = false;
+  let arrayValues: string[] = [];
+  
+  const lines = frontmatterStr.split('\n');
+  
+  for (const line of lines) {
+    // Check for array item
+    if (line.match(/^\s+-\s+/)) {
+      const value = line.replace(/^\s+-\s+/, '').replace(/^["']|["']$/g, '').trim();
+      arrayValues.push(value);
+      continue;
+    }
+    
+    // If we were building an array, save it
+    if (inArray && currentKey && arrayValues.length > 0) {
+      data[currentKey] = arrayValues;
+      arrayValues = [];
+      inArray = false;
+    }
+    
+    // Check for nested object (like socialLinks:)
+    if (line.match(/^[a-zA-Z_]+:\s*$/)) {
+      // Start of object or array - skip for simple parsing
+      continue;
+    }
+    
+    // Check for key: value pair
+    const keyValueMatch = line.match(/^([a-zA-Z_]+):\s*(.*)$/);
+    if (keyValueMatch) {
+      const [, key, value] = keyValueMatch;
+      currentKey = key;
+      
+      if (value === '') {
+        // Could be start of array
+        inArray = true;
+        arrayValues = [];
+      } else {
+        // Clean up the value (remove quotes)
+        let cleanValue: string | number | boolean = value.replace(/^["']|["']$/g, '').trim();
+        
+        // Parse boolean
+        if (cleanValue === 'true') cleanValue = true as unknown as string;
+        else if (cleanValue === 'false') cleanValue = false as unknown as string;
+        // Parse number
+        else if (/^\d+$/.test(cleanValue)) cleanValue = parseInt(cleanValue, 10) as unknown as string;
+        
+        data[key] = cleanValue;
+        inArray = false;
+      }
+    }
+  }
+  
+  // Save last array if any
+  if (inArray && currentKey && arrayValues.length > 0) {
+    data[currentKey] = arrayValues;
+  }
+  
+  return { data, content: body.trim() };
 }
 
 // Get site configuration
@@ -62,18 +129,23 @@ export function getSiteConfig(): SiteConfig {
     };
   }
   
-  const { data } = parseMarkdown<SiteConfig>(configFile[configPath]);
-  return data;
+  const { data } = parseFrontmatter(configFile[configPath] as string);
+  return data as unknown as SiteConfig;
 }
 
 // Load all services
 export function loadServices(): ServiceContent[] {
   const services: ServiceContent[] = [];
   
-  for (const [path, content] of Object.entries(serviceFiles)) {
-    const { data, content: body } = parseMarkdown<Omit<ServiceContent, 'description'>>(content);
+  for (const [, content] of Object.entries(serviceFiles)) {
+    const { data, content: body } = parseFrontmatter(content as string);
     services.push({
-      ...data,
+      title: data.title as string || '',
+      subtitle: data.subtitle as string || '',
+      slug: data.slug as string || '',
+      infoColor: data.infoColor as string || '#000000',
+      heroImage: data.heroImage as string || '',
+      order: data.order as number || 0,
       description: body
     });
   }
@@ -85,8 +157,8 @@ export function loadServices(): ServiceContent[] {
 export function loadProjects(serviceSlug?: string): ProjectContent[] {
   const projects: ProjectContent[] = [];
   
-  for (const [path, content] of Object.entries(projectFiles)) {
-    const { data, content: body } = parseMarkdown<Omit<ProjectContent, 'description'>>(content);
+  for (const [, content] of Object.entries(projectFiles)) {
+    const { data, content: body } = parseFrontmatter(content as string);
     
     // Parse description into paragraphs
     const descriptionParagraphs = body
@@ -95,9 +167,15 @@ export function loadProjects(serviceSlug?: string): ProjectContent[] {
       .filter(p => p.length > 0);
     
     const project: ProjectContent = {
-      ...data,
-      galleryImages: data.galleryImages || [],
-      featured: data.featured || false,
+      title: data.title as string || '',
+      slug: data.slug as string || '',
+      service: data.service as string || '',
+      location: data.location as string || '',
+      year: data.year as string || '',
+      heroImage: data.heroImage as string || '',
+      galleryImages: (data.galleryImages as string[]) || [],
+      order: data.order as number || 0,
+      featured: data.featured as boolean || false,
       description: descriptionParagraphs
     };
     
