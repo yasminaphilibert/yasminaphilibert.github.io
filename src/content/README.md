@@ -5,7 +5,7 @@ This folder contains all the editable content for your portfolio website. Each m
 ## Directory Structure
 
 ```
-content/
+src/content/
 ├── config.md              # Global site settings (name, email, social links)
 ├── services/              # Service pages
 │   ├── visual-identity.md
