@@ -2,6 +2,7 @@
 const serviceFiles = import.meta.glob('/src/content/services/*.md', { as: 'raw', eager: true });
 const projectFiles = import.meta.glob('/src/content/projects/**/*.md', { as: 'raw', eager: true });
 const configFile = import.meta.glob('/src/content/config.md', { as: 'raw', eager: true });
+const aboutFile = import.meta.glob('/src/content/about.md', { as: 'raw', eager: true });
 
 // Type definitions
 export interface ServiceContent {
@@ -36,6 +37,18 @@ export interface SiteConfig {
     instagram: string;
     behance: string;
   };
+}
+
+export interface AboutContent {
+  title: string;
+  label: string;
+  email: string;
+  location: string;
+  experienceLabel: string;
+  introParagraphs: string[];
+  services: string[];
+  experienceText: string;
+  experienceNote: string;
 }
 
 // Simple browser-compatible frontmatter parser
@@ -212,4 +225,66 @@ export function getProjectBySlugFromContent(slug: string): (ProjectContent & { s
 // Get featured projects
 export function getFeaturedProjects(): ProjectContent[] {
   return loadProjects().filter(p => p.featured);
+}
+
+// Load about page content
+export function getAboutContent(): AboutContent {
+  const aboutPath = Object.keys(aboutFile)[0];
+  
+  const defaultAbout: AboutContent = {
+    title: 'M—Studio',
+    label: 'About',
+    email: 'hello@mstudio.com',
+    location: 'Based in Los Angeles, working globally.',
+    experienceLabel: 'Experience',
+    introParagraphs: [],
+    services: [],
+    experienceText: '',
+    experienceNote: ''
+  };
+  
+  if (!aboutPath) {
+    return defaultAbout;
+  }
+  
+  const { data, content: body } = parseFrontmatter(aboutFile[aboutPath] as string);
+  
+  // Parse the body content with custom section markers
+  const sections = body.split(/\n---(\w+)\n/);
+  
+  // First section is the intro paragraphs (before any ---section marker)
+  const introParagraphs = sections[0]
+    .split('\n\n')
+    .map(p => p.trim())
+    .filter(p => p.length > 0);
+  
+  // Parse other sections
+  let services: string[] = [];
+  let experienceText = '';
+  let experienceNote = '';
+  
+  for (let i = 1; i < sections.length; i += 2) {
+    const sectionName = sections[i];
+    const sectionContent = sections[i + 1]?.trim() || '';
+    
+    if (sectionName === 'services') {
+      services = sectionContent.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+    } else if (sectionName === 'experience') {
+      experienceText = sectionContent;
+    } else if (sectionName === 'experienceNote') {
+      experienceNote = sectionContent;
+    }
+  }
+  
+  return {
+    title: data.title as string || defaultAbout.title,
+    label: data.label as string || defaultAbout.label,
+    email: data.email as string || defaultAbout.email,
+    location: data.location as string || defaultAbout.location,
+    experienceLabel: data.experienceLabel as string || defaultAbout.experienceLabel,
+    introParagraphs,
+    services,
+    experienceText,
+    experienceNote
+  };
 }

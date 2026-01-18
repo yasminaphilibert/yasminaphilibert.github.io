@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { getAboutContent } from "@/lib/content";
 
 const About = () => {
+  const about = getAboutContent();
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -19,28 +22,19 @@ const About = () => {
           <div className="grid md:grid-cols-12 gap-8 md:gap-12">
             {/* Label - Left */}
             <div className="md:col-span-2">
-              <span className="text-sm text-black/60">About</span>
+              <span className="text-sm text-black/60">{about.label}</span>
             </div>
 
             {/* Main Content - Center */}
             <div className="md:col-span-6">
               <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-medium text-black mb-8">
-                M—Studio
+                {about.title}
               </h1>
               <div className="space-y-6 text-lg md:text-xl text-black/70 leading-relaxed">
-                <p>
-                  M—Studio is the creative practice of Marcus Chen, a multidisciplinary 
-                  creative director working across visual art, graphic design, and 
-                  sound engineering.
-                </p>
-                <p>
-                  With over a decade of experience shaping brand identities and 
-                  immersive experiences, the studio bridges the gap between visual 
-                  and auditory storytelling.
-                </p>
-                <p>
-                  Based in Los Angeles, working globally.
-                </p>
+                {about.introParagraphs.map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
+                <p>{about.location}</p>
               </div>
             </div>
 
@@ -49,22 +43,19 @@ const About = () => {
               <div>
                 <h2 className="text-sm text-black/60 mb-4">Contact</h2>
                 <a 
-                  href="mailto:hello@mstudio.com" 
+                  href={`mailto:${about.email}`}
                   className="text-black underline underline-offset-4 hover:opacity-70 transition-opacity"
                 >
-                  hello@mstudio.com
+                  {about.email}
                 </a>
               </div>
               
               <div>
                 <h2 className="text-sm text-black/60 mb-4">Services</h2>
                 <ul className="space-y-2 text-black/70">
-                  <li>Creative Direction</li>
-                  <li>Visual Identity</li>
-                  <li>Graphic Design</li>
-                  <li>Art Direction</li>
-                  <li>Sound Engineering</li>
-                  <li>Audio Production</li>
+                  {about.services.map((service, index) => (
+                    <li key={index}>{service}</li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -82,20 +73,16 @@ const About = () => {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-12 gap-8 md:gap-12">
             <div className="md:col-span-2">
-              <span className="text-sm text-muted-foreground">Experience</span>
+              <span className="text-sm text-muted-foreground">{about.experienceLabel}</span>
             </div>
             <div className="md:col-span-6">
               <p className="text-lg text-muted-foreground leading-relaxed">
-                The work spans collaborations with global brands, independent 
-                artists, cultural institutions, and forward-thinking startups. 
-                Every project shares a commitment to craft, conceptual depth, 
-                and emotional resonance.
+                {about.experienceText}
               </p>
             </div>
             <div className="md:col-span-4">
               <p className="text-sm text-muted-foreground">
-                Featured clients include major labels, design studios, and 
-                cultural organizations across three continents.
+                {about.experienceNote}
               </p>
             </div>
           </div>
