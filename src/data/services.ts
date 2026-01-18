@@ -1,6 +1,25 @@
+import { loadServices, loadProjects, getServiceBySlugFromContent, getProjectBySlugFromContent } from '@/lib/content';
+
+// Fallback images for when content images aren't available yet
 import project1 from "@/assets/project-1.jpg";
 import project2 from "@/assets/project-2.jpg";
 import project3 from "@/assets/project-3.jpg";
+
+// Image mapping for backward compatibility
+const fallbackImages: Record<string, string> = {
+  'chromatic-visions': project1,
+  'brand-horizon': project2,
+  'identity-shift': project3,
+  'noir-typography': project2,
+  'editorial-essence': project1,
+  'poster-series': project3,
+  'resonance-studio': project3,
+  'sonic-landscapes': project1,
+  'film-score': project2,
+  'visual-identity': project1,
+  'graphic-design': project2,
+  'sound-engineering': project3,
+};
 
 export interface Project {
   title: string;
@@ -21,137 +40,46 @@ export interface Service {
   projects: Project[];
 }
 
-export const services: Service[] = [
-  {
-    title: "Visual Identity",
-    subtitle: "Art Direction",
-    description: "Crafting distinctive visual systems that communicate brand essence across all touchpoints.",
-    image: project1,
-    slug: "visual-identity",
-    infoColor: "#6BCB77",
-    projects: [
-      {
-        title: "Chromatic Visions",
-        location: "Los Angeles, CA",
-        year: "2024",
-        image: project1,
-        slug: "chromatic-visions",
-        description: [
-          "A comprehensive visual identity project exploring the intersection of color theory and brand storytelling.",
-          "Working closely with the client, we developed a flexible color palette that shifts based on context while maintaining brand recognition."
-        ]
-      },
-      {
-        title: "Brand Horizon",
-        location: "San Francisco, CA",
-        year: "2023",
-        image: project2,
-        slug: "brand-horizon",
-        description: [
-          "Complete brand identity system for a tech startup focused on sustainable innovation.",
-          "The visual language bridges technology and nature through organic geometric forms."
-        ]
-      },
-      {
-        title: "Identity Shift",
-        location: "Chicago, IL",
-        year: "2022",
-        image: project3,
-        slug: "identity-shift",
-        description: [
-          "Rebranding project for a heritage fashion house entering the contemporary market.",
-          "Balanced legacy elements with modern minimalism."
-        ]
-      }
-    ]
-  },
-  {
-    title: "Graphic Design",
-    subtitle: "Print & Digital",
-    description: "Bold typography and thoughtful compositions that capture attention and communicate with clarity.",
-    image: project2,
-    slug: "graphic-design",
-    infoColor: "#7B5EA7",
-    projects: [
-      {
-        title: "Noir Typography",
-        location: "New York, NY",
-        year: "2023",
-        image: project2,
-        slug: "noir-typography",
-        description: [
-          "An exploration of contrast and negative space through typography-driven design.",
-          "The monochromatic approach was elevated through strategic use of neon accents."
-        ]
-      },
-      {
-        title: "Editorial Essence",
-        location: "Paris, FR",
-        year: "2023",
-        image: project1,
-        slug: "editorial-essence",
-        description: [
-          "Magazine design system for a quarterly arts publication.",
-          "Flexible grid system accommodating diverse visual content."
-        ]
-      },
-      {
-        title: "Poster Series",
-        location: "Berlin, DE",
-        year: "2022",
-        image: project3,
-        slug: "poster-series",
-        description: [
-          "Limited edition poster series for international music festival.",
-          "Each piece explores the intersection of sound visualization and graphic form."
-        ]
-      }
-    ]
-  },
-  {
-    title: "Sound Engineering",
-    subtitle: "Audio Production",
-    description: "Professional audio engineering and production services for artists, studios, and brands.",
-    image: project3,
-    slug: "sound-engineering",
-    infoColor: "#E8A87C",
-    projects: [
-      {
-        title: "Resonance Studio",
-        location: "London, UK",
-        year: "2022",
-        image: project3,
-        slug: "resonance-studio",
-        description: [
-          "A complete audio engineering project for an independent recording studio.",
-          "The project involved mixing and mastering over 40 tracks across multiple genres."
-        ]
-      },
-      {
-        title: "Sonic Landscapes",
-        location: "Tokyo, JP",
-        year: "2023",
-        image: project1,
-        slug: "sonic-landscapes",
-        description: [
-          "Immersive audio installation for contemporary art exhibition.",
-          "Spatial audio design creating distinct sonic environments."
-        ]
-      },
-      {
-        title: "Film Score",
-        location: "Los Angeles, CA",
-        year: "2024",
-        image: project2,
-        slug: "film-score",
-        description: [
-          "Original score and sound design for independent feature film.",
-          "Blending orchestral elements with electronic textures."
-        ]
-      }
-    ]
+// Helper to resolve image path with fallback
+function resolveImage(imagePath: string, slug: string): string {
+  // If the image path starts with /images/, check if it exists
+  // For now, use fallback images since we haven't moved images yet
+  if (imagePath.startsWith('/images/')) {
+    return fallbackImages[slug] || project1;
   }
-];
+  return imagePath || fallbackImages[slug] || project1;
+}
+
+// Load services from markdown content
+export const services: Service[] = (() => {
+  try {
+    const contentServices = loadServices();
+    
+    return contentServices.map(service => {
+      const serviceProjects = loadProjects(service.slug);
+      
+      return {
+        title: service.title,
+        subtitle: service.subtitle,
+        description: service.description,
+        image: resolveImage(service.heroImage, service.slug),
+        slug: service.slug,
+        infoColor: service.infoColor,
+        projects: serviceProjects.map(project => ({
+          title: project.title,
+          location: project.location,
+          year: project.year,
+          image: resolveImage(project.heroImage, project.slug),
+          slug: project.slug,
+          description: project.description
+        }))
+      };
+    });
+  } catch (error) {
+    console.error('Error loading content from markdown:', error);
+    return [];
+  }
+})();
 
 export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor: string })[] => {
   return services.flatMap(service => 
