@@ -42,12 +42,11 @@ export interface Service {
 
 // Helper to resolve image path with fallback
 function resolveImage(imagePath: string, slug: string): string {
-  // If the image path starts with /images/, check if it exists
-  // For now, use fallback images since we haven't moved images yet
-  if (imagePath.startsWith('/images/')) {
-    return fallbackImages[slug] || project1;
+  // Use the image path from markdown if provided, otherwise fallback
+  if (imagePath && imagePath.trim() !== '') {
+    return imagePath;
   }
-  return imagePath || fallbackImages[slug] || project1;
+  return fallbackImages[slug] || project1;
 }
 
 // Load services from markdown content
