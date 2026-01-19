@@ -25,6 +25,7 @@ export interface ProjectContent {
   galleryImages: string[];
   order: number;
   featured: boolean;
+  barColor?: string; // Optional custom bar color, falls back to service color
   description: string[];
 }
 
@@ -189,6 +190,7 @@ export function loadProjects(serviceSlug?: string): ProjectContent[] {
       galleryImages: (data.galleryImages as string[]) || [],
       order: data.order as number || 0,
       featured: data.featured as boolean || false,
+      barColor: data.barColor as string | undefined,
       description: descriptionParagraphs
     };
     

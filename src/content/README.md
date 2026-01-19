@@ -65,6 +65,7 @@ galleryImages:                     # Additional gallery images
   - "/images/projects/chromatic-visions/gallery-2.jpg"
 order: 1                          # Display order within service
 featured: true                    # Show on homepage (true/false)
+barColor: "#FF6B6B"               # Optional: custom bar color (overrides service color)
 ---
 
 Project description goes here. Each paragraph becomes a separate block.

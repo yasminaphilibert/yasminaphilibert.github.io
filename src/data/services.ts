@@ -28,6 +28,7 @@ export interface Project {
   image: string;
   slug: string;
   description: string[];
+  barColor?: string; // Optional custom bar color
 }
 
 export interface Service {
@@ -42,12 +43,11 @@ export interface Service {
 
 // Helper to resolve image path with fallback
 function resolveImage(imagePath: string, slug: string): string {
-  // If the image path starts with /images/, check if it exists
-  // For now, use fallback images since we haven't moved images yet
-  if (imagePath.startsWith('/images/')) {
-    return fallbackImages[slug] || project1;
+  // Use the image path from markdown if provided, otherwise fallback
+  if (imagePath && imagePath.trim() !== '') {
+    return imagePath;
   }
-  return imagePath || fallbackImages[slug] || project1;
+  return fallbackImages[slug] || project1;
 }
 
 // Load services from markdown content
@@ -71,7 +71,8 @@ export const services: Service[] = (() => {
           year: project.year,
           image: resolveImage(project.heroImage, project.slug),
           slug: project.slug,
-          description: project.description
+          description: project.description,
+          barColor: project.barColor
         }))
       };
     });
@@ -81,12 +82,12 @@ export const services: Service[] = (() => {
   }
 })();
 
-export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor: string })[] => {
+export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor: string; barColor?: string })[] => {
   return services.flatMap(service => 
     service.projects.map(project => ({
       ...project,
       serviceSlug: service.slug,
-      serviceColor: service.infoColor
+      serviceColor: project.barColor || service.infoColor // Use project's barColor if set, otherwise service color
     }))
   );
 };
@@ -102,7 +103,7 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
       return {
         ...project,
         serviceSlug: service.slug,
-        serviceColor: service.infoColor,
+        serviceColor: project.barColor || service.infoColor, // Use project's barColor if set
         serviceTitle: service.title
       };
     }
