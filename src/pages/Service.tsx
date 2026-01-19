@@ -93,7 +93,7 @@ const Service = () => {
                 key={project.slug}
                 {...project}
                 index={index}
-                infoColor={service.infoColor}
+                infoColor={project.barColor || service.infoColor}
               />
             ))}
           </div>
