@@ -23,7 +23,7 @@ const Index = () => {
         ))}
       </main>
 
-      <Footer bgColor="#6BCB77" />
+      <Footer />
     </div>
   );
 };

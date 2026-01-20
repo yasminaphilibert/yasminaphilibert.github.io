@@ -22,7 +22,7 @@ const Service = () => {
             </Link>
           </div>
         </main>
-        <Footer bgColor="#6BCB77" />
+        <Footer />
       </div>
     );
   }
@@ -100,7 +100,7 @@ const Service = () => {
         </div>
       </main>
 
-      <Footer bgColor={service.infoColor} />
+      <Footer />
     </div>
   );
 };

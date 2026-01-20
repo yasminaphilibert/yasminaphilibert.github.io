@@ -1,12 +1,8 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { getProjectBySlug, services, getServiceBySlug } from "@/data/services";
-import project1 from "@/assets/project-1.jpg";
-import project2 from "@/assets/project-2.jpg";
-import project3 from "@/assets/project-3.jpg";
-
-const galleryImages = [project1, project2, project3];
 
 const Project = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -95,22 +91,25 @@ const Project = () => {
         </motion.section>
 
         {/* Gallery Images */}
-        {galleryImages.filter(img => img !== project.image).slice(0, 2).map((img, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="w-full"
-          >
-            <img 
-              src={img} 
-              alt={`${project.title} gallery ${index + 1}`}
-              className="w-full h-[50vh] md:h-[70vh] object-cover"
-            />
-          </motion.div>
-        ))}
+        {project.galleryImages && project.galleryImages.length > 0 && project.galleryImages
+          .filter(img => img !== project.image)
+          .slice(0, 2)
+          .map((img, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="w-full"
+            >
+              <img 
+                src={img} 
+                alt={`${project.title} gallery ${index + 1}`}
+                className="w-full h-[50vh] md:h-[70vh] object-cover"
+              />
+            </motion.div>
+          ))}
 
         {/* Navigation Footer */}
         <div className="flex w-full">
@@ -143,16 +142,7 @@ const Project = () => {
         </div>
 
         {/* Footer */}
-        <footer 
-          className="w-full px-6 py-12 md:px-12 md:py-16 rounded-t-[2rem]"
-          style={{ backgroundColor: project.serviceColor }}
-        >
-          <div className="max-w-7xl mx-auto">
-            <p className="text-sm text-black/70">
-              © 2018–{new Date().getFullYear()}. Marcus Chen
-            </p>
-          </div>
-        </footer>
+        <Footer />
       </main>
     </div>
   );

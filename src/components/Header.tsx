@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { getNavbarContent } from "@/lib/content";
 
 const Header = () => {
+  const navbar = getNavbarContent();
+
   return (
     <motion.header 
-      className="bg-primary rounded-b-[2rem] px-6 py-8 md:px-12 md:py-10"
+      className="rounded-b-[2rem] px-6 py-8 md:px-12 md:py-10"
+      style={{ backgroundColor: navbar.bgColor || undefined }}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
@@ -12,35 +16,31 @@ const Header = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between">
           {/* Tagline - Left */}
-          <span className="text-sm font-medium text-primary-foreground hidden md:block">
-            Creative Director
-          </span>
+          <div className="text-sm font-medium text-primary-foreground hidden md:block">
+            {navbar.tagline.map((line, index) => (
+              <span key={index}>
+                {line}
+                {index < navbar.tagline.length - 1 && <br />}
+              </span>
+            ))}
+          </div>
 
           {/* Logo - Center */}
-          <Link to="/" className="font-display text-2xl md:text-4xl font-semibold tracking-tight text-primary-foreground">
-            M—Studio
+          <Link to="/" className="text-2xl md:text-4xl font-semibold tracking-tight text-primary-foreground" style={{ fontFamily: 'var(--font-logo)', fontSize: 'var(--font-size-logo)' }}>
+            {navbar.logo}
           </Link>
 
           {/* Navigation - Right */}
           <nav className="flex items-center gap-6 md:gap-8">
-            <Link 
-              to="/work" 
-              className="text-sm font-medium text-primary-foreground underline underline-offset-4 hover:opacity-70 transition-opacity duration-200"
-            >
-              My Work
-            </Link>
-            <Link 
-              to="/about" 
-              className="text-sm font-medium text-primary-foreground underline underline-offset-4 hover:opacity-70 transition-opacity duration-200"
-            >
-              About
-            </Link>
-            <Link 
-              to="/contact" 
-              className="text-sm font-medium text-primary-foreground underline underline-offset-4 hover:opacity-70 transition-opacity duration-200"
-            >
-              Get in touch
-            </Link>
+            {navbar.navLinks.map((link) => (
+              <Link 
+                key={link.path}
+                to={link.path} 
+                className="text-sm font-medium text-primary-foreground underline underline-offset-4 hover:opacity-70 transition-opacity duration-200"
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
         </div>
       </div>

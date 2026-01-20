@@ -1,7 +1,7 @@
 ---
 title: "Visual Identity"
 subtitle: "Print & Digital"
-slug: "graphic-design"
+slug: "visual-identity"
 infoColor: "#7B5EA7"
 heroImage: "public/images/services/visual-identity/Screenshot 2026-01-13 at 11.21.50.png"
 order: 2

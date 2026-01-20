@@ -3,6 +3,8 @@ const serviceFiles = import.meta.glob('/src/content/services/*.md', { as: 'raw',
 const projectFiles = import.meta.glob('/src/content/projects/**/*.md', { as: 'raw', eager: true });
 const configFile = import.meta.glob('/src/content/config.md', { as: 'raw', eager: true });
 const aboutFile = import.meta.glob('/src/content/about.md', { as: 'raw', eager: true });
+const navbarFile = import.meta.glob('/src/content/navbar.md', { as: 'raw', eager: true });
+const footerFile = import.meta.glob('/src/content/footer.md', { as: 'raw', eager: true });
 
 // Type definitions
 export interface ServiceContent {
@@ -50,6 +52,40 @@ export interface AboutContent {
   services: string[];
   experienceText: string;
   experienceNote: string;
+  // Color customization
+  backgroundColor?: string;
+  secondSectionBgColor?: string;
+  titleColor?: string;
+  textColor?: string;
+  labelColor?: string;
+  linkColor?: string;
+  mutedTextColor?: string;
+}
+
+export interface NavLink {
+  label: string;
+  path: string;
+}
+
+export interface NavbarContent {
+  tagline: string[];
+  logo: string;
+  bgColor?: string;
+  navLinks: NavLink[];
+}
+
+export interface SocialLink {
+  platform: string;
+  url: string;
+  enabled: boolean;
+}
+
+export interface FooterContent {
+  copyrightName: string;
+  startYear: number;
+  bgColor?: string;
+  socialLinks: SocialLink[];
+  navLinks: NavLink[];
 }
 
 // Simple browser-compatible frontmatter parser
@@ -69,42 +105,87 @@ function parseFrontmatter(content: string): { data: Record<string, unknown>; con
   let currentKey = '';
   let inArray = false;
   let arrayValues: string[] = [];
+  let inObjectArray = false;
+  let objectArrayValues: Record<string, unknown>[] = [];
+  let currentObject: Record<string, unknown> = {};
   
   const lines = frontmatterStr.split('\n');
   
-  for (const line of lines) {
-    // Check for array item
-    if (line.match(/^\s+-\s+/)) {
-      const value = line.replace(/^\s+-\s+/, '').replace(/^["']|["']$/g, '').trim();
-      arrayValues.push(value);
-      continue;
-    }
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmedLine = line.trim();
+    if (!trimmedLine) continue;
     
-    // If we were building an array, save it
-    if (inArray && currentKey && arrayValues.length > 0) {
-      data[currentKey] = arrayValues;
-      arrayValues = [];
-      inArray = false;
-    }
+    const currentIndent = line.match(/^(\s*)/)?.[1].length || 0;
+    const isArrayItem = line.match(/^\s+-\s+/);
+    const isTopLevel = currentIndent === 0;
     
-    // Check for nested object (like socialLinks:)
-    if (line.match(/^[a-zA-Z_]+:\s*$/)) {
-      // Start of object or array - skip for simple parsing
-      continue;
-    }
-    
-    // Check for key: value pair
-    const keyValueMatch = line.match(/^([a-zA-Z_]+):\s*(.*)$/);
-    if (keyValueMatch) {
-      const [, key, value] = keyValueMatch;
-      currentKey = key;
-      
-      if (value === '') {
-        // Could be start of array
-        inArray = true;
+    // Save previous array/object array when we hit a new top-level key
+    if (isTopLevel && currentKey) {
+      if (inObjectArray) {
+        // Save the current object if it has properties before saving the array
+        if (Object.keys(currentObject).length > 0) {
+          objectArrayValues.push(currentObject);
+          currentObject = {};
+        }
+        if (objectArrayValues.length > 0) {
+          data[currentKey] = objectArrayValues;
+          objectArrayValues = [];
+          inObjectArray = false;
+        }
+      } else if (inArray && arrayValues.length > 0) {
+        data[currentKey] = arrayValues;
         arrayValues = [];
+        inArray = false;
+      }
+    }
+    
+    // Check for array item (starts with -)
+    if (isArrayItem) {
+      // If we have a current object being built, save it
+      if (inObjectArray && Object.keys(currentObject).length > 0) {
+        objectArrayValues.push(currentObject);
+        currentObject = {};
+      }
+      
+      // Check if this is an object item (next line is indented more, or this line has a key:value)
+      const nextLine = i + 1 < lines.length ? lines[i + 1] : '';
+      const isObjectItem = (nextLine && nextLine.match(/^\s{4,}/)) || line.match(/^\s+-\s+[a-zA-Z_]+:\s*/);
+      
+      if (isObjectItem) {
+        inObjectArray = true;
+        inArray = false;
+        
+        // If this line itself has a key:value (like "- label: value"), parse it
+        const inlineKeyValue = line.match(/^\s+-\s+([a-zA-Z_]+):\s*(.*)$/);
+        if (inlineKeyValue) {
+          const [, key, value] = inlineKeyValue;
+          let cleanValue: string | number | boolean = value.replace(/^["']|["']$/g, '').trim();
+          
+          // Parse boolean
+          if (cleanValue === 'true') cleanValue = true as unknown as string;
+          else if (cleanValue === 'false') cleanValue = false as unknown as string;
+          // Parse number
+          else if (/^\d+$/.test(cleanValue)) cleanValue = parseInt(cleanValue, 10) as unknown as string;
+          
+          currentObject[key] = cleanValue;
+        }
+        continue;
       } else {
-        // Clean up the value (remove quotes)
+        // Simple array item
+        const value = line.replace(/^\s+-\s+/, '').replace(/^["']|["']$/g, '').trim();
+        arrayValues.push(value);
+        inArray = true;
+        continue;
+      }
+    }
+    
+    // Check for nested object property (indented with 4+ spaces, under an array item)
+    // Must not be an array item itself (doesn't start with -)
+    if (inObjectArray && currentIndent >= 4 && !isArrayItem) {
+      const keyValueMatch = line.match(/^\s+([a-zA-Z_]+):\s*(.*)$/);
+      if (keyValueMatch) {
+        const [, key, value] = keyValueMatch;
         let cleanValue: string | number | boolean = value.replace(/^["']|["']$/g, '').trim();
         
         // Parse boolean
@@ -113,13 +194,60 @@ function parseFrontmatter(content: string): { data: Record<string, unknown>; con
         // Parse number
         else if (/^\d+$/.test(cleanValue)) cleanValue = parseInt(cleanValue, 10) as unknown as string;
         
-        data[key] = cleanValue;
-        inArray = false;
+        currentObject[key] = cleanValue;
+      }
+      continue;
+    }
+    
+    // Check for top-level key: value pair
+    if (isTopLevel) {
+      const keyValueMatch = line.match(/^([a-zA-Z_]+):\s*(.*)$/);
+      if (keyValueMatch) {
+        const [, key, value] = keyValueMatch;
+        
+        // Before switching to a new key, save the current object if we're in an object array
+        if (inObjectArray && currentKey && Object.keys(currentObject).length > 0) {
+          objectArrayValues.push(currentObject);
+          currentObject = {};
+        }
+        
+        currentKey = key;
+        
+        if (value === '') {
+          // Start of array (will be detected by next lines)
+          inArray = false;
+          inObjectArray = false;
+          arrayValues = [];
+          objectArrayValues = [];
+        } else {
+          // Simple key-value
+          let cleanValue: string | number | boolean = value.replace(/^["']|["']$/g, '').trim();
+          
+          // Parse boolean
+          if (cleanValue === 'true') cleanValue = true as unknown as string;
+          else if (cleanValue === 'false') cleanValue = false as unknown as string;
+          // Parse number
+          else if (/^\d+$/.test(cleanValue)) cleanValue = parseInt(cleanValue, 10) as unknown as string;
+          
+          data[key] = cleanValue;
+          inArray = false;
+          inObjectArray = false;
+        }
       }
     }
   }
   
-  // Save last array if any
+  // Save last array of objects if any
+  if (inObjectArray && currentKey) {
+    if (Object.keys(currentObject).length > 0) {
+      objectArrayValues.push(currentObject);
+    }
+    if (objectArrayValues.length > 0) {
+      data[currentKey] = objectArrayValues;
+    }
+  }
+  
+  // Save last simple array if any
   if (inArray && currentKey && arrayValues.length > 0) {
     data[currentKey] = arrayValues;
   }
@@ -270,7 +398,33 @@ export function getAboutContent(): AboutContent {
     const sectionContent = sections[i + 1]?.trim() || '';
     
     if (sectionName === 'services') {
-      services = sectionContent.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+      // Split services content - services list vs experience text (paragraph after blank line)
+      const parts = sectionContent.split(/\n\n+/);
+      // First part(s) are services (short lines), last part is experience text (long paragraph)
+      const serviceLines: string[] = [];
+      let expText = '';
+      
+      for (const part of parts) {
+        const trimmed = part.trim();
+        if (!trimmed) continue;
+        
+        // Check if this part looks like a services list (multiple short lines) or experience text (long paragraph)
+        const lines = trimmed.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+        const isServicesList = lines.length > 1 || (lines.length === 1 && lines[0].length < 50 && !lines[0].includes('.'));
+        
+        if (isServicesList) {
+          serviceLines.push(...lines);
+        } else {
+          // This is experience text (long paragraph)
+          expText = trimmed;
+        }
+      }
+      
+      services = serviceLines;
+      // If we found experience text in the services section, use it
+      if (expText && !experienceText) {
+        experienceText = expText;
+      }
     } else if (sectionName === 'experience') {
       experienceText = sectionContent;
     } else if (sectionName === 'experienceNote') {
@@ -287,6 +441,110 @@ export function getAboutContent(): AboutContent {
     introParagraphs,
     services,
     experienceText,
-    experienceNote
+    experienceNote,
+    backgroundColor: data.backgroundColor as string | undefined,
+    secondSectionBgColor: data.secondSectionBgColor as string | undefined,
+    titleColor: data.titleColor as string | undefined,
+    textColor: data.textColor as string | undefined,
+    labelColor: data.labelColor as string | undefined,
+    linkColor: data.linkColor as string | undefined,
+    mutedTextColor: data.mutedTextColor as string | undefined
+  };
+}
+
+// Get navbar content
+export function getNavbarContent(): NavbarContent {
+  const navbarPath = Object.keys(navbarFile)[0];
+  
+  const defaultNavbar: NavbarContent = {
+    tagline: ['Creative Director'],
+    logo: 'M—Studio',
+    navLinks: [
+      { label: 'My Work', path: '/work' },
+      { label: 'About', path: '/about' },
+      { label: 'Get in touch', path: '/contact' }
+    ]
+  };
+  
+  if (!navbarPath) {
+    return defaultNavbar;
+  }
+  
+  const { data } = parseFrontmatter(navbarFile[navbarPath] as string);
+  
+  // Parse tagline - can be string (single line) or array (multiple lines)
+  let tagline: string[] = defaultNavbar.tagline;
+  if (data.tagline) {
+    if (Array.isArray(data.tagline)) {
+      tagline = (data.tagline as string[]).filter(line => line.trim().length > 0);
+    } else {
+      // Backward compatibility: single string becomes array with one item
+      tagline = [(data.tagline as string).trim()].filter(line => line.length > 0);
+    }
+  }
+  
+  // Parse navLinks array of objects
+  const navLinks = Array.isArray(data.navLinks) ? (data.navLinks as Array<Record<string, unknown>>) : [];
+  const parsedNavLinks: NavLink[] = navLinks.map(link => ({
+    label: (link.label as string) || '',
+    path: (link.path as string) || ''
+  }));
+  
+  return {
+    tagline: tagline.length > 0 ? tagline : defaultNavbar.tagline,
+    logo: (data.logo as string) || defaultNavbar.logo,
+    bgColor: (data.bgColor as string) || undefined,
+    navLinks: parsedNavLinks.length > 0 ? parsedNavLinks : defaultNavbar.navLinks
+  };
+}
+
+// Get footer content
+export function getFooterContent(): FooterContent {
+  const footerPath = Object.keys(footerFile)[0];
+  
+  const defaultFooter: FooterContent = {
+    copyrightName: 'Marcus Chen',
+    startYear: 2018,
+    bgColor: '#FF69B4',
+    socialLinks: [
+      { platform: 'linkedin', url: 'https://linkedin.com', enabled: true },
+      { platform: 'instagram', url: 'https://instagram.com', enabled: true },
+      { platform: 'behance', url: 'https://behance.net', enabled: true }
+    ],
+    navLinks: [
+      { label: 'About', path: '/about' },
+      { label: 'Contact', path: '/contact' }
+    ]
+  };
+  
+  if (!footerPath) {
+    return defaultFooter;
+  }
+  
+  const { data } = parseFrontmatter(footerFile[footerPath] as string);
+  
+  // Parse socialLinks array of objects
+  const socialLinks = Array.isArray(data.socialLinks) ? (data.socialLinks as Array<Record<string, unknown>>) : [];
+  const parsedSocialLinks: SocialLink[] = socialLinks
+    .map(link => ({
+      platform: (link.platform as string) || '',
+      url: (link.url as string) || '',
+      enabled: link.enabled !== undefined ? (link.enabled as boolean) : true
+    }))
+    .filter(link => link.enabled && link.platform && link.url);
+  
+  // Parse navLinks array of objects
+  const navLinks = Array.isArray(data.navLinks) ? (data.navLinks as Array<Record<string, unknown>>) : [];
+  const parsedNavLinks: NavLink[] = navLinks.map(link => ({
+    label: (link.label as string) || '',
+    path: (link.path as string) || ''
+  }));
+  
+  return {
+    copyrightName: (data.copyrightName as string) || defaultFooter.copyrightName,
+    startYear: (data.startYear as number) || defaultFooter.startYear,
+    bgColor: (data.bgColor as string) || defaultFooter.bgColor,
+    socialLinks: parsedSocialLinks.length > 0 ? parsedSocialLinks : defaultFooter.socialLinks,
+    navLinks: parsedNavLinks.length > 0 ? parsedNavLinks : defaultFooter.navLinks
   };
 }

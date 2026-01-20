@@ -29,6 +29,7 @@ export interface Project {
   slug: string;
   description: string[];
   barColor?: string; // Optional custom bar color
+  galleryImages?: string[]; // Gallery images from markdown
 }
 
 export interface Service {
@@ -41,13 +42,34 @@ export interface Service {
   projects: Project[];
 }
 
+// Helper to normalize image paths from markdown (public/ -> /)
+function normalizeImagePath(path: string): string {
+  if (!path || path.trim() === '') {
+    return path;
+  }
+  // Convert paths starting with "public/" to "/" for Vite public assets
+  if (path.startsWith('public/')) {
+    return '/' + path.substring(7); // Remove "public/" prefix
+  }
+  // Ensure paths starting with "/" are preserved
+  if (!path.startsWith('/')) {
+    return '/' + path;
+  }
+  return path;
+}
+
 // Helper to resolve image path with fallback
 function resolveImage(imagePath: string, slug: string): string {
   // Use the image path from markdown if provided, otherwise fallback
   if (imagePath && imagePath.trim() !== '') {
-    return imagePath;
+    return normalizeImagePath(imagePath);
   }
   return fallbackImages[slug] || project1;
+}
+
+// Helper to normalize multiple image paths (for gallery images)
+function normalizeImagePaths(paths: string[]): string[] {
+  return paths.map(path => normalizeImagePath(path));
 }
 
 // Load services from markdown content
@@ -72,7 +94,8 @@ export const services: Service[] = (() => {
           image: resolveImage(project.heroImage, project.slug),
           slug: project.slug,
           description: project.description,
-          barColor: project.barColor
+          barColor: project.barColor,
+          galleryImages: normalizeImagePaths(project.galleryImages || [])
         }))
       };
     });
@@ -83,13 +106,29 @@ export const services: Service[] = (() => {
 })();
 
 export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor: string; barColor?: string })[] => {
-  return services.flatMap(service => 
-    service.projects.map(project => ({
-      ...project,
-      serviceSlug: service.slug,
-      serviceColor: project.barColor || service.infoColor // Use project's barColor if set, otherwise service color
-    }))
-  );
+  // Load all projects directly from markdown to ensure we get all projects
+  const allProjectsFromContent = loadProjects();
+  
+  return allProjectsFromContent.map(project => {
+    // Find the service that matches this project's service field
+    const matchingService = services.find(s => s.slug === project.service);
+    
+    // If no matching service found, try to find by slug or use first available service as fallback
+    const service = matchingService || services.find(s => s.slug === 'graphic-design') || services[0];
+    
+    return {
+      title: project.title,
+      location: project.location,
+      year: project.year,
+      image: resolveImage(project.heroImage, project.slug),
+      slug: project.slug,
+      description: project.description,
+      barColor: project.barColor,
+      galleryImages: normalizeImagePaths(project.galleryImages || []),
+      serviceSlug: service?.slug || project.service,
+      serviceColor: project.barColor || service?.infoColor || '#000000'
+    };
+  });
 };
 
 export const getServiceBySlug = (slug: string): Service | undefined => {
@@ -97,16 +136,43 @@ export const getServiceBySlug = (slug: string): Service | undefined => {
 };
 
 export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string; serviceColor: string; serviceTitle: string }) | undefined => {
+  // First try to find in services array (for backward compatibility)
   for (const service of services) {
     const project = service.projects.find(p => p.slug === slug);
     if (project) {
       return {
         ...project,
+        galleryImages: project.galleryImages || [],
         serviceSlug: service.slug,
         serviceColor: project.barColor || service.infoColor, // Use project's barColor if set
         serviceTitle: service.title
       };
     }
   }
+  
+  // If not found, search all projects directly from markdown
+  const allProjectsFromContent = loadProjects();
+  const projectContent = allProjectsFromContent.find(p => p.slug === slug);
+  
+  if (projectContent) {
+    // Find the matching service
+    const matchingService = services.find(s => s.slug === projectContent.service);
+    const service = matchingService || services.find(s => s.slug === 'graphic-design') || services[0];
+    
+    return {
+      title: projectContent.title,
+      location: projectContent.location,
+      year: projectContent.year,
+      image: resolveImage(projectContent.heroImage, projectContent.slug),
+      slug: projectContent.slug,
+      description: projectContent.description,
+      barColor: projectContent.barColor,
+      galleryImages: normalizeImagePaths(projectContent.galleryImages || []),
+      serviceSlug: service?.slug || projectContent.service,
+      serviceColor: projectContent.barColor || service?.infoColor || '#000000',
+      serviceTitle: service?.title || 'Project'
+    };
+  }
+  
   return undefined;
 };

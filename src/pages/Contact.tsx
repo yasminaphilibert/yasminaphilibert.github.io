@@ -154,7 +154,7 @@ const Contact = () => {
         </Link>
       </section>
 
-      <Footer bgColor="#FF6B6B" />
+      <Footer />
     </div>
   );
 };
