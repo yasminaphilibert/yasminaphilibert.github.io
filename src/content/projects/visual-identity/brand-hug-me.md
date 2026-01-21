@@ -9,6 +9,7 @@ galleryImages:
   - "public/images/services/visual-identity/page_08.png"
   - "public/images/services/visual-identity/page_09.png"
   - "public/images/services/visual-identity/page_10.png"
+galleryBackground: "#ffffff"
 order: 1
 featured: false
 ---

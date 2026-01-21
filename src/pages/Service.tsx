@@ -48,7 +48,7 @@ const Service = () => {
         
         {/* Colored info section */}
         <div 
-          className="w-full px-6 py-10 md:px-12 md:py-14 rounded-b-[2rem]"
+          className="w-full px-6 py-10 md:px-12 md:py-14 rounded-b-[2rem] overflow-hidden"
           style={{ backgroundColor: service.infoColor }}
         >
           <div className="max-w-7xl mx-auto">
@@ -56,18 +56,18 @@ const Service = () => {
               to="/" 
               className="inline-flex items-center gap-2 text-black/60 hover:text-black transition-colors mb-6"
             >
-              <ArrowLeft className="w-4 h-4" />
-              <span className="text-sm">Back to services</span>
+              <ArrowLeft className="w-4 h-4 flex-shrink-0" />
+              <span className="text-sm break-words">Back to services</span>
             </Link>
             
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-              <div>
-                <span className="text-sm text-black/60 block mb-2">{service.subtitle}</span>
-                <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-medium text-black">
+              <div className="min-w-0">
+                <span className="text-sm text-black/60 block mb-2 break-words">{service.subtitle}</span>
+                <h1 className="service-card-title font-megna text-4xl md:text-5xl lg:text-6xl font-black text-black break-words">
                   {service.title}
                 </h1>
               </div>
-              <p className="text-black/80 max-w-md text-lg">
+              <p className="text-black/80 max-w-md text-lg break-words">
                 {service.description}
               </p>
             </div>
@@ -76,7 +76,10 @@ const Service = () => {
       </motion.div>
 
       {/* Projects Grid - 2 columns */}
-      <main className="py-16 md:py-24">
+      <main 
+        className="py-16 md:py-24"
+        style={service.projectsGridBackground ? { backgroundColor: service.projectsGridBackground } : undefined}
+      >
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}

@@ -30,6 +30,7 @@ export interface Project {
   description: string[];
   barColor?: string; // Optional custom bar color
   galleryImages?: string[]; // Gallery images from markdown
+  galleryBackground?: string; // Optional custom gallery background color
 }
 
 export interface Service {
@@ -39,6 +40,7 @@ export interface Service {
   image: string;
   slug: string;
   infoColor: string;
+  projectsGridBackground?: string; // Optional custom projects grid background color
   projects: Project[];
 }
 
@@ -87,6 +89,7 @@ export const services: Service[] = (() => {
         image: resolveImage(service.heroImage, service.slug),
         slug: service.slug,
         infoColor: service.infoColor,
+        projectsGridBackground: service.projectsGridBackground,
         projects: serviceProjects.map(project => ({
           title: project.title,
           location: project.location,
@@ -95,7 +98,8 @@ export const services: Service[] = (() => {
           slug: project.slug,
           description: project.description,
           barColor: project.barColor,
-          galleryImages: normalizeImagePaths(project.galleryImages || [])
+          galleryImages: normalizeImagePaths(project.galleryImages || []),
+          galleryBackground: project.galleryBackground
         }))
       };
     });
@@ -125,6 +129,7 @@ export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor
       description: project.description,
       barColor: project.barColor,
       galleryImages: normalizeImagePaths(project.galleryImages || []),
+      galleryBackground: project.galleryBackground,
       serviceSlug: service?.slug || project.service,
       serviceColor: project.barColor || service?.infoColor || '#000000'
     };
@@ -143,6 +148,7 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
       return {
         ...project,
         galleryImages: project.galleryImages || [],
+        galleryBackground: project.galleryBackground,
         serviceSlug: service.slug,
         serviceColor: project.barColor || service.infoColor, // Use project's barColor if set
         serviceTitle: service.title
@@ -168,6 +174,7 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
       description: projectContent.description,
       barColor: projectContent.barColor,
       galleryImages: normalizeImagePaths(projectContent.galleryImages || []),
+      galleryBackground: projectContent.galleryBackground,
       serviceSlug: service?.slug || projectContent.service,
       serviceColor: projectContent.barColor || service?.infoColor || '#000000',
       serviceTitle: service?.title || 'Project'

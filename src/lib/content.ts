@@ -14,6 +14,7 @@ export interface ServiceContent {
   infoColor: string;
   heroImage: string;
   order: number;
+  projectsGridBackground?: string; // Optional custom projects grid background color
   description: string;
 }
 
@@ -28,6 +29,7 @@ export interface ProjectContent {
   order: number;
   featured: boolean;
   barColor?: string; // Optional custom bar color, falls back to service color
+  galleryBackground?: string; // Optional custom gallery background color
   description: string[];
 }
 
@@ -288,6 +290,7 @@ export function loadServices(): ServiceContent[] {
       infoColor: data.infoColor as string || '#000000',
       heroImage: data.heroImage as string || '',
       order: data.order as number || 0,
+      projectsGridBackground: data.projectsGridBackground as string | undefined,
       description: body
     });
   }
@@ -319,6 +322,7 @@ export function loadProjects(serviceSlug?: string): ProjectContent[] {
       order: data.order as number || 0,
       featured: data.featured as boolean || false,
       barColor: data.barColor as string | undefined,
+      galleryBackground: data.galleryBackground as string | undefined,
       description: descriptionParagraphs
     };
     

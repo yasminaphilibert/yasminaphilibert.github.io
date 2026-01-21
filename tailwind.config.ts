@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         display: ["'Playfair Display'", "Georgia", "serif"],
         body: ["'Inter'", "system-ui", "sans-serif"],
+        megna: ["'Megna Regular'", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",

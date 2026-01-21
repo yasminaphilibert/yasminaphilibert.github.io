@@ -33,20 +33,20 @@ const ProjectCard = ({ title, category, location, year, image, slug, index, info
         
         {/* Colored info bar with rounded bottom corners */}
         <div 
-          className="w-full px-6 py-8 md:px-12 md:py-10 rounded-b-[2rem]"
+          className="w-full px-6 py-8 md:px-12 md:py-10 rounded-b-[2rem] overflow-hidden"
           style={{ backgroundColor: infoColor }}
         >
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex items-center gap-4 md:gap-8">
-              <span className="text-sm text-black/70">{category}</span>
-              <h3 className="font-display text-2xl md:text-3xl font-medium text-black">
+            <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8 min-w-0">
+              <span className="text-sm text-black/70 break-words flex-shrink-0">{category}</span>
+              <h3 className="font-display text-2xl md:text-3xl font-medium text-black break-words min-w-0">
                 {title}
               </h3>
             </div>
             
-            <div className="flex flex-col md:items-end gap-1">
-              <span className="text-sm text-black/70">{location}</span>
-              <span className="text-sm text-black/70">{year}</span>
+            <div className="flex flex-col md:items-end gap-1 flex-shrink-0">
+              <span className="text-sm text-black/70 break-words">{location}</span>
+              <span className="text-sm text-black/70 break-words">{year}</span>
             </div>
           </div>
         </div>

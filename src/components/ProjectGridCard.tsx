@@ -32,16 +32,16 @@ const ProjectGridCard = ({ title, location, year, image, slug, index, infoColor 
         
         {/* Colored info bar with rounded bottom corners */}
         <div 
-          className="w-full px-5 py-6 md:px-6 md:py-8 rounded-b-[1.5rem]"
+          className="w-full px-5 py-6 md:px-6 md:py-8 rounded-b-[1.5rem] overflow-hidden"
           style={{ backgroundColor: infoColor }}
         >
-          <h3 className="font-display text-xl md:text-2xl font-medium text-black mb-3">
+          <h3 className="font-display text-xl md:text-2xl font-medium text-black mb-3 break-words">
             {title}
           </h3>
-          <div className="flex items-center gap-4 text-sm text-black/70">
-            <span>{location}</span>
+          <div className="flex items-center gap-4 text-sm text-black/70 flex-wrap">
+            <span className="break-words">{location}</span>
             <span>•</span>
-            <span>{year}</span>
+            <span className="break-words">{year}</span>
           </div>
         </div>
       </Link>

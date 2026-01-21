@@ -7,16 +7,16 @@ const Header = () => {
 
   return (
     <motion.header 
-      className="rounded-b-[2rem] px-6 py-8 md:px-12 md:py-10"
+      className="rounded-b-[2rem] px-6 py-8 md:px-12 md:py-10 overflow-hidden"
       style={{ backgroundColor: navbar.bgColor || undefined }}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
           {/* Tagline - Left */}
-          <div className="text-sm font-medium text-primary-foreground hidden md:block">
+          <div className="text-sm font-medium text-primary-foreground hidden md:block flex-shrink-0">
             {navbar.tagline.map((line, index) => (
               <span key={index}>
                 {line}
@@ -26,17 +26,17 @@ const Header = () => {
           </div>
 
           {/* Logo - Center */}
-          <Link to="/" className="text-2xl md:text-4xl font-semibold tracking-tight text-primary-foreground" style={{ fontFamily: 'var(--font-logo)', fontSize: 'var(--font-size-logo)' }}>
+          <Link to="/" className="text-2xl md:text-4xl font-semibold tracking-tight text-primary-foreground flex-shrink-0 min-w-0 break-words" style={{ fontFamily: 'var(--font-logo)', fontSize: 'var(--font-size-logo)' }}>
             {navbar.logo}
           </Link>
 
           {/* Navigation - Right */}
-          <nav className="flex items-center gap-6 md:gap-8">
+          <nav className="flex items-center gap-4 md:gap-6 lg:gap-8 flex-shrink-0">
             {navbar.navLinks.map((link) => (
               <Link 
                 key={link.path}
                 to={link.path} 
-                className="text-sm font-medium text-primary-foreground underline underline-offset-4 hover:opacity-70 transition-opacity duration-200"
+                className="text-sm font-medium text-primary-foreground underline underline-offset-4 hover:opacity-70 transition-opacity duration-200 whitespace-nowrap"
               >
                 {link.label}
               </Link>
