@@ -41,12 +41,12 @@ const Project = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
-          className="w-full"
+          className="w-full overflow-hidden"
         >
           <img 
             src={project.image} 
             alt={project.title}
-            className="w-full h-[50vh] md:h-[70vh] object-cover"
+            className="w-full h-[50vh] md:h-[70vh] object-cover transition-transform duration-700 ease-out hover:scale-105"
           />
         </motion.div>
 
@@ -114,7 +114,7 @@ const Project = () => {
                       <img 
                         src={img} 
                         alt={`${project.title} gallery ${index + 1}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out hover:scale-105"
                       />
                     </motion.div>
                   ))}

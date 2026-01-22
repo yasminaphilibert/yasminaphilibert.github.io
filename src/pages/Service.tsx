@@ -42,7 +42,7 @@ const Service = () => {
           <img 
             src={service.image} 
             alt={service.title}
-            className="w-full h-[50vh] md:h-[60vh] object-cover"
+            className="w-full h-[50vh] md:h-[60vh] object-cover transition-transform duration-700 ease-out hover:scale-105"
           />
         </div>
         
