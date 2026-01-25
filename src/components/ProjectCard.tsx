@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Media from "./Media";
 
 interface ProjectCardProps {
   title: string;
@@ -22,14 +23,16 @@ const ProjectCard = ({ title, category, location, year, image, slug, index, info
       className="w-full"
     >
       <Link to={`/project/${slug}`} className="block">
-        {/* Full-width image - no rounded corners on top to attach flush to previous section */}
-        <div className="w-full overflow-hidden">
-          <img 
-            src={image} 
-            alt={title}
-            className="w-full h-[50vh] md:h-[70vh] lg:h-[80vh] object-cover transition-transform duration-700 ease-out hover:scale-105"
-          />
-        </div>
+        {/* Full-width media (image or video) - no rounded corners on top to attach flush to previous section */}
+        <Media
+          src={image}
+          alt={title}
+          className="w-full h-[50vh] md:h-[70vh] lg:h-[80vh] transition-transform duration-700 ease-out hover:scale-105"
+          autoplay={true}
+          loop={true}
+          muted={true}
+          controls={false}
+        />
         
         {/* Colored info bar with rounded bottom corners */}
         <div 

@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProjectGridCard from "@/components/ProjectGridCard";
+import Media from "@/components/Media";
 import { getServiceBySlug } from "@/data/services";
 
 const Service = () => {
@@ -31,20 +32,22 @@ const Service = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      {/* Hero section - full width image flush with header */}
+      {/* Hero section - full width media (image or video) flush with header */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         className="w-full"
       >
-        <div className="w-full overflow-hidden">
-          <img 
-            src={service.image} 
-            alt={service.title}
-            className="w-full h-[50vh] md:h-[60vh] object-cover transition-transform duration-700 ease-out hover:scale-105"
-          />
-        </div>
+        <Media
+          src={service.heroImage}
+          alt={service.title}
+          className="w-full h-[50vh] md:h-[60vh] transition-transform duration-700 ease-out hover:scale-105"
+          autoplay={false}
+          loop={true}
+          muted={false}
+          controls={true}
+        />
         
         {/* Colored info section */}
         <div 

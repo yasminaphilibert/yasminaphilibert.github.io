@@ -5,6 +5,7 @@ service: "visual-identity"
 location: "Paris, France"
 year: "2018"
 heroImage: "public/images/services/visual-identity/page_08.png"
+thumbnailImage: "public/images/services/visual-identity/page_08.png"
 galleryImages:
   - "public/images/services/visual-identity/page_08.png"
   - "public/images/services/visual-identity/page_09.png"

@@ -5,6 +5,7 @@ service: "visual-identity"
 location: "Paris, France"
 year: "2019"
 heroImage: "public/images/services/visual-identity/generation-c9900545-3203-4cef-a7cb-c32727092c54.png"
+thumbnailImage: "public/images/services/visual-identity/generation-c9900545-3203-4cef-a7cb-c32727092c54.png"
 galleryImages:
   - "public/images/services/visual-identity/generation-c9900545-3203-4cef-a7cb-c32727092c54.png"
   - "public/images/services/visual-identity/generation-8062c617-2622-4037-93f2-2c27845653d9.png"

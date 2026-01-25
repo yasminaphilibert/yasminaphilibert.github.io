@@ -2,6 +2,8 @@ import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Media from "@/components/Media";
+import Video from "@/components/Video";
 import { getProjectBySlug, services, getServiceBySlug } from "@/data/services";
 
 const Project = () => {
@@ -36,17 +38,21 @@ const Project = () => {
       <Header />
       
       <main>
-        {/* Hero Image */}
+        {/* Hero Media (Image or Video) */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
-          className="w-full overflow-hidden"
+          className="w-full"
         >
-          <img 
-            src={project.image} 
+          <Media
+            src={project.heroImage}
             alt={project.title}
-            className="w-full h-[50vh] md:h-[70vh] object-cover transition-transform duration-700 ease-out hover:scale-105"
+            className="w-full h-[50vh] md:h-[70vh] transition-transform duration-700 ease-out hover:scale-105"
+            autoplay={false}
+            loop={true}
+            muted={false}
+            controls={true}
           />
         </motion.div>
 
@@ -90,8 +96,9 @@ const Project = () => {
           </div>
         </motion.section>
 
-        {/* Gallery Images Grid */}
-        {project.galleryImages && project.galleryImages.length > 0 && (
+        {/* Gallery Images and Videos Grid */}
+        {((project.galleryImages && project.galleryImages.length > 0) || 
+          (project.galleryVideos && project.galleryVideos.length > 0)) && (
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -101,23 +108,56 @@ const Project = () => {
           >
             <div className="max-w-7xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-10 lg:gap-12 justify-items-center">
-                {project.galleryImages
-                  .map((img, index) => (
+                {/* Render images and videos (mixed gallery) */}
+                {project.galleryImages?.map((media, index) => (
+                  <motion.div
+                    key={`media-${index}`}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    className="w-full max-w-md md:max-w-lg lg:max-w-xl"
+                  >
+                    <Media
+                      src={media}
+                      alt={`${project.title} gallery ${index + 1}`}
+                      className="w-full h-full transition-transform duration-700 ease-out hover:scale-105"
+                      aspectRatio="square"
+                      containerClassName="rounded-lg overflow-hidden"
+                      autoplay={false}
+                      loop={true}
+                      muted={false}
+                      controls={true}
+                    />
+                  </motion.div>
+                ))}
+                
+                {/* Render videos */}
+                {project.galleryVideos?.map((video, index) => {
+                  // Generate poster image path (same name but .jpg extension)
+                  const posterPath = video.replace(/\.(mp4|webm)$/, "_poster.jpg");
+                  return (
                     <motion.div
-                      key={index}
+                      key={`video-${index}`}
                       initial={{ opacity: 0, scale: 0.9 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: index * 0.1 }}
-                      className="aspect-square overflow-hidden rounded-lg w-full max-w-md md:max-w-lg lg:max-w-xl"
+                      transition={{ duration: 0.4, delay: (project.galleryImages?.length || 0) * 0.1 + index * 0.1 }}
+                      className="w-full max-w-md md:max-w-lg lg:max-w-xl"
                     >
-                      <img 
-                        src={img} 
-                        alt={`${project.title} gallery ${index + 1}`}
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out hover:scale-105"
+                      <Video
+                        src={video}
+                        poster={posterPath}
+                        alt={`${project.title} video ${index + 1}`}
+                        aspectRatio="square"
+                        autoplay={false}
+                        loop={true}
+                        muted={false}
+                        controls={true}
                       />
                     </motion.div>
-                  ))}
+                  );
+                })}
               </div>
             </div>
           </motion.section>

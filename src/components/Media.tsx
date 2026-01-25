@@ -1,0 +1,88 @@
+import { ReactNode } from "react";
+import Video from "./Video";
+import { cn } from "@/lib/utils";
+
+interface MediaProps {
+  src: string;
+  alt: string;
+  className?: string;
+  aspectRatio?: "square" | "video" | "auto";
+  // For images
+  objectFit?: "cover" | "contain" | "fill" | "none" | "scale-down";
+  // For videos
+  autoplay?: boolean;
+  loop?: boolean;
+  muted?: boolean;
+  controls?: boolean;
+  poster?: string;
+  // Container props
+  containerClassName?: string;
+  children?: ReactNode;
+}
+
+/**
+ * Smart Media component that automatically detects if src is a video or image
+ * and renders the appropriate component
+ */
+const Media = ({
+  src,
+  alt,
+  className,
+  aspectRatio,
+  objectFit = "cover",
+  autoplay = false,
+  loop = true,
+  muted = false, // Audio enabled by default
+  controls = true, // Full controls: play/pause, mute, volume, fullscreen
+  poster,
+  containerClassName,
+  children,
+}: MediaProps) => {
+  // Check if the source is a video file
+  const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(src);
+
+  // Generate poster path if not provided (same name with _poster.jpg)
+  const videoPoster = poster || (isVideo ? src.replace(/\.(mp4|webm|mov|avi|mkv)$/i, "_poster.jpg") : undefined);
+  
+  // For videos, if src ends with .mp4, try to use .webm version if available
+  // The Video component will handle the fallback
+
+  if (isVideo) {
+    // Extract height classes from className to apply to container
+    const heightMatch = className?.match(/h-\[[\w\d]+vh\]|h-\[[\w\d]+px\]|h-\d+/);
+    const heightClass = heightMatch ? heightMatch[0] : "";
+    
+    return (
+      <div className={cn("w-full", containerClassName)}>
+        <div className={cn("w-full", heightClass || "h-full")}>
+          <Video
+            src={src}
+            poster={videoPoster}
+            alt={alt}
+            className={cn(className.replace(/h-\[[\w\d]+vh\]|h-\[[\w\d]+px\]|h-\d+/g, ""), "w-full h-full")}
+            aspectRatio={aspectRatio}
+            autoplay={autoplay}
+            loop={loop}
+            muted={muted}
+            controls={controls}
+          />
+        </div>
+        {children}
+      </div>
+    );
+  }
+
+  // Render as image
+  return (
+    <div className={cn("w-full overflow-hidden", containerClassName)}>
+      <img
+        src={src}
+        alt={alt}
+        className={cn("w-full h-full", `object-${objectFit}`, className)}
+      />
+      {children}
+    </div>
+  );
+};
+
+export default Media;

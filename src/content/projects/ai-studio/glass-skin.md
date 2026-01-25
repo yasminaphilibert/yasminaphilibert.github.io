@@ -5,6 +5,7 @@ service: "ai-studio"
 location: "Paris, France"
 year: "2025"
 heroImage: "public/images/services/ai-station/004/httpss.mj.runRCJw3_zmfHA_httpss.mj.runq0gYg9UVs2c_--ar_34_--v_d3f2e191-9c65-41a1-9bb9-7824468b3ced_3.png"
+thumbnailImage: "public/images/services/ai-station/004/httpss.mj.runRCJw3_zmfHA_httpss.mj.runq0gYg9UVs2c_--ar_34_--v_d3f2e191-9c65-41a1-9bb9-7824468b3ced_3.png"
 galleryImages:
   - "public/images/services/ai-station/004/httpss.mj.runRCJw3_zmfHA_httpss.mj.runq0gYg9UVs2c_--ar_34_--v_d3f2e191-9c65-41a1-9bb9-7824468b3ced_2.png"
   - "public/images/services/ai-station/004/httpss.mj.runRCJw3_zmfHA_httpss.mj.runq0gYg9UVs2c_--ar_34_--v_d3f2e191-9c65-41a1-9bb9-7824468b3ced_0.png"

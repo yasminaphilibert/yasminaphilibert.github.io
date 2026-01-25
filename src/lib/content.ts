@@ -12,7 +12,8 @@ export interface ServiceContent {
   subtitle: string;
   slug: string;
   infoColor: string;
-  heroImage: string;
+  heroImage: string; // Image/video for the service detail page
+  thumbnailImage?: string; // Optional thumbnail for cards/lists (falls back to heroImage if not provided)
   order: number;
   projectsGridBackground?: string; // Optional custom projects grid background color
   description: string;
@@ -24,8 +25,10 @@ export interface ProjectContent {
   service: string;
   location: string;
   year: string;
-  heroImage: string;
+  heroImage: string; // Image/video for the project detail page
+  thumbnailImage?: string; // Optional thumbnail for cards/lists (falls back to heroImage if not provided)
   galleryImages: string[];
+  galleryVideos?: string[]; // Optional gallery videos
   order: number;
   featured: boolean;
   barColor?: string; // Optional custom bar color, falls back to service color
@@ -289,6 +292,7 @@ export function loadServices(): ServiceContent[] {
       slug: data.slug as string || '',
       infoColor: data.infoColor as string || '#000000',
       heroImage: data.heroImage as string || '',
+      thumbnailImage: data.thumbnailImage as string | undefined,
       order: data.order as number || 0,
       projectsGridBackground: data.projectsGridBackground as string | undefined,
       description: body
@@ -318,7 +322,9 @@ export function loadProjects(serviceSlug?: string): ProjectContent[] {
       location: data.location as string || '',
       year: data.year as string || '',
       heroImage: data.heroImage as string || '',
+      thumbnailImage: data.thumbnailImage as string | undefined,
       galleryImages: (data.galleryImages as string[]) || [],
+      galleryVideos: (data.galleryVideos as string[]) || [],
       order: data.order as number || 0,
       featured: data.featured as boolean || false,
       barColor: data.barColor as string | undefined,

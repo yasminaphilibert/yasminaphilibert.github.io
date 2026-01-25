@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Media from "./Media";
 
 interface ProjectGridCardProps {
   title: string;
@@ -21,14 +22,17 @@ const ProjectGridCard = ({ title, location, year, image, slug, index, infoColor 
       className="w-full"
     >
       <Link to={`/project/${slug}`} className="block">
-        {/* Image container */}
-        <div className="w-full overflow-hidden rounded-t-[1.5rem]">
-          <img 
-            src={image} 
-            alt={title}
-            className="w-full h-[40vh] md:h-[50vh] object-cover transition-transform duration-700 ease-out hover:scale-105"
-          />
-        </div>
+        {/* Media container (image or video) */}
+        <Media
+          src={image}
+          alt={title}
+          className="w-full h-[40vh] md:h-[50vh] transition-transform duration-700 ease-out hover:scale-105"
+          containerClassName="rounded-t-[1.5rem] overflow-hidden"
+          autoplay={false}
+          loop={true}
+          muted={true}
+          controls={true}
+        />
         
         {/* Colored info bar with rounded bottom corners */}
         <div 

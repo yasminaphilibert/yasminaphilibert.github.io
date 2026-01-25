@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Media from "./Media";
 
 interface ServiceCardProps {
   title: string;
@@ -21,14 +22,17 @@ const ServiceCard = ({ title, subtitle, description, image, slug, index, infoCol
       className="w-full -mt-8"
     >
       <Link to={`/services/${slug}`} className="block">
-        {/* Full-width image */}
-        <div className="w-full overflow-hidden pt-8">
-          <img 
-            src={image} 
-            alt={title}
-            className="w-full h-[50vh] md:h-[70vh] lg:h-[80vh] object-cover transition-transform duration-700 ease-out hover:scale-105"
-          />
-        </div>
+        {/* Full-width media (image or video) */}
+        <Media
+          src={image}
+          alt={title}
+          className="w-full h-[50vh] md:h-[70vh] lg:h-[80vh] transition-transform duration-700 ease-out hover:scale-105"
+          containerClassName="pt-8"
+          autoplay={true}
+          loop={true}
+          muted={true}
+          controls={false}
+        />
         
         {/* Colored info bar with rounded bottom corners */}
         <div 

@@ -4,6 +4,7 @@ subtitle: "Digital"
 slug: "visual-art"
 infoColor: "#5ea77e"
 heroImage: "public/images/services/visual-art/page_54.png"
+thumbnailImage: "public/images/services/visual-art/page_54.png"
 order: 2
 ---
 

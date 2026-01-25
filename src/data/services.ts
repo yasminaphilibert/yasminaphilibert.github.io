@@ -25,11 +25,13 @@ export interface Project {
   title: string;
   location: string;
   year: string;
-  image: string;
+  image: string; // Thumbnail image for cards/lists
+  heroImage: string; // Hero image for detail page
   slug: string;
   description: string[];
   barColor?: string; // Optional custom bar color
   galleryImages?: string[]; // Gallery images from markdown
+  galleryVideos?: string[]; // Gallery videos from markdown
   galleryBackground?: string; // Optional custom gallery background color
 }
 
@@ -37,7 +39,8 @@ export interface Service {
   title: string;
   subtitle: string;
   description: string;
-  image: string;
+  image: string; // Thumbnail image for cards/lists
+  heroImage: string; // Hero image for detail page
   slug: string;
   infoColor: string;
   projectsGridBackground?: string; // Optional custom projects grid background color
@@ -74,6 +77,11 @@ function normalizeImagePaths(paths: string[]): string[] {
   return paths.map(path => normalizeImagePath(path));
 }
 
+// Helper to normalize video paths (same as images)
+function normalizeVideoPaths(paths: string[]): string[] {
+  return paths.map(path => normalizeImagePath(path));
+}
+
 // Load services from markdown content
 export const services: Service[] = (() => {
   try {
@@ -86,7 +94,8 @@ export const services: Service[] = (() => {
         title: service.title,
         subtitle: service.subtitle,
         description: service.description,
-        image: resolveImage(service.heroImage, service.slug),
+        image: resolveImage(service.thumbnailImage || service.heroImage, service.slug),
+        heroImage: resolveImage(service.heroImage, service.slug),
         slug: service.slug,
         infoColor: service.infoColor,
         projectsGridBackground: service.projectsGridBackground,
@@ -94,11 +103,13 @@ export const services: Service[] = (() => {
           title: project.title,
           location: project.location,
           year: project.year,
-          image: resolveImage(project.heroImage, project.slug),
+          image: resolveImage(project.thumbnailImage || project.heroImage, project.slug),
+          heroImage: resolveImage(project.heroImage, project.slug),
           slug: project.slug,
           description: project.description,
           barColor: project.barColor,
           galleryImages: normalizeImagePaths(project.galleryImages || []),
+          galleryVideos: normalizeVideoPaths(project.galleryVideos || []),
           galleryBackground: project.galleryBackground
         }))
       };
@@ -109,7 +120,7 @@ export const services: Service[] = (() => {
   }
 })();
 
-export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor: string; barColor?: string })[] => {
+export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor: string; barColor?: string; heroImage: string })[] => {
   // Load all projects directly from markdown to ensure we get all projects
   const allProjectsFromContent = loadProjects();
   
@@ -124,11 +135,13 @@ export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor
       title: project.title,
       location: project.location,
       year: project.year,
-      image: resolveImage(project.heroImage, project.slug),
+      image: resolveImage(project.thumbnailImage || project.heroImage, project.slug),
+      heroImage: resolveImage(project.heroImage, project.slug),
       slug: project.slug,
       description: project.description,
       barColor: project.barColor,
       galleryImages: normalizeImagePaths(project.galleryImages || []),
+      galleryVideos: normalizeVideoPaths(project.galleryVideos || []),
       galleryBackground: project.galleryBackground,
       serviceSlug: service?.slug || project.service,
       serviceColor: project.barColor || service?.infoColor || '#000000'
@@ -140,14 +153,16 @@ export const getServiceBySlug = (slug: string): Service | undefined => {
   return services.find(s => s.slug === slug);
 };
 
-export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string; serviceColor: string; serviceTitle: string }) | undefined => {
+export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string; serviceColor: string; serviceTitle: string; heroImage: string }) | undefined => {
   // First try to find in services array (for backward compatibility)
   for (const service of services) {
     const project = service.projects.find(p => p.slug === slug);
     if (project) {
       return {
         ...project,
+        heroImage: project.heroImage || project.image, // Fallback to image if heroImage not set
         galleryImages: project.galleryImages || [],
+        galleryVideos: project.galleryVideos || [],
         galleryBackground: project.galleryBackground,
         serviceSlug: service.slug,
         serviceColor: project.barColor || service.infoColor, // Use project's barColor if set
@@ -169,11 +184,13 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
       title: projectContent.title,
       location: projectContent.location,
       year: projectContent.year,
-      image: resolveImage(projectContent.heroImage, projectContent.slug),
+      image: resolveImage(projectContent.thumbnailImage || projectContent.heroImage, projectContent.slug),
+      heroImage: resolveImage(projectContent.heroImage, projectContent.slug),
       slug: projectContent.slug,
       description: projectContent.description,
       barColor: projectContent.barColor,
       galleryImages: normalizeImagePaths(projectContent.galleryImages || []),
+      galleryVideos: normalizeVideoPaths(projectContent.galleryVideos || []),
       galleryBackground: projectContent.galleryBackground,
       serviceSlug: service?.slug || projectContent.service,
       serviceColor: projectContent.barColor || service?.infoColor || '#000000',

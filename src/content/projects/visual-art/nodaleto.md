@@ -1,15 +1,13 @@
 ---
-title: "From Sound To Matter"
-slug: "sound-matter"
+title: "Nodaleto"
+slug: "nodaleto"
 service: "visual-art"
 location: "Paris, France"
 year: "2019"
-heroImage: "public/images/services/visual-identity/page_08.png"
+heroImage: "public/videos/Nodaleto - Love To Love You.webm"
 thumbnailImage: "public/images/services/visual-identity/page_08.png"
 galleryImages:
-  - "public/images/services/visual-identity/page_08.png"
-  - "public/images/services/visual-identity/page_09.png"
-  - "public/images/services/visual-identity/page_10.png"
+  -
 galleryBackground: "#ffffff"
 order: 1
 featured: false
