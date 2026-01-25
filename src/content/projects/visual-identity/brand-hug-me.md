@@ -4,7 +4,7 @@ slug: "brand-hug-me"
 service: "visual-identity"
 location: "Paris, France"
 year: "2018"
-heroImage: "public/images/services/visual-identity/page_08.png"
+heroImage: "public/videos/Yasyntha See - showreel.webm"
 thumbnailImage: "public/images/services/visual-identity/page_08.png"
 galleryImages:
   - "public/images/services/visual-identity/page_08.png"
