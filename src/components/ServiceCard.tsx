@@ -38,7 +38,7 @@ const ServiceCard = ({ title, subtitle, description, image, slug, index, infoCol
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8 min-w-0">
               <span className="text-sm text-black/70 break-words flex-shrink-0">{subtitle}</span>
-              <h3 className="service-card-title font-megna text-4xl md:text-3xl font-black text-black break-words min-w-0">
+              <h3 className="service-card-title font-megna text-4xl md:text-3xl font-black text-black break-words min-w-0 transition-transform duration-300 ease-in-out hover:scale-110">
                 {title}
               </h3>
             </div>

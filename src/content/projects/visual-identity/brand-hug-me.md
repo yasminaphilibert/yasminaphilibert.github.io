@@ -14,6 +14,15 @@ order: 1
 featured: false
 ---
 
-Complete brand identity system for a tech startup focused on sustainable innovation.
 
-The visual language bridges technology and nature through organic geometric forms.
+Designing Comfort
+
+HUG ME was born from the instinct to protect and reassure.
+The initial idea of a hug evolved through research into the most primal bond: mother and child.
+
+The symbol became the kangaroo, whose baby grows held close, inside a pouch, guided by warmth and heartbeat — a universal image of comfort and security.
+
+Soft pastel colors express calm and tenderness.
+The overlapping typography allows the letters to touch, visually recreating the gesture of a hug.
+
+HUG ME is a promise of closeness, care, and warmth — designed to be felt before it is seen.
