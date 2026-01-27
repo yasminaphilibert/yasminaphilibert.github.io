@@ -28,9 +28,20 @@ jobs:
       - name: Build
         run: npm run build
       
+      - name: Verify build output
+        run: |
+          echo "=== Dist folder contents ==="
+          ls -la dist/
+          echo "=== Assets folder contents ==="
+          ls -la dist/assets/ || echo "No assets folder found"
+          echo "=== HTML file check ==="
+          head -35 dist/index.html | tail -5
+      
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           cname: false
+          keep_files: false
+          force_orphan: false
