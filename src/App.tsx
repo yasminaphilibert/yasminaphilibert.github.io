@@ -19,7 +19,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter basename="/yasyntha">
+      <BrowserRouter basename="/creative-canvas-portfolio">
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
