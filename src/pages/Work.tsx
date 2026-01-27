@@ -4,9 +4,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProjectGridCard from "@/components/ProjectGridCard";
 import { getAllProjects } from "@/data/services";
+import { getWorkContent } from "@/lib/content";
 
 const Work = () => {
   const allProjects = getAllProjects();
+  const workContent = getWorkContent();
 
   return (
     <div className="min-h-screen bg-background">
@@ -14,17 +16,18 @@ const Work = () => {
       
       {/* Hero Section */}
       <motion.section 
-        className="bg-secondary -mt-8 pt-16 pb-12 px-6 md:px-12"
+        className="-mt-8 pt-16 pb-12 px-6 md:px-12"
+        style={{ backgroundColor: workContent.heroBackgroundColor || '#F8F8F8' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <div className="max-w-7xl mx-auto">
           <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-semibold text-secondary-foreground mb-4">
-            My Work
+            {workContent.title}
           </h1>
           <p className="text-lg md:text-xl text-secondary-foreground/80 max-w-2xl">
-            A collection of projects across visual identity, graphic design, and sound engineering.
+            {workContent.subtitle}
           </p>
         </div>
       </motion.section>
@@ -32,7 +35,7 @@ const Work = () => {
       {/* Info Bar */}
       <div 
         className="py-6 px-6 md:px-12 rounded-b-[2rem]"
-        style={{ backgroundColor: "#4ECDC4" }}
+        style={{ backgroundColor: workContent.infoBarColor || "#4ECDC4" }}
       >
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
           <span className="text-sm font-medium text-white">
@@ -45,7 +48,10 @@ const Work = () => {
       </div>
 
       {/* Projects Gallery */}
-      <section className="py-16 px-6 md:px-12 bg-background">
+      <section 
+        className="py-16 px-6 md:px-12"
+        style={{ backgroundColor: workContent.projectsBackgroundColor || '#FFFFFF' }}
+      >
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {allProjects.map((project, index) => (
@@ -65,7 +71,7 @@ const Work = () => {
       </section>
 
       {/* Back to Home */}
-      <section className="bg-muted">
+      <section style={{ backgroundColor: workContent.backToHomeBackgroundColor || '#F5F5F5' }}>
         <Link 
           to="/"
           className="block py-12 px-6 md:px-12 hover:bg-muted/80 transition-colors duration-300"

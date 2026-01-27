@@ -16,7 +16,7 @@ const About = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         className="w-full px-6 py-16 md:px-12 md:py-24 -mt-8 rounded-b-[2rem]"
-        style={{ backgroundColor: about.backgroundColor || "hsl(330, 100%, 71%)" }}
+        style={{ backgroundColor: about.backgroundColor || "hsl(179, 100.00%, 71.00%)" }}
       >
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-12 gap-8 md:gap-12">

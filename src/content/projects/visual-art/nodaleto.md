@@ -1,11 +1,11 @@
 ---
-title: "Nodaleto"
+title: "Love to Love You"
 slug: "nodaleto"
 service: "visual-art"
 location: "Paris, France"
-year: "2019"
+year: "2021"
 heroImage: "public/videos/Nodaleto - Love To Love You.webm"
-thumbnailImage: "public/images/services/visual-identity/page_08.png"
+thumbnailImage: "public/images/services/visual-art/page_26.png"
 galleryImages:
   -
 galleryBackground: "#ffffff"
@@ -14,19 +14,34 @@ featured: false
 ---
 
 
-Research on the Invisible
+YΛSYNTHΛ - Love to Love You (Revisited)
 
-This project emerges from a personal research into the invisible forces that shape reality.
-Using cymatic experimentation, I captured the propagation of sound as a visual experience — where vibration becomes matter.
+NODALETO — Bulla Babies
 
-Sound reveals itself as structure.
-Each frequency generates its own geometry, each movement leaves a trace.
-What is heard transforms into what is seen.
+This campaign is a film about desire in suspension.
+Paint moves like smoke.
+Color breathes, melts, and wraps the frame in slow motion — never settling, never stopping.
 
-This research is rooted in the observation of repetitive patterns across all scales — from breath and heartbeat to waves and natural systems.
-Nothing exists in isolation: rhythm governs life, form, and time.
+The shoe appears inside this flow, not as an object, but as a body.
+It is touched by color, swallowed by it, revealed again.
+The image is not about showing — it is about feeling.
 
-In this work, sound and image are inseparable.
-They are two states of the same phenomenon, emerging through resonance rather than control.
+Donna Summer’s Love to Love You Baby becomes a structure.
+The rhythm stretches time.
+The voice becomes liquid.
+Sound and image fuse into the same gesture — sensual, obsessive, repetitive.
 
-From Sound to Matter is an exploration of how the invisible organizes the visible — and how every form is born from vibration.
+Paint behaves like breath.
+Music behaves like skin.
+The film becomes a loop where desire never resolves.
+
+The camera lingers, not to explain, but to insist.
+This is not a product moment.
+It is a state.
+
+A slow, intimate trance where color replaces touch,
+and sound becomes the only way to see.
+
+Optional closing line (perfect for campaign end card)
+
+Desire has no beginning. Only a rhythm.

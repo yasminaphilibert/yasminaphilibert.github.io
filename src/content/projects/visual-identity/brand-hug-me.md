@@ -4,13 +4,17 @@ slug: "brand-hug-me"
 service: "visual-identity"
 location: "Paris, France"
 year: "2018"
-heroImage: "public/videos/Yasyntha See - showreel.webm"
-thumbnailImage: "public/images/services/visual-identity/page_08.png"
+heroImage: "public/videos/Yasyntha See-showreel_clip_combined.webm"
+thumbnailImage: "public/images/services/visual-identity/Generated Image January 26, 2026 - 5_33AM.png"
 galleryImages:
+  - "public/images/services/visual-identity/Generated Image January 26, 2026 - 6_54PM.png"
+  - "public/images/services/visual-identity/Generated Image January 26, 2026-5_24AM.png"
+  - "public/images/services/visual-identity/Generated Image January 26, 2026 - 5_29AM.png"
   - "public/images/services/visual-identity/page_08.png"
   - "public/images/services/visual-identity/page_09.png"
   - "public/images/services/visual-identity/page_10.png"
-galleryBackground: "#ffffff"
+  
+galleryBackground: "#8d6f70"
 order: 1
 featured: false
 ---

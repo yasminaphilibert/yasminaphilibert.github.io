@@ -51,45 +51,88 @@ process_video() {
     
     # 1. Create optimized WebM (VP9) - Best compression
     # Using faster speed settings for quicker encoding
+    # Preserves full original video duration
     echo "  → Creating WebM (VP9) version..."
-    if ffmpeg -i "$video" \
-        -c:v libvpx-vp9 \
-        -crf 30 \
-        -b:v 0 \
-        -cpu-used 4 \
-        -row-mt 1 \
-        -c:a libopus \
-        -b:a 128k \
-        -movflags +faststart \
-        -y \
-        "$OUTPUT_DIR/${name}.webm" 2>&1 | grep -q "error\|Error" && false || true; then
+    
+    # Check if video has audio stream
+    local has_audio=$(ffprobe -v error -select_streams a:0 -show_entries stream=codec_type -of default=noprint_wrappers=1:nokey=1 "$video" 2>/dev/null | head -1)
+    
+    # Run ffmpeg with proper error handling
+    local temp_log=$(mktemp)
+    local ffmpeg_args=(
+        -i "$video"
+        -c:v libvpx-vp9
+        -crf 30
+        -b:v 0
+        -cpu-used 4
+        -row-mt 1
+        -map 0:v:0
+    )
+    
+    # Add audio encoding if audio stream exists
+    if [ -n "$has_audio" ]; then
+        ffmpeg_args+=(-c:a libopus -b:a 128k -map 0:a:0)
+    fi
+    
+    ffmpeg_args+=(-avoid_negative_ts make_zero -y "$OUTPUT_DIR/${name}.webm")
+    
+    if ffmpeg "${ffmpeg_args[@]}" > "$temp_log" 2>&1; then
+        # Check if file was created and has reasonable size (> 1KB)
         if [ -f "$OUTPUT_DIR/${name}.webm" ]; then
-            echo -e "    ${GREEN}✓ WebM created${NC}"
+            local file_size=$(stat -f%z "$OUTPUT_DIR/${name}.webm" 2>/dev/null || stat -c%s "$OUTPUT_DIR/${name}.webm" 2>/dev/null || echo "0")
+            if [ "$file_size" -gt 1024 ]; then
+                echo -e "    ${GREEN}✓ WebM created ($(numfmt --to=iec-i --suffix=B $file_size 2>/dev/null || echo "${file_size} bytes"))${NC}"
+            else
+                echo -e "    ${RED}✗ WebM creation failed - file too small (${file_size} bytes)${NC}"
+                echo "    Last 10 lines of ffmpeg output:"
+                tail -10 "$temp_log" | sed 's/^/    /'
+                rm -f "$temp_log"
+                return 1
+            fi
         else
-            echo -e "    ${RED}✗ WebM creation failed${NC}"
+            echo -e "    ${RED}✗ WebM creation failed - file not created${NC}"
+            echo "    Last 10 lines of ffmpeg output:"
+            tail -10 "$temp_log" | sed 's/^/    /'
+            rm -f "$temp_log"
+            return 1
         fi
     else
         echo -e "    ${RED}✗ WebM creation failed${NC}"
+        echo "    Last 10 lines of ffmpeg output:"
+        tail -10 "$temp_log" | sed 's/^/    /'
+        rm -f "$temp_log"
+        return 1
     fi
+    rm -f "$temp_log"
     
     # MP4 encoding skipped - using WebM only for better compression
     
     # 3. Create poster image (thumbnail)
     echo "  → Creating poster image..."
+    local poster_log=$(mktemp)
     if ffmpeg -i "$video" \
         -ss 00:00:01 \
         -vframes 1 \
         -q:v 2 \
         -y \
-        "$OUTPUT_DIR/${name}_poster.jpg" 2>&1 | grep -q "error\|Error" && false || true; then
+        "$OUTPUT_DIR/${name}_poster.jpg" > "$poster_log" 2>&1; then
         if [ -f "$OUTPUT_DIR/${name}_poster.jpg" ]; then
-            echo -e "    ${GREEN}✓ Poster created${NC}"
+            local poster_size=$(stat -f%z "$OUTPUT_DIR/${name}_poster.jpg" 2>/dev/null || stat -c%s "$OUTPUT_DIR/${name}_poster.jpg" 2>/dev/null || echo "0")
+            if [ "$poster_size" -gt 100 ]; then
+                echo -e "    ${GREEN}✓ Poster created${NC}"
+            else
+                echo -e "    ${RED}✗ Poster creation failed - file too small${NC}"
+                tail -5 "$poster_log" | sed 's/^/    /'
+            fi
         else
-            echo -e "    ${RED}✗ Poster creation failed${NC}"
+            echo -e "    ${RED}✗ Poster creation failed - file not created${NC}"
+            tail -5 "$poster_log" | sed 's/^/    /'
         fi
     else
         echo -e "    ${RED}✗ Poster creation failed${NC}"
+        tail -5 "$poster_log" | sed 's/^/    /'
     fi
+    rm -f "$poster_log"
     
     echo ""
 }

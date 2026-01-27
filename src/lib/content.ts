@@ -3,8 +3,10 @@ const serviceFiles = import.meta.glob('/src/content/services/*.md', { as: 'raw',
 const projectFiles = import.meta.glob('/src/content/projects/**/*.md', { as: 'raw', eager: true });
 const configFile = import.meta.glob('/src/content/config.md', { as: 'raw', eager: true });
 const aboutFile = import.meta.glob('/src/content/about.md', { as: 'raw', eager: true });
+const workFile = import.meta.glob('/src/content/work.md', { as: 'raw', eager: true });
 const navbarFile = import.meta.glob('/src/content/navbar.md', { as: 'raw', eager: true });
 const footerFile = import.meta.glob('/src/content/footer.md', { as: 'raw', eager: true });
+const contactFile = import.meta.glob('/src/content/contact.md', { as: 'raw', eager: true });
 
 // Type definitions
 export interface ServiceContent {
@@ -91,6 +93,29 @@ export interface FooterContent {
   bgColor?: string;
   socialLinks: SocialLink[];
   navLinks: NavLink[];
+}
+
+export interface WorkContent {
+  title: string;
+  subtitle: string;
+  heroBackgroundColor?: string;
+  infoBarColor?: string;
+  projectsBackgroundColor?: string;
+  backToHomeBackgroundColor?: string;
+}
+
+export interface ContactContent {
+  title: string;
+  subtitle: string;
+  infoBarText1: string;
+  infoBarText2: string;
+  email: string;
+  location: string;
+  infoBarColor?: string;
+  alternativeContactTitle?: string;
+  heroBackgroundColor?: string;
+  formBackgroundColor?: string;
+  backToHomeBackgroundColor?: string;
 }
 
 // Simple browser-compatible frontmatter parser
@@ -556,5 +581,70 @@ export function getFooterContent(): FooterContent {
     bgColor: (data.bgColor as string) || defaultFooter.bgColor,
     socialLinks: parsedSocialLinks.length > 0 ? parsedSocialLinks : defaultFooter.socialLinks,
     navLinks: parsedNavLinks.length > 0 ? parsedNavLinks : defaultFooter.navLinks
+  };
+}
+
+// Get work page content
+export function getWorkContent(): WorkContent {
+  const workPath = Object.keys(workFile)[0];
+  
+  const defaultWork: WorkContent = {
+    title: 'My Work',
+    subtitle: 'A collection of projects across visual identity, graphic design, and sound.',
+    heroBackgroundColor: '#F8F8F8',
+    infoBarColor: '#4ECDC4',
+    projectsBackgroundColor: '#FFFFFF',
+    backToHomeBackgroundColor: '#F5F5F5'
+  };
+  
+  if (!workPath) {
+    return defaultWork;
+  }
+  
+  const { data } = parseFrontmatter(workFile[workPath] as string);
+  
+  return {
+    title: (data.title as string) || defaultWork.title,
+    subtitle: (data.subtitle as string) || defaultWork.subtitle,
+    heroBackgroundColor: (data.heroBackgroundColor as string) || defaultWork.heroBackgroundColor,
+    infoBarColor: (data.infoBarColor as string) || defaultWork.infoBarColor,
+    projectsBackgroundColor: (data.projectsBackgroundColor as string) || defaultWork.projectsBackgroundColor,
+    backToHomeBackgroundColor: (data.backToHomeBackgroundColor as string) || defaultWork.backToHomeBackgroundColor
+  };
+}
+
+// Get contact page content
+export function getContactContent(): ContactContent {
+  const contactPath = Object.keys(contactFile)[0];
+  
+  const defaultContact: ContactContent = {
+    title: 'Get in Touch',
+    subtitle: "Have a project in mind? Let's create something amazing together.",
+    infoBarText1: 'Available for freelance',
+    infoBarText2: 'Based in Paris & Barcelona',
+    email: 'yasynthamusic@gmail.com',
+    location: 'Paris - Barcelona',
+    infoBarColor: '#ffb4ec',
+    alternativeContactTitle: 'Or reach out directly'
+  };
+  
+  if (!contactPath) {
+    return defaultContact;
+  }
+  
+  const { data } = parseFrontmatter(contactFile[contactPath] as string);
+  
+  return {
+    title: data.title !== undefined ? (data.title as string) : defaultContact.title,
+    subtitle: data.subtitle !== undefined ? (data.subtitle as string) : defaultContact.subtitle,
+    infoBarText1: data.infoBarText1 !== undefined ? (data.infoBarText1 as string) : defaultContact.infoBarText1,
+    infoBarText2: data.infoBarText2 !== undefined ? (data.infoBarText2 as string) : defaultContact.infoBarText2,
+    email: data.email !== undefined ? (data.email as string) : defaultContact.email,
+    location: data.location !== undefined ? (data.location as string) : defaultContact.location,
+    infoBarColor: data.infoBarColor !== undefined ? (data.infoBarColor as string) : defaultContact.infoBarColor,
+    alternativeContactTitle: data.alternativeContactTitle !== undefined ? (data.alternativeContactTitle as string) : defaultContact.alternativeContactTitle,
+    heroBackgroundColor: data.heroBackgroundColor !== undefined && (data.heroBackgroundColor as string).trim() !== '' ? (data.heroBackgroundColor as string) : undefined,
+    formBackgroundColor: data.formBackgroundColor !== undefined && (data.formBackgroundColor as string).trim() !== '' ? (data.formBackgroundColor as string) : undefined,
+    backToHomeBackgroundColor: data.backToHomeBackgroundColor !== undefined && (data.backToHomeBackgroundColor as string).trim() !== '' ? (data.backToHomeBackgroundColor as string) : undefined
   };
 }

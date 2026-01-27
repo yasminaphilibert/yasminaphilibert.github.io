@@ -9,7 +9,7 @@ thumbnailImage: "public/images/services/visual-identity/generation-c9900545-3203
 galleryImages:
   - "public/images/services/visual-identity/generation-c9900545-3203-4cef-a7cb-c32727092c54.png"
   - "public/images/services/visual-identity/generation-8062c617-2622-4037-93f2-2c27845653d9.png"
-galleryBackground: "#ffffff"
+galleryBackground: "#302f2f"
 order: 1
 featured: false
 ---

@@ -5,8 +5,11 @@ import Footer from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { getContactContent } from "@/lib/content";
 
 const Contact = () => {
+  const contact = getContactContent();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission
@@ -18,17 +21,18 @@ const Contact = () => {
       
       {/* Hero Section - connects seamlessly with header */}
       <motion.section 
-        className="bg-secondary -mt-8 pt-16 pb-12 px-6 md:px-12"
+        className={`-mt-8 pt-16 pb-12 px-6 md:px-12 ${!contact.heroBackgroundColor ? 'bg-secondary' : ''}`}
+        style={contact.heroBackgroundColor ? { backgroundColor: contact.heroBackgroundColor } : undefined}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <div className="max-w-7xl mx-auto">
           <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-semibold text-secondary-foreground mb-4">
-            Get in Touch
+            {contact.title}
           </h1>
           <p className="text-lg md:text-xl text-secondary-foreground/80 max-w-2xl">
-            Have a project in mind? Let's create something amazing together.
+            {contact.subtitle}
           </p>
         </div>
       </motion.section>
@@ -36,20 +40,23 @@ const Contact = () => {
       {/* Info Bar with rounded bottom */}
       <div 
         className="py-6 px-6 md:px-12 rounded-b-[2rem]"
-        style={{ backgroundColor: "#FF6B6B" }}
+        style={{ backgroundColor: contact.infoBarColor || "#FF6B6B" }}
       >
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
           <span className="text-sm font-medium text-white">
-            Available for freelance
+            {contact.infoBarText1}
           </span>
           <span className="text-sm font-medium text-white">
-            Based in San Francisco
+            {contact.infoBarText2}
           </span>
         </div>
       </div>
 
       {/* Contact Form Section */}
-      <section className="py-16 px-6 md:px-12 bg-background">
+      <section 
+        className={`py-16 px-6 md:px-12 ${!contact.formBackgroundColor ? 'bg-background' : ''}`}
+        style={contact.formBackgroundColor ? { backgroundColor: contact.formBackgroundColor } : undefined}
+      >
         <div className="max-w-3xl mx-auto">
           <motion.form
             onSubmit={handleSubmit}
@@ -107,7 +114,7 @@ const Contact = () => {
             <Button 
               type="submit"
               className="w-full md:w-auto px-12 py-6 h-auto rounded-xl text-base font-medium"
-              style={{ backgroundColor: "#FF6B6B" }}
+              style={{ backgroundColor: contact.infoBarColor || "#FF6B6B" }}
             >
               Send Message
             </Button>
@@ -121,17 +128,17 @@ const Contact = () => {
             transition={{ duration: 0.6, delay: 0.5 }}
           >
             <h2 className="font-display text-2xl font-semibold text-foreground mb-6">
-              Or reach out directly
+              {contact.alternativeContactTitle || "Or reach out directly"}
             </h2>
             <div className="space-y-4">
               <a 
-                href="mailto:hello@mstudio.com"
+                href={`mailto:${contact.email}`}
                 className="block text-lg text-muted-foreground hover:text-foreground transition-colors"
               >
-                hello@mstudio.com
+                {contact.email}
               </a>
               <p className="text-lg text-muted-foreground">
-                San Francisco, California
+                {contact.location}
               </p>
             </div>
           </motion.div>
@@ -139,7 +146,10 @@ const Contact = () => {
       </section>
 
       {/* Back to Home */}
-      <section className="bg-muted">
+      <section 
+        className={!contact.backToHomeBackgroundColor ? 'bg-muted' : ''}
+        style={contact.backToHomeBackgroundColor ? { backgroundColor: contact.backToHomeBackgroundColor } : undefined}
+      >
         <Link 
           to="/"
           className="block py-12 px-6 md:px-12 hover:bg-muted/80 transition-colors duration-300"
