@@ -84,7 +84,7 @@ const Header = () => {
               className="flex flex-col items-center gap-1 flex-shrink-0 min-w-0"
             >
               <img 
-                src="/yasyntha_logo.svg" 
+                src={`${import.meta.env.BASE_URL}yasyntha_logo.svg`}
                 alt="Yasyntha Logo" 
                 className="h-9 md:h-[54px] w-auto"
               />

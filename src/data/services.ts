@@ -52,15 +52,23 @@ function normalizeImagePath(path: string): string {
   if (!path || path.trim() === '') {
     return path;
   }
-  // Convert paths starting with "public/" to "/" for Vite public assets
+  // Get the base URL from Vite (will be "/yasyntha/" in production)
+  const baseUrl = import.meta.env.BASE_URL;
+  
+  // Convert paths starting with "public/" to base path for Vite public assets
   if (path.startsWith('public/')) {
-    return '/' + path.substring(7); // Remove "public/" prefix
+    return baseUrl + path.substring(7); // Remove "public/" prefix and add base
   }
-  // Ensure paths starting with "/" are preserved
-  if (!path.startsWith('/')) {
-    return '/' + path;
+  // If path already starts with base, return as is
+  if (path.startsWith(baseUrl)) {
+    return path;
   }
-  return path;
+  // Ensure paths starting with "/" get the base path prepended
+  if (path.startsWith('/')) {
+    return baseUrl + path.substring(1); // Remove leading "/" and add base
+  }
+  // If path doesn't start with "/", add base path
+  return baseUrl + path;
 }
 
 // Helper to resolve image path with fallback
