@@ -51,6 +51,17 @@ jobs:
           fi
           echo "=== Final base tag ==="
           grep -E "base href" dist/index.html
+          echo "=== Verifying asset files exist ==="
+          ASSETS=$(grep -oE 'src="([^"]+)"|href="([^"]+)"' dist/index.html | grep -oE '/assets/[^"]+' | sed 's|^/||')
+          for asset in $ASSETS; do
+            if [ -f "dist/$asset" ]; then
+              echo "✓ Found: $asset"
+            else
+              echo "✗ Missing: $asset"
+              exit 1
+            fi
+          done
+          echo "All referenced assets exist!"
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
