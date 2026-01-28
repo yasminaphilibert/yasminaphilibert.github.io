@@ -28,6 +28,9 @@ jobs:
       - name: Build
         run: npm run build
       
+      - name: Create .nojekyll file
+        run: touch dist/.nojekyll
+      
       - name: Verify build output
         run: |
           echo "=== Dist folder contents ==="
@@ -36,6 +39,8 @@ jobs:
           ls -la dist/assets/ || echo "No assets folder found"
           echo "=== HTML file check ==="
           head -35 dist/index.html | tail -5
+          echo "=== Checking for .nojekyll ==="
+          ls -la dist/.nojekyll || echo ".nojekyll not found"
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -44,4 +49,4 @@ jobs:
           publish_dir: ./dist
           cname: false
           keep_files: false
-          force_orphan: false
+          force_orphan: true
