@@ -16,7 +16,7 @@ const About = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         className="w-full px-6 py-16 md:px-12 md:py-24 -mt-8 rounded-b-[2rem]"
-        style={{ backgroundColor: about.backgroundColor || "hsl(179, 100.00%, 71.00%)" }}
+        style={{ backgroundColor: about.backgroundColor || "hsl(330, 100%, 71%)" }}
       >
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-12 gap-8 md:gap-12">
@@ -33,13 +33,13 @@ const About = () => {
             {/* Main Content - Center */}
             <div className="md:col-span-6">
               <h1 
-                className="font-display text-3xl md:text-4xl lg:text-5xl font-medium mb-8"
+                className="font-display text-xl md:text-4xl lg:text-5xl font-medium mb-8"
                 style={{ color: about.titleColor || "#000000" }}
               >
                 {about.title}
               </h1>
               <div 
-                className="space-y-6 text-lg md:text-xl leading-relaxed"
+                className="space-y-6 text-sm md:text-xl leading-relaxed"
                 style={{ color: about.textColor || "rgba(0, 0, 0, 0.7)" }}
               >
                 {about.introParagraphs.map((paragraph, index) => (
@@ -102,7 +102,7 @@ const About = () => {
             </div>
             <div className="md:col-span-6">
               <p 
-                className="text-lg leading-relaxed"
+                className="text-sm md:text-lg leading-relaxed"
                 style={{ color: about.mutedTextColor || undefined }}
               >
                 {about.experienceText}

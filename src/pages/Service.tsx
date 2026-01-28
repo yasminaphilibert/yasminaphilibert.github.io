@@ -66,11 +66,11 @@ const Service = () => {
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
               <div className="min-w-0">
                 <span className="text-sm text-black/60 block mb-2 break-words">{service.subtitle}</span>
-                <h1 className="service-card-title font-megna text-4xl md:text-5xl lg:text-6xl font-black text-black break-words">
+                <h1 className="service-card-title font-megna text-2xl md:text-5xl lg:text-6xl font-black text-black break-words">
                   {service.title}
                 </h1>
               </div>
-              <p className="text-black/80 max-w-md text-lg break-words">
+              <p className="text-black/80 max-w-md text-sm md:text-lg break-words">
                 {service.description}
               </p>
             </div>

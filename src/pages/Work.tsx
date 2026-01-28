@@ -23,10 +23,10 @@ const Work = () => {
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <div className="max-w-7xl mx-auto">
-          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-semibold text-secondary-foreground mb-4">
+          <h1 className="font-display text-2xl md:text-6xl lg:text-7xl font-semibold text-secondary-foreground mb-4">
             {workContent.title}
           </h1>
-          <p className="text-lg md:text-xl text-secondary-foreground/80 max-w-2xl">
+          <p className="text-sm md:text-xl text-secondary-foreground/80 max-w-2xl">
             {workContent.subtitle}
           </p>
         </div>

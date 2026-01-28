@@ -74,12 +74,12 @@ const Project = () => {
 
               {/* Title & Description - Center */}
               <div className="md:col-span-6 min-w-0">
-                <h1 className="font-display text-3xl md:text-4xl font-medium text-black mb-6 break-words">
+                <h1 className="font-display text-xl md:text-4xl font-medium text-black mb-6 break-words">
                   {project.title}
                 </h1>
                 <div className="space-y-4">
                   {project.description.map((paragraph, index) => (
-                    <p key={index} className="text-xl md:text-2xl text-black/80 leading-relaxed break-words">
+                    <p key={index} className="text-sm md:text-2xl text-black/80 leading-relaxed break-words">
                       {paragraph}
                     </p>
                   ))}
