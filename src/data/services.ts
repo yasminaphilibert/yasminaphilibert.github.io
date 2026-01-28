@@ -27,6 +27,7 @@ export interface Project {
   year: string;
   image: string; // Thumbnail image for cards/lists
   heroImage: string; // Hero image for detail page
+  heroImagePosition?: string; // Optional object-position for hero image
   slug: string;
   description: string[];
   barColor?: string; // Optional custom bar color
@@ -113,6 +114,7 @@ export const services: Service[] = (() => {
           year: project.year,
           image: resolveImage(project.thumbnailImage || project.heroImage, project.slug),
           heroImage: resolveImage(project.heroImage, project.slug),
+          heroImagePosition: project.heroImagePosition,
           slug: project.slug,
           description: project.description,
           barColor: project.barColor,
@@ -145,6 +147,7 @@ export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor
       year: project.year,
       image: resolveImage(project.thumbnailImage || project.heroImage, project.slug),
       heroImage: resolveImage(project.heroImage, project.slug),
+      heroImagePosition: project.heroImagePosition,
       slug: project.slug,
       description: project.description,
       barColor: project.barColor,
@@ -194,6 +197,7 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
       year: projectContent.year,
       image: resolveImage(projectContent.thumbnailImage || projectContent.heroImage, projectContent.slug),
       heroImage: resolveImage(projectContent.heroImage, projectContent.slug),
+      heroImagePosition: projectContent.heroImagePosition,
       slug: projectContent.slug,
       description: projectContent.description,
       barColor: projectContent.barColor,

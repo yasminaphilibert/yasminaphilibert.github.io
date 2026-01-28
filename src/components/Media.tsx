@@ -9,6 +9,7 @@ interface MediaProps {
   aspectRatio?: "square" | "video" | "auto";
   // For images
   objectFit?: "cover" | "contain" | "fill" | "none" | "scale-down";
+  objectPosition?: string; // CSS object-position value (e.g., "center top")
   // For videos
   autoplay?: boolean;
   loop?: boolean;
@@ -30,6 +31,7 @@ const Media = ({
   className,
   aspectRatio,
   objectFit = "cover",
+  objectPosition,
   autoplay = false,
   loop = true,
   muted = false, // Audio enabled by default
@@ -79,6 +81,7 @@ const Media = ({
         src={src}
         alt={alt}
         className={cn("w-full h-full", `object-${objectFit}`, className)}
+        style={objectPosition ? { objectPosition } : undefined}
       />
       {children}
     </div>

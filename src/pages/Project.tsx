@@ -49,6 +49,7 @@ const Project = () => {
             src={project.heroImage}
             alt={project.title}
             className="w-full h-[50vh] md:h-[70vh] transition-transform duration-700 ease-out hover:scale-105"
+            objectPosition={project.heroImagePosition}
             autoplay={false}
             loop={true}
             muted={false}

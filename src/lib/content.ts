@@ -29,6 +29,7 @@ export interface ProjectContent {
   year: string;
   heroImage: string; // Image/video for the project detail page
   thumbnailImage?: string; // Optional thumbnail for cards/lists (falls back to heroImage if not provided)
+  heroImagePosition?: string; // Optional object-position for hero image (e.g., "center top")
   galleryImages: string[];
   galleryVideos?: string[]; // Optional gallery videos
   order: number;
@@ -348,6 +349,7 @@ export function loadProjects(serviceSlug?: string): ProjectContent[] {
       year: data.year as string || '',
       heroImage: data.heroImage as string || '',
       thumbnailImage: data.thumbnailImage as string | undefined,
+      heroImagePosition: data.heroImagePosition as string | undefined,
       galleryImages: (data.galleryImages as string[]) || [],
       galleryVideos: (data.galleryVideos as string[]) || [],
       order: data.order as number || 0,
