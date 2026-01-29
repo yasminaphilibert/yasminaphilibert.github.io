@@ -153,6 +153,16 @@ ffmpeg -i input.mp4 -ss 00:00:01 -vframes 1 -q:v 2 poster.jpg
 - Ensure both `.webm` and `.mp4` versions exist
 - Check browser console for errors
 
+**Video shows 0:00 duration / black screen when opened directly:**
+- The WebM file likely has missing or corrupt metadata (duration not written, or non-streamable encoding).
+- Re-encode the file so the container and metadata are correct:
+  ```bash
+  chmod +x scripts/fix-video-metadata.sh
+  ./scripts/fix-video-metadata.sh                                    # fix all .webm in public/videos/
+  ./scripts/fix-video-metadata.sh "public/videos/Your-Video.webm"   # fix one file
+  ```
+- Or re-export from your editor and run `./scripts/optimize-videos.sh` with the new file in `public/videos/raw/`.
+
 **Large file sizes:**
 - Lower CRF value (e.g., 35 for WebM, 28 for MP4)
 - Consider reducing resolution if original is very high (4K+)
