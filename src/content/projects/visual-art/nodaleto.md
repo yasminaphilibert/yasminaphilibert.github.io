@@ -4,7 +4,7 @@ slug: "nodaleto"
 service: "visual-art"
 location: "Paris, France"
 year: "2021"
-heroImage: "public/videos/Nodaleto - Love To Love You.webm"
+heroImage: "public/videos/Nodaleto-Love-To-Love-You.webm"
 thumbnailImage: "public/images/services/visual-art/page_26.png"
 galleryImages:
   -
