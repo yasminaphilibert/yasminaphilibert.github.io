@@ -50,23 +50,28 @@ export interface Service {
 
 // Helper to normalize image/video paths from markdown (public/ -> /)
 // Vite serves public/ at the site root, so we must use root-relative URLs.
+// Avoid double slash (//) which browsers treat as protocol-relative URL (e.g. https://images/...).
 function normalizeImagePath(path: string): string {
   if (!path || path.trim() === '') {
     return path;
   }
   const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '/';
-  
-  // Convert "public/..." to root-relative "/..." (required for production)
+  const baseWithSlash = base === '' || base === '/' ? '/' : base + '/';
+
+  // Convert "public/..." to root-relative (required for production)
   if (path.startsWith('public/')) {
-    return base + '/' + path.substring(7);
+    return baseWithSlash + path.substring(7);
   }
-  if (path.startsWith(base + '/') || path === base) {
+  if (path.startsWith('/') && (base === '' || base === '/')) {
+    return path;
+  }
+  if (path.startsWith(baseWithSlash) || path === base) {
     return path;
   }
   if (path.startsWith('/')) {
-    return base + path;
+    return base === '' || base === '/' ? path : base + path;
   }
-  return base + '/' + path;
+  return baseWithSlash + path;
 }
 
 // Helper to resolve image path with fallback
