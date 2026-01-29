@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { cn, normalizePublicAssetPath } from "@/lib/utils";
+import { cn, normalizePublicAssetPath, encodeAssetUrl } from "@/lib/utils";
 
 interface VideoProps {
   src: string;
@@ -29,43 +29,39 @@ const Video = ({
   // Normalize paths so public/videos/... -> /videos/... (required for production)
   const normalizedSrc = normalizePublicAssetPath(src);
   const normalizedPoster = poster ? normalizePublicAssetPath(poster) : undefined;
+  // Encode Unicode in URLs so GitHub Pages and strict servers can resolve the file (e.g. Ākāsadhātu)
+  const srcUrl = encodeAssetUrl(normalizedSrc);
+  const posterUrl = normalizedPoster ? encodeAssetUrl(normalizedPoster) : undefined;
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(autoplay);
-  const [isIntersecting, setIsIntersecting] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Intersection Observer for lazy loading
+  // Load video when in viewport (lazy), and trigger load on mount so hero videos start immediately
   useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsIntersecting(true);
-            // Only load video when it's in viewport
-            if (videoRef.current && !isLoaded) {
-              videoRef.current.load();
-            }
+          if (entry.isIntersecting && videoRef.current) {
+            videoRef.current.load();
           }
         });
       },
-      {
-        rootMargin: "50px", // Start loading 50px before entering viewport
-        threshold: 0.1,
-      }
+      { rootMargin: "50px", threshold: 0.1 }
     );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
+    observer.observe(el);
+    // Hero videos: trigger load immediately so we don't wait for observer callback
+    const t = requestAnimationFrame(() => {
+      if (videoRef.current) videoRef.current.load();
+    });
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
-      }
+      observer.unobserve(el);
+      cancelAnimationFrame(t);
     };
-  }, [isLoaded]);
+  }, []);
 
   // Handle video loaded
   const handleLoadedData = () => {
@@ -95,9 +91,9 @@ const Video = ({
       className={cn("relative w-full overflow-hidden", aspectClass, !aspectRatio && "h-full", className)}
     >
       {/* Poster image - shown before video loads */}
-      {normalizedPoster && !isLoaded && (
+      {posterUrl && !isLoaded && (
         <img
-          src={normalizedPoster}
+          src={posterUrl}
           alt={alt}
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -117,8 +113,8 @@ const Video = ({
           "w-full h-full object-cover transition-opacity duration-300",
           isLoaded ? "opacity-100" : "opacity-0"
         )}
-        poster={normalizedPoster}
-        preload="metadata" // Only load metadata initially
+        poster={posterUrl}
+        preload="auto"
         playsInline={playsInline}
         muted={muted}
         loop={loop}
@@ -128,8 +124,8 @@ const Video = ({
         onPause={handlePause}
       >
         {/* WebM only - best compression for web */}
-        <source src={normalizedSrc.replace(/\.(mp4|mov|avi|mkv)$/i, ".webm")} type="video/webm" />
-        <source src={normalizedSrc} type="video/webm" />
+        <source src={srcUrl.replace(/\.(mp4|mov|avi|mkv)$/i, ".webm")} type="video/webm" />
+        <source src={srcUrl} type="video/webm" />
         Your browser does not support the video tag.
       </video>
 

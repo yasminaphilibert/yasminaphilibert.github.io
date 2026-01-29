@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Video from "./Video";
-import { cn, normalizePublicAssetPath } from "@/lib/utils";
+import { cn, normalizePublicAssetPath, encodeAssetUrl } from "@/lib/utils";
 
 interface MediaProps {
   src: string;
@@ -79,11 +79,11 @@ const Media = ({
     );
   }
 
-  // Render as image
+  // Render as image (encode Unicode for GitHub Pages / strict servers)
   return (
     <div className={cn("w-full overflow-hidden", containerClassName)}>
       <img
-        src={normalizedSrc}
+        src={encodeAssetUrl(normalizedSrc)}
         alt={alt}
         className={cn("w-full h-full", `object-${objectFit}`, className)}
         style={objectPosition ? { objectPosition } : undefined}
