@@ -4,7 +4,7 @@ slug: "akasa-dhatu"
 service: "visual-art"
 location: "Paris, France"
 year: "2022"
-heroImage: "public/videos/Yasyntha-Ākāsadhātu.webm"
+heroImage: "public/videos/Yasyntha-Akasadhatu.webm"
 thumbnailImage: "public/images/services/visual-art/image.png"
 galleryImages:
   - "public/images/services/visual-art/page_44.png"
