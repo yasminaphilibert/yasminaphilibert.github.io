@@ -44,7 +44,7 @@ jobs:
           echo "=== Verifying base path ==="
           grep -E "base href" dist/index.html || echo "No base tag found"
           echo "=== Verifying asset files exist ==="
-          ASSETS=$(grep -oE 'src="[^"]+"|href="[^"]+"' dist/index.html | grep -oE '/[^"]+assets/[^"]+' | sed 's|^/[^/]*/||')
+          ASSETS=$(grep -oE 'src="[^"]+"|href="[^"]+"' dist/index.html | grep -oE '/assets/[^"]+' | sed 's|^/||')
           for asset in $ASSETS; do
             if [ -f "dist/$asset" ]; then
               echo "✓ Found: $asset"

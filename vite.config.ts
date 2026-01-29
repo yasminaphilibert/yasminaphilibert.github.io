@@ -4,9 +4,8 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-// Use repo name as base when deployed to GitHub Pages project site (username.github.io/repo-name)
 export default defineConfig(({ mode }) => ({
-  base: "/creative-canvas-portfolio/",
+  base: "/",
   server: {
     host: "::",
     port: 8080,
