@@ -48,28 +48,25 @@ export interface Service {
   projects: Project[];
 }
 
-// Helper to normalize image paths from markdown (public/ -> /)
+// Helper to normalize image/video paths from markdown (public/ -> /)
+// Vite serves public/ at the site root, so we must use root-relative URLs.
 function normalizeImagePath(path: string): string {
   if (!path || path.trim() === '') {
     return path;
   }
-  // Get the base URL from Vite (will be "/yasyntha/" in production)
-  const baseUrl = import.meta.env.BASE_URL;
+  const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '/';
   
-  // Convert paths starting with "public/" to base path for Vite public assets
+  // Convert "public/..." to root-relative "/..." (required for production)
   if (path.startsWith('public/')) {
-    return baseUrl + path.substring(7); // Remove "public/" prefix and add base
+    return base + '/' + path.substring(7);
   }
-  // If path already starts with base, return as is
-  if (path.startsWith(baseUrl)) {
+  if (path.startsWith(base + '/') || path === base) {
     return path;
   }
-  // Ensure paths starting with "/" get the base path prepended
   if (path.startsWith('/')) {
-    return baseUrl + path.substring(1); // Remove leading "/" and add base
+    return base + path;
   }
-  // If path doesn't start with "/", add base path
-  return baseUrl + path;
+  return base + '/' + path;
 }
 
 // Helper to resolve image path with fallback

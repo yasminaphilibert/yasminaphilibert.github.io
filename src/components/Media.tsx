@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Video from "./Video";
-import { cn } from "@/lib/utils";
+import { cn, normalizePublicAssetPath } from "@/lib/utils";
 
 interface MediaProps {
   src: string;
@@ -40,11 +40,16 @@ const Media = ({
   containerClassName,
   children,
 }: MediaProps) => {
+  // Normalize paths so public/videos/... -> /videos/... (required for production)
+  const normalizedSrc = normalizePublicAssetPath(src);
+
   // Check if the source is a video file
-  const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(src);
+  const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(normalizedSrc);
 
   // Generate poster path if not provided (same name with _poster.jpg)
-  const videoPoster = poster || (isVideo ? src.replace(/\.(mp4|webm|mov|avi|mkv)$/i, "_poster.jpg") : undefined);
+  const videoPoster = normalizePublicAssetPath(
+    poster || (isVideo ? normalizedSrc.replace(/\.(mp4|webm|mov|avi|mkv)$/i, "_poster.jpg") : "")
+  ) || undefined;
   
   // For videos, if src ends with .mp4, try to use .webm version if available
   // The Video component will handle the fallback
@@ -58,7 +63,7 @@ const Media = ({
       <div className={cn("w-full", containerClassName)}>
         <div className={cn("w-full", heightClass || "h-full")}>
           <Video
-            src={src}
+            src={normalizedSrc}
             poster={videoPoster}
             alt={alt}
             className={cn(className.replace(/h-\[[\w\d]+vh\]|h-\[[\w\d]+px\]|h-\d+/g, ""), "w-full h-full")}
@@ -78,7 +83,7 @@ const Media = ({
   return (
     <div className={cn("w-full overflow-hidden", containerClassName)}>
       <img
-        src={src}
+        src={normalizedSrc}
         alt={alt}
         className={cn("w-full h-full", `object-${objectFit}`, className)}
         style={objectPosition ? { objectPosition } : undefined}

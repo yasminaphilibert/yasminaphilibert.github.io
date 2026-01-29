@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { cn } from "@/lib/utils";
+import { cn, normalizePublicAssetPath } from "@/lib/utils";
 
 interface VideoProps {
   src: string;
@@ -26,6 +26,10 @@ const Video = ({
   controls = true, // Full controls: play/pause, mute, volume, fullscreen
   aspectRatio = "square",
 }: VideoProps) => {
+  // Normalize paths so public/videos/... -> /videos/... (required for production)
+  const normalizedSrc = normalizePublicAssetPath(src);
+  const normalizedPoster = poster ? normalizePublicAssetPath(poster) : undefined;
+
   const [isLoaded, setIsLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(autoplay);
   const [isIntersecting, setIsIntersecting] = useState(false);
@@ -91,9 +95,9 @@ const Video = ({
       className={cn("relative w-full overflow-hidden", aspectClass, !aspectRatio && "h-full", className)}
     >
       {/* Poster image - shown before video loads */}
-      {poster && !isLoaded && (
+      {normalizedPoster && !isLoaded && (
         <img
-          src={poster}
+          src={normalizedPoster}
           alt={alt}
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -113,7 +117,7 @@ const Video = ({
           "w-full h-full object-cover transition-opacity duration-300",
           isLoaded ? "opacity-100" : "opacity-0"
         )}
-        poster={poster}
+        poster={normalizedPoster}
         preload="metadata" // Only load metadata initially
         playsInline={playsInline}
         muted={muted}
@@ -124,8 +128,8 @@ const Video = ({
         onPause={handlePause}
       >
         {/* WebM only - best compression for web */}
-        <source src={src.replace(/\.(mp4|mov|avi|mkv)$/i, ".webm")} type="video/webm" />
-        <source src={src} type="video/webm" />
+        <source src={normalizedSrc.replace(/\.(mp4|mov|avi|mkv)$/i, ".webm")} type="video/webm" />
+        <source src={normalizedSrc} type="video/webm" />
         Your browser does not support the video tag.
       </video>
 
