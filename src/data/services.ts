@@ -1,4 +1,5 @@
 import { loadServices, loadProjects, getServiceBySlugFromContent, getProjectBySlugFromContent } from '@/lib/content';
+import { encodeAssetUrl } from '@/lib/utils';
 
 // Fallback images for when content images aren't available yet
 import project1 from "@/assets/project-1.jpg";
@@ -60,18 +61,20 @@ function normalizeImagePath(path: string): string {
 
   // Convert "public/..." to root-relative (required for production)
   if (path.startsWith('public/')) {
-    return baseWithSlash + path.substring(7);
+    return encodeAssetUrl(baseWithSlash + path.substring(7));
   }
   if (path.startsWith('/') && (base === '' || base === '/')) {
-    return path;
+    return encodeAssetUrl(path);
   }
   if (path.startsWith(baseWithSlash) || path === base) {
-    return path;
+    return encodeAssetUrl(path);
   }
   if (path.startsWith('/')) {
-    return base === '' || base === '/' ? path : base + path;
+    const result = base === '' || base === '/' ? path : base + path;
+    return encodeAssetUrl(result);
   }
-  return baseWithSlash + path;
+  const result = baseWithSlash + path;
+  return encodeAssetUrl(result);
 }
 
 // Helper to resolve image path with fallback

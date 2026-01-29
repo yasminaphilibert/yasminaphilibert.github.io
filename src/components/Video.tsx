@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { cn, normalizePublicAssetPath, encodeAssetUrl } from "@/lib/utils";
+import { cn, normalizePublicAssetPath } from "@/lib/utils";
 
 interface VideoProps {
   src: string;
@@ -26,12 +26,9 @@ const Video = ({
   controls = true, // Full controls: play/pause, mute, volume, fullscreen
   aspectRatio = "square",
 }: VideoProps) => {
-  // Normalize paths so public/videos/... -> /videos/... (required for production)
-  const normalizedSrc = normalizePublicAssetPath(src);
-  const normalizedPoster = poster ? normalizePublicAssetPath(poster) : undefined;
-  // Encode Unicode in URLs so GitHub Pages and strict servers can resolve the file (e.g. Ākāsadhātu)
-  const srcUrl = encodeAssetUrl(normalizedSrc);
-  const posterUrl = normalizedPoster ? encodeAssetUrl(normalizedPoster) : undefined;
+  // Normalize paths (public/ -> /). Encoding for Unicode filenames is done in services.ts.
+  const srcUrl = normalizePublicAssetPath(src);
+  const posterUrl = poster ? normalizePublicAssetPath(poster) : undefined;
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(autoplay);
