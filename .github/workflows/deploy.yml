@@ -31,6 +31,9 @@ jobs:
       - name: Create .nojekyll file
         run: touch dist/.nojekyll
       
+      - name: Copy index.html to 404.html for SPA routing
+        run: cp dist/index.html dist/404.html
+      
       - name: Redirect /creative-canvas-portfolio/ to root
         run: |
           mkdir -p dist/creative-canvas-portfolio
