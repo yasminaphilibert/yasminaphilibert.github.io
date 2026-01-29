@@ -68,14 +68,3 @@ jobs:
           cname: false
           keep_files: false
           force_orphan: true
-          user_name: github-actions[bot]
-          user_email: github-actions[bot]@users.noreply.github.com
-      
-      - name: Verify deployment
-        run: |
-          echo "=== Deployment completed ==="
-          echo "Check GitHub Pages settings:"
-          echo "1. Go to Settings > Pages"
-          echo "2. Source should be 'Deploy from a branch'"
-          echo "3. Branch should be 'gh-pages' / (root)"
-          echo "4. If it shows a different branch, change it to gh-pages"
