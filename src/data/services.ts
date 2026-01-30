@@ -59,9 +59,20 @@ function normalizeImagePath(path: string): string {
   const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '/';
   const baseWithSlash = base === '' || base === '/' ? '/' : base + '/';
 
+  // #region agent log
+  const isVideoPath = /\.(mp4|webm|mov|avi|mkv)$/i.test(path);
+  if (isVideoPath) {
+    fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'services.ts:normalizeImagePath',message:'video path normalize',data:{path,base,baseWithSlash},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H1,H5'})}).catch(()=>{});
+  }
+  // #endregion
+
   // Convert "public/..." to root-relative (required for production)
   if (path.startsWith('public/')) {
-    return encodeAssetUrl(baseWithSlash + path.substring(7));
+    const out = encodeAssetUrl(baseWithSlash + path.substring(7));
+    if (isVideoPath) {
+      fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'services.ts:normalizeImagePath',message:'video path normalized output',data:{path,out},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H1,H2'})}).catch(()=>{});
+    }
+    return out;
   }
   if (path.startsWith('/') && (base === '' || base === '/')) {
     return encodeAssetUrl(path);

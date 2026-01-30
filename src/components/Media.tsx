@@ -46,6 +46,12 @@ const Media = ({
   // Check if the source is a video file
   const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(normalizedSrc);
 
+  // #region agent log
+  if (isVideo) {
+    fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Media.tsx',message:'Media video src',data:{srcReceived:src,normalizedSrc},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H3'})}).catch(()=>{});
+  }
+  // #endregion
+
   // Generate poster path if not provided (same name with _poster.jpg)
   const videoPoster = normalizePublicAssetPath(
     poster || (isVideo ? normalizedSrc.replace(/\.(mp4|webm|mov|avi|mkv)$/i, "_poster.jpg") : "")

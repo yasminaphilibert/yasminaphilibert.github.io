@@ -30,6 +30,10 @@ const Video = ({
   const srcUrl = normalizePublicAssetPath(src);
   const posterUrl = poster ? normalizePublicAssetPath(poster) : undefined;
 
+  // #region agent log
+  fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Video.tsx',message:'Video final URLs',data:{src,srcUrl,poster,posterUrl},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H1,H2'})}).catch(()=>{});
+  // #endregion
+
   const [isLoaded, setIsLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(autoplay);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -62,6 +66,11 @@ const Video = ({
 
   // Handle video loaded
   const handleLoadedData = () => {
+    // #region agent log
+    if (videoRef.current) {
+      fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Video.tsx',message:'Video loaded OK',data:{src:videoRef.current.src},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H4'})}).catch(()=>{});
+    }
+    // #endregion
     setIsLoaded(true);
     if (autoplay && videoRef.current) {
       videoRef.current.play().catch(() => {
@@ -117,6 +126,10 @@ const Video = ({
         loop={loop}
         controls={controls} // Provides: play/pause, mute, volume, fullscreen, progress
         onLoadedData={handleLoadedData}
+        onError={(e) => {
+          const el = e.currentTarget;
+          fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Video.tsx',message:'Video load error',data:{src:el.src,errorCode:el.error?.code,errorMessage:el.error?.message},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H4'})}).catch(()=>{});
+        }}
         onPlay={handlePlay}
         onPause={handlePause}
       >
