@@ -31,7 +31,9 @@ const Video = ({
   const posterUrl = poster ? normalizePublicAssetPath(poster) : undefined;
 
   // #region agent log
-  fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Video.tsx',message:'Video final URLs',data:{src,srcUrl,poster,posterUrl},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H1,H2'})}).catch(()=>{});
+  const _videoLog = { location: 'Video.tsx', message: 'Video final URLs', data: { src, srcUrl, poster, posterUrl }, hypothesisId: 'H1,H2' };
+  console.log('[DEBUG VIDEO]', _videoLog);
+  fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({..._videoLog,timestamp:Date.now(),sessionId:'debug-session'})}).catch(()=>{});
   // #endregion
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -68,7 +70,9 @@ const Video = ({
   const handleLoadedData = () => {
     // #region agent log
     if (videoRef.current) {
-      fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Video.tsx',message:'Video loaded OK',data:{src:videoRef.current.src},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H4'})}).catch(()=>{});
+      const _okLog = { location: 'Video.tsx', message: 'Video loaded OK', data: { src: videoRef.current.src }, hypothesisId: 'H4' };
+      console.log('[DEBUG VIDEO]', _okLog);
+      fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({..._okLog,timestamp:Date.now(),sessionId:'debug-session'})}).catch(()=>{});
     }
     // #endregion
     setIsLoaded(true);
@@ -128,7 +132,9 @@ const Video = ({
         onLoadedData={handleLoadedData}
         onError={(e) => {
           const el = e.currentTarget;
-          fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Video.tsx',message:'Video load error',data:{src:el.src,errorCode:el.error?.code,errorMessage:el.error?.message},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H4'})}).catch(()=>{});
+          const _errLog = { location: 'Video.tsx', message: 'Video load error', data: { src: el.src, errorCode: el.error?.code, errorMessage: el.error?.message }, hypothesisId: 'H4' };
+          console.error('[DEBUG VIDEO]', _errLog);
+          fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({..._errLog,timestamp:Date.now(),sessionId:'debug-session'})}).catch(()=>{});
         }}
         onPlay={handlePlay}
         onPause={handlePause}

@@ -6,6 +6,7 @@ infoColor: "#524063"
 heroImage: "public/images/services/visual-art/page_54.png"
 thumbnailImage: "public/images/services/visual-art/page_54.png"
 order: 2
+homeIntro: ""
 ---
 
-Bold typography and thoughtful compositions that capture attention and communicate with clarity.
+Creative visual art direction personal visual and sound projects, visual art videos where image and music meet. Bold typography, clear composition, and a strong visual direction.

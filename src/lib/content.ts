@@ -7,6 +7,7 @@ const workFile = import.meta.glob('/src/content/work.md', { as: 'raw', eager: tr
 const navbarFile = import.meta.glob('/src/content/navbar.md', { as: 'raw', eager: true });
 const footerFile = import.meta.glob('/src/content/footer.md', { as: 'raw', eager: true });
 const contactFile = import.meta.glob('/src/content/contact.md', { as: 'raw', eager: true });
+const indexFile = import.meta.glob('/src/content/index.md', { as: 'raw', eager: true });
 
 // Type definitions
 export interface ServiceContent {
@@ -18,6 +19,7 @@ export interface ServiceContent {
   thumbnailImage?: string; // Optional thumbnail for cards/lists (falls back to heroImage if not provided)
   order: number;
   projectsGridBackground?: string; // Optional custom projects grid background color
+  homeIntro?: string; // Short intro for home page, before each service card
   description: string;
 }
 
@@ -117,6 +119,14 @@ export interface ContactContent {
   heroBackgroundColor?: string;
   formBackgroundColor?: string;
   backToHomeBackgroundColor?: string;
+}
+
+export interface IndexContent {
+  heroTitle: string;
+  heroSubtitle: string;
+  heroTitleColor?: string;
+  heroBackgroundColor?: string;
+  heroBackgroundImage?: string;
 }
 
 // Simple browser-compatible frontmatter parser
@@ -321,6 +331,7 @@ export function loadServices(): ServiceContent[] {
       thumbnailImage: data.thumbnailImage as string | undefined,
       order: data.order as number || 0,
       projectsGridBackground: data.projectsGridBackground as string | undefined,
+      homeIntro: data.homeIntro as string | undefined,
       description: body
     });
   }
@@ -648,5 +659,30 @@ export function getContactContent(): ContactContent {
     heroBackgroundColor: data.heroBackgroundColor !== undefined && (data.heroBackgroundColor as string).trim() !== '' ? (data.heroBackgroundColor as string) : undefined,
     formBackgroundColor: data.formBackgroundColor !== undefined && (data.formBackgroundColor as string).trim() !== '' ? (data.formBackgroundColor as string) : undefined,
     backToHomeBackgroundColor: data.backToHomeBackgroundColor !== undefined && (data.backToHomeBackgroundColor as string).trim() !== '' ? (data.backToHomeBackgroundColor as string) : undefined
+  };
+}
+
+// Get home page content (hero)
+export function getIndexContent(): IndexContent {
+  const indexPath = Object.keys(indexFile)[0];
+
+  const defaultIndex: IndexContent = {
+    heroTitle: 'Creative Direction & Visual Art — branding, design, and sound.',
+    heroSubtitle: '',
+    heroBackgroundColor: '#ffb4ec'
+  };
+
+  if (!indexPath) {
+    return defaultIndex;
+  }
+
+  const { data } = parseFrontmatter(indexFile[indexPath] as string);
+
+  return {
+    heroTitle: (data.heroTitle as string) || defaultIndex.heroTitle,
+    heroSubtitle: (data.heroSubtitle as string) || defaultIndex.heroSubtitle,
+    heroTitleColor: data.heroTitleColor !== undefined && (data.heroTitleColor as string).trim() !== '' ? (data.heroTitleColor as string) : undefined,
+    heroBackgroundColor: data.heroBackgroundColor !== undefined && (data.heroBackgroundColor as string).trim() !== '' ? (data.heroBackgroundColor as string) : defaultIndex.heroBackgroundColor,
+    heroBackgroundImage: data.heroBackgroundImage !== undefined && (data.heroBackgroundImage as string).trim() !== '' ? (data.heroBackgroundImage as string) : undefined
   };
 }
