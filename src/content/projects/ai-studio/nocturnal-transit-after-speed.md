@@ -11,7 +11,6 @@ thumbnailImage: "public/images/services/ai-station/008/generation-a0886a42-b96a-
 galleryImages:
  
   - "public/images/services/ai-station/008/generation-a3250168-b607-444c-a878-f9f495776b07 (2).png"
-  - "public/images/services/ai-station/008/generation-9e3c1921-85be-41f6-aaff-e624e8ef3c50.png"
   - "public/images/services/ai-station/008/generation-9e9ce01e-4bef-4cb8-aad5-bd38f37f6d29.png"
   - "public/images/services/ai-station/008/generation-827873ef-ba93-49de-a58c-305b8bbbe3cc (1).png"
   - "public/images/services/ai-station/008/generation-2249e260-3105-4289-a9bf-2f522d0a3fa6.png"
@@ -44,7 +43,7 @@ featured: false
 
 OTTOLINGER × MARINE SERRE — Future System
 
-This project exists in transit spaces — underground corridors, parking structures, infrastructures designed for movement, not rest.
+This project exists in transit spaces underground corridors, parking structures, infrastructures designed for movement, not rest.
 The body passes through them as a signal.
 
 AI-generated silhouettes merge OTTOLINGER’s deconstructed tension with Marine Serre’s lunar mesh, producing garments that feel engineered rather than styled.
@@ -64,3 +63,5 @@ Speed becomes the condition.
 
 
 The body operates as signal.
+
+Generated with Nano Banana2 & Flux Kontext

@@ -1,5 +1,5 @@
 ---
-title: "MUA"
+title: "SYNTHETIC PROTOCOL.EXE"
 slug: "makeup"
 service: "ai-studio"
 location: "Paris, France"
@@ -21,6 +21,12 @@ order: 1
 featured: false
 ---
 
-Complete brand identity system for a tech startup focused on sustainable innovation.
+SYNTHETIC PROTOCOL.EXE studies skin, hair, and makeup as engineered surfaces.
 
-The visual language bridges technology and nature through organic geometric forms.
+The skin is treated as a reflective material uniform, controlled, almost artificial. Light does not reveal imperfection; it confirms precision. Makeup is applied as structure, not expression. Pigment defines geometry, creating contrast between softness and synthetic clarity.
+
+Hair becomes a constructed element. Glossy, sculptural forms wrap the head like designed extensions, existing between organic growth and manufactured object. They frame the face with intention, reinforcing the sense of a system rather than a natural state.
+
+SYNTHETIC PROTOCOL.EXE presents beauty as a controlled condition where skin, hair, and makeup operate together as one continuous, designed surface.
+
+Generated with Flux Kontext

@@ -47,6 +47,7 @@ export interface Service {
   infoColor: string;
   projectsGridBackground?: string; // Optional custom projects grid background color
   homeIntro?: string; // Short intro for home page, before each service card
+  soundCloudUrl?: string; // Optional SoundCloud link (e.g. for Sound service)
   projects: Project[];
 }
 
@@ -126,6 +127,7 @@ export const services: Service[] = (() => {
         infoColor: service.infoColor,
         projectsGridBackground: service.projectsGridBackground,
         homeIntro: service.homeIntro,
+        soundCloudUrl: service.soundCloudUrl,
         projects: serviceProjects.map(project => ({
           title: project.title,
           location: project.location,

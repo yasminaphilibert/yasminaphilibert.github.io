@@ -1,5 +1,5 @@
 ---
-title: "All It Takes Is A Smile"
+title: COMPLIANCE SIGNAL"
 slug: "brand-rouge-s"
 service: "ai-studio"
 location: "Paris, France"
@@ -20,6 +20,15 @@ order: 3
 featured: false
 ---
 
-Complete brand identity system for a tech startup focused on sustainable innovation.
 
-The visual language bridges technology and nature through organic geometric forms.
+COMPLIANCE SIGNAL examines the smile as a programmed response.
+
+The mouth becomes a visible output stretched, framed, and stabilized by external structures. Expression is no longer spontaneous. It is held in place, regulated, and maintained.
+
+The smile exists as a surface instruction.
+A signal of stability.
+A confirmation of control.
+
+COMPLIANCE SIGNAL isolates the moment where human expression stops being emotional and becomes functional a visible confirmation that the system is intact.
+
+Generated with MidJourney

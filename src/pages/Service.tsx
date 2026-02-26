@@ -70,9 +70,19 @@ const Service = () => {
                   {service.title}
                 </h1>
               </div>
-              <p className="text-black/80 max-w-md text-sm md:text-lg break-words">
-                {service.description}
-              </p>
+              <div className="text-black/80 max-w-md text-sm md:text-lg break-words space-y-2">
+                <p>{service.description}</p>
+                {'soundCloudUrl' in service && service.soundCloudUrl && (
+                  <a
+                    href={service.soundCloudUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block text-black font-medium underline underline-offset-2 hover:no-underline"
+                  >
+                    Listen on SoundCloud →
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>

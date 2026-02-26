@@ -20,6 +20,7 @@ export interface ServiceContent {
   order: number;
   projectsGridBackground?: string; // Optional custom projects grid background color
   homeIntro?: string; // Short intro for home page, before each service card
+  soundCloudUrl?: string; // Optional SoundCloud profile/tracks link (e.g. for Sound service)
   description: string;
 }
 
@@ -332,6 +333,7 @@ export function loadServices(): ServiceContent[] {
       order: data.order as number || 0,
       projectsGridBackground: data.projectsGridBackground as string | undefined,
       homeIntro: data.homeIntro as string | undefined,
+      soundCloudUrl: data.soundCloudUrl as string | undefined,
       description: body
     });
   }

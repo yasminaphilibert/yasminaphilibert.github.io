@@ -12,6 +12,9 @@ socialLinks:
   - platform: "linktree"
     url: "https://linktr.ee/YASYNTHA"
     enabled: true
+  - platform: "soundcloud"
+    url: "https://soundcloud.com/yasyntha"
+    enabled: true
 navLinks:
   - label: "About"
     path: "/about"

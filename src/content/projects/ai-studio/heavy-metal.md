@@ -1,5 +1,5 @@
 ---
-title: "Stone In Texture"
+title: "PRESSURE CORE"
 slug: "heavy-metal"
 service: "ai-studio"
 location: "Paris, France"
@@ -20,6 +20,13 @@ order: 3
 featured: false
 ---
 
-Complete brand identity system for a tech startup focused on sustainable innovation.
+PRESSURE CORE explores matter at the moment of internal stress.
 
-The visual language bridges technology and nature through organic geometric forms.
+Rigid surfaces hold unstable interiors. Chrome shells contain soft, volatile substance tension exists not on the surface, but within. The object becomes a container of force, preserving a state that cannot remain stable indefinitely.
+
+The forms appear frozen between integrity and collapse.
+Between protection and exposure.
+
+PRESSURE CORE examines material as a condition of compression where structure exists only as long as it can resist what it contains.
+
+Generated with MidJourney

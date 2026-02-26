@@ -5,6 +5,8 @@ slug: "visual-art"
 infoColor: "#524063"
 heroImage: "public/images/services/visual-art/page_54.png"
 thumbnailImage: "public/images/services/visual-art/page_54.png"
+projectsGridBackground: "#634056"
+
 order: 2
 homeIntro: ""
 ---

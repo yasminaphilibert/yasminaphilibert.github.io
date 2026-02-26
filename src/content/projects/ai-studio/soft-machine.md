@@ -16,10 +16,25 @@ galleryImages:
   - "public/images/services/ai-station/005/httpss.mj.runr2kElOlDKfM_httpss.mj.runfaybbBPJP-4_--ar_34_--c_b6922e88-d6b7-4999-bf4a-2267c319b69c_0.png"
   - "public/images/services/ai-station/005/httpss.mj.runr2kElOlDKfM_httpss.mj.runfaybbBPJP-4_--ar_34_--c_f61b86df-6c26-4e0a-933a-f25b50e5d626_0.png"
 galleryBackground: "#26262e"
-order: 1
+order: 2
 featured: false
 ---
 
-Complete brand identity system for a tech startup focused on sustainable innovation.
 
-The visual language bridges technology and nature through organic geometric forms.
+
+CHRØME SOFT MACHINE explores a new state of being, where the body is no longer fixed, but continuously reshaped.
+
+Chrome is no longer rigid or industrial.
+It behaves like a living material elastic, adaptive, almost biological.
+
+Features appear altered, extended, refined beyond natural proportion.
+The familiar becomes unfamiliar.
+The human becomes something else.
+
+These identities do not belong to the present.
+They exist in transition between organic origin and synthetic evolution.
+
+CHRØME SOFT MACHINE imagines a future where beauty is no longer inherited,
+but constructed.
+
+Generated with MidJourney

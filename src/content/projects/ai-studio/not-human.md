@@ -20,6 +20,17 @@ order: 1
 featured: false
 ---
 
-Complete brand identity system for a tech startup focused on sustainable innovation.
+FVTVR HUMAN explores the body as something prepared, formatted, and made ready.
 
-The visual language bridges technology and nature through organic geometric forms.
+The surface is no longer neutral.
+It becomes organized, segmented, optimized.
+
+Protective layers, markers, and applied elements redefine the face as a site of intervention.
+Identity is no longer natural. It is assembled, adjusted, and maintained.
+
+These figures exist in a state of readiness — calibrated for a world where the human must continuously adapt.
+
+FVTVR HUMAN imagines identity not as something given,
+but as something continuously configured.
+
+Generated with MidJourney
