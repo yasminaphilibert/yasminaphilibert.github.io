@@ -18,6 +18,18 @@ galleryImages:
 galleryBackground: "#721c13"
 order: 3
 featured: false
+tags:
+  - AI
+  - expression
+  - compliance
+  - portrait
+keywords:
+  - smile
+  - signal
+  - control
+  - programmed
+toolsUsed: 
+  - MidJourney
 ---
 
 
@@ -30,5 +42,3 @@ A signal of stability.
 A confirmation of control.
 
 COMPLIANCE SIGNAL isolates the moment where human expression stops being emotional and becomes functional a visible confirmation that the system is intact.
-
-Generated with MidJourney

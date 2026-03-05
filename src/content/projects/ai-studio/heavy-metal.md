@@ -18,6 +18,18 @@ galleryImages:
 galleryBackground: "#a2acb4"
 order: 3
 featured: false
+tags:
+  - AI
+  - material
+  - chrome
+  - sculpture
+keywords:
+  - pressure
+  - tension
+  - compression
+  - structure
+toolsUsed: 
+  - MidJourney
 ---
 
 PRESSURE CORE explores matter at the moment of internal stress.

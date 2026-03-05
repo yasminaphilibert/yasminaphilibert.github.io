@@ -11,6 +11,21 @@ galleryImages:
 galleryBackground: "#ffffff"
 order: 1
 featured: false
+tags:
+  - visual art
+  - campaign
+  - film
+  - NODALETO
+keywords:
+  - desire
+  - paint
+  - sound
+  - motion
+toolsUsed:
+  - Premier Pro 
+  - After Effect
+  - Camera Sony Alpha 7 III
+
 ---
 
 

@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,6 +10,14 @@ import { getProjectBySlug, services, getServiceBySlug } from "@/data/services";
 const Project = () => {
   const { slug } = useParams<{ slug: string }>();
   const project = slug ? getProjectBySlug(slug) : null;
+
+  // #region agent log
+  useEffect(() => {
+    if (project?.slug === 'brand-hug-me' && project.galleryImages) {
+      fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Project.tsx',message:'gallery props at render',data:{slug:project.slug,galleryImages:project.galleryImages,firstSrc:project.galleryImages[0]},timestamp:Date.now(),hypothesisId:'H5'})}).catch(()=>{});
+    }
+  }, [project?.slug, project?.galleryImages]);
+  // #endregion
   
   // Find next project within the same service
   const service = project ? getServiceBySlug(project.serviceSlug) : null;
@@ -86,12 +95,48 @@ const Project = () => {
                 </div>
               </div>
 
-              {/* Location & Year - Right */}
+              {/* Location, Year, Tags & Keywords - Right */}
               <div className="md:col-span-4 space-y-8">
                 <div>
                   <p className="text-sm text-black/70 break-words">{project.location}</p>
                   <p className="text-sm text-black/70 break-words">{project.year}</p>
                 </div>
+                {(project.tags && project.tags.length > 0) && (
+                  <div>
+                    <p className="text-xs font-medium text-black/60 uppercase tracking-wider mb-2">Tags</p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map((tag, i) => (
+                        <span key={i} className="text-sm text-black/80 px-2.5 py-1 rounded-md bg-black/10 break-words">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {(project.keywords && project.keywords.length > 0) && (
+                  <div>
+                    <p className="text-xs font-medium text-black/60 uppercase tracking-wider mb-2">Keywords</p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.keywords.map((kw, i) => (
+                        <span key={i} className="text-sm text-black/70 break-words">
+                          {kw}{i < (project.keywords?.length ?? 0) - 1 ? ', ' : ''}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {(project.toolsUsed && project.toolsUsed.length > 0) && (
+                  <div>
+                    <p className="text-xs font-medium text-black/60 uppercase tracking-wider mb-2">Tools used</p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.toolsUsed.map((tool, i) => (
+                        <span key={i} className="text-sm text-black/80 px-2.5 py-1 rounded-md bg-black/10 break-words">
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

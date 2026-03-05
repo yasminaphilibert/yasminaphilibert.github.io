@@ -18,6 +18,18 @@ galleryImages:
 galleryBackground: "#26262e"
 order: 1
 featured: false
+tags:
+  - AI
+  - body
+  - surface
+  - vessel
+keywords:
+  - glass skin
+  - containment
+  - interior
+  - protection
+toolsUsed:
+  - MidJourney
 ---
 
 
@@ -34,6 +46,3 @@ Nothing escapes. Everything is held.
 
 GLASS SKIN explores the moment where the body becomes enclosure,
 and identity becomes something carried inside.
-
-Generated with MidJourney
-

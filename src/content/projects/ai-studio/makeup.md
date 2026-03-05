@@ -19,6 +19,18 @@ galleryImages:
 galleryBackground: "#d6bec0"
 order: 1
 featured: false
+tags:
+  - AI
+  - beauty
+  - synthetic
+  - portrait
+keywords:
+  - makeup
+  - skin
+  - hair
+  - protocol
+toolsUsed:
+  - Flux Kontext
 ---
 
 SYNTHETIC PROTOCOL.EXE studies skin, hair, and makeup as engineered surfaces.
@@ -28,5 +40,3 @@ The skin is treated as a reflective material uniform, controlled, almost artific
 Hair becomes a constructed element. Glossy, sculptural forms wrap the head like designed extensions, existing between organic growth and manufactured object. They frame the face with intention, reinforcing the sense of a system rather than a natural state.
 
 SYNTHETIC PROTOCOL.EXE presents beauty as a controlled condition where skin, hair, and makeup operate together as one continuous, designed surface.
-
-Generated with Flux Kontext

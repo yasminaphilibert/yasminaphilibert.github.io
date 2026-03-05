@@ -43,14 +43,14 @@ const Media = ({
   // Normalize paths so public/videos/... -> /videos/... (required for production)
   const normalizedSrc = normalizePublicAssetPath(src);
 
-  // Check if the source is a video file
-  const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(normalizedSrc);
-
   // #region agent log
-  if (isVideo) {
-    fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Media.tsx',message:'Media video src',data:{srcReceived:src,normalizedSrc},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H3'})}).catch(()=>{});
+  if (src.includes('visual-identity') && !/\.(mp4|webm|mov|avi|mkv)$/i.test(src)) {
+    fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Media.tsx',message:'image src received and normalized',data:{src,normalizedSrc},timestamp:Date.now(),hypothesisId:'H5'})}).catch(()=>{});
   }
   // #endregion
+
+  // Check if the source is a video file
+  const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(normalizedSrc);
 
   // Generate poster path if not provided (same name with _poster.jpg)
   const videoPoster = normalizePublicAssetPath(

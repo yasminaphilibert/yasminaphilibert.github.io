@@ -40,6 +40,9 @@ export interface ProjectContent {
   barColor?: string; // Optional custom bar color, falls back to service color
   galleryBackground?: string; // Optional custom gallery background color
   description: string[];
+  tags?: string[];
+  keywords?: string[];
+  toolsUsed?: string[];
 }
 
 export interface SiteConfig {
@@ -369,7 +372,10 @@ export function loadProjects(serviceSlug?: string): ProjectContent[] {
       featured: data.featured as boolean || false,
       barColor: data.barColor as string | undefined,
       galleryBackground: data.galleryBackground as string | undefined,
-      description: descriptionParagraphs
+      description: descriptionParagraphs,
+      tags: Array.isArray(data.tags) ? (data.tags as string[]) : (data.tags != null ? [String(data.tags)] : []),
+      keywords: Array.isArray(data.keywords) ? (data.keywords as string[]) : (data.keywords != null ? [String(data.keywords)] : []),
+      toolsUsed: Array.isArray(data.toolsUsed) ? (data.toolsUsed as string[]) : (data.toolsUsed != null && String(data.toolsUsed).trim() !== '' && String(data.toolsUsed) !== '[]' ? [String(data.toolsUsed)] : [])
     };
     
     if (!serviceSlug || project.service === serviceSlug) {

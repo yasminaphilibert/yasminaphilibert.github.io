@@ -20,7 +20,7 @@ galleryImages:
   - "public/images/services/ai-station/008/generation-4eacce1f-0ea6-47b7-835a-b50accbbc2d7.png"
   - "public/images/services/ai-station/008/generation-87221af9-2667-41b2-a533-8bafce3ec2e0.png"
   - "public/images/services/ai-station/008/generation-22e89616-cfb1-48ff-a2eb-2277e00af3d7 (1).png"
- m - "public/images/services/ai-station/008/generation-94c44d70-b3cb-4f36-978b-56ecfc40f897.png"
+  - "public/images/services/ai-station/008/generation-94c44d70-b3cb-4f36-978b-56ecfc40f897.png"
   - "public/images/services/ai-station/008/generation-606c1f79-9d1d-46f9-87f5-eaead7aa2634.png"
   - "public/images/services/ai-station/008/generation-34400753-40b5-4194-90b6-5e93247c1a88.png"
   - "public/images/services/ai-station/008/generation-3a6fa342-4fb2-40d7-b81f-2365834b8f6c.png"
@@ -39,6 +39,20 @@ galleryImages:
 galleryBackground: "#9fa3df"
 order: 1
 featured: false
+tags:
+  - AI fashion
+  - generative
+  - OTTOLINGER
+  - Marine Serre
+keywords:
+  - transit
+  - infrastructure
+  - mesh
+  - lunar
+  - speed
+toolsUsed:
+  - Nano Banana2
+  - Flux Kontext
 ---
 
 OTTOLINGER × MARINE SERRE — Future System
@@ -59,9 +73,4 @@ Movement replaces pose.
 Fashion becomes infrastructure.
 The body becomes data.
 Speed becomes the condition.
-
-
-
 The body operates as signal.
-
-Generated with Nano Banana2 & Flux Kontext

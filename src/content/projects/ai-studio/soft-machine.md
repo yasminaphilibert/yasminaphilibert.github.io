@@ -18,6 +18,18 @@ galleryImages:
 galleryBackground: "#26262e"
 order: 2
 featured: false
+tags:
+  - AI
+  - chrome
+  - body
+  - generative
+keywords:
+  - soft machine
+  - elastic
+  - synthetic
+  - material
+toolsUsed: 
+  - MidJourney
 ---
 
 

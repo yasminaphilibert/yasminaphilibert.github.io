@@ -4,19 +4,30 @@ slug: "brand-hug-me"
 service: "visual-identity"
 location: "Paris, France"
 year: "2018"
-heroImage: "public/videos/Yasyntha See-showreel_clip_combined.webm"
-thumbnailImage: "public/images/services/visual-identity/Generated Image January 26, 2026 - 5_33AM.png"
+heroImage: "/videos/Yasyntha See-showreel_clip_combined.webm"
+thumbnailImage: "/images/services/visual-identity/Generated Image January 26, 2026 - 5_33AM.png"
 galleryImages:
-  - "public/images/services/visual-identity/Generated Image January 26, 2026 - 6_54PM.png"
-  - "public/images/services/visual-identity/Generated Image January 26, 2026-5_24AM.png"
-  - "public/images/services/visual-identity/Generated Image January 26, 2026 - 5_29AM.png"
-  - "public/images/services/visual-identity/page_08.png"
-  - "public/images/services/visual-identity/page_09.png"
-  - "public/images/services/visual-identity/page_10.png"
+  - "/images/services/visual-identity/Generated Image January 26, 2026 - 6_54PM.png"
+  - "/images/services/visual-identity/Generated Image January 26, 2026-5_24AM.png"
+  - "/images/services/visual-identity/Generated Image January 26, 2026 - 5_29AM.png"
+  - "/images/services/visual-identity/page_08.png"
+  - "/images/services/visual-identity/page_09.png"
+  - "/images/services/visual-identity/page_10.png"
   
 galleryBackground: "#8d6f70"
 order: 1
 featured: false
+tags:
+  - brand
+  - visual identity
+  - packaging
+  - typography
+keywords:
+  - HUG ME
+  - comfort
+  - kangaroo
+  - warmth
+toolsUsed: []
 ---
 
 

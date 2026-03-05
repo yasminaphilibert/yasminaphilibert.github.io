@@ -35,6 +35,9 @@ export interface Project {
   galleryImages?: string[]; // Gallery images from markdown
   galleryVideos?: string[]; // Gallery videos from markdown
   galleryBackground?: string; // Optional custom gallery background color
+  tags?: string[];
+  keywords?: string[];
+  toolsUsed?: string[];
 }
 
 export interface Service {
@@ -61,33 +64,47 @@ function normalizeImagePath(path: string): string {
   const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '/';
   const baseWithSlash = base === '' || base === '/' ? '/' : base + '/';
 
-  // #region agent log
-  const isVideoPath = /\.(mp4|webm|mov|avi|mkv)$/i.test(path);
-  if (isVideoPath) {
-    fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'services.ts:normalizeImagePath',message:'video path normalize',data:{path,base,baseWithSlash},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H1,H5'})}).catch(()=>{});
-  }
-  // #endregion
+  // In dev, use raw path so Vite's static server can resolve filenames with spaces/comma.
+  // In production (e.g. GitHub Pages), use encoded path for strict servers.
+  const useEncoded = !import.meta.env.DEV;
+  const encodeIfNeeded = (p: string) => (useEncoded ? encodeAssetUrl(p) : p);
 
   // Convert "public/..." to root-relative (required for production)
   if (path.startsWith('public/')) {
-    const out = encodeAssetUrl(baseWithSlash + path.substring(7));
-    if (isVideoPath) {
-      fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'services.ts:normalizeImagePath',message:'video path normalized output',data:{path,out},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H1,H2'})}).catch(()=>{});
+    return encodeIfNeeded(baseWithSlash + path.substring(7));
+  }
+
+  let out: string;
+  if (path.startsWith('/') && (base === '' || base === '/')) {
+    out = encodeIfNeeded(path);
+    // #region agent log
+    if (path.includes('visual-identity')) {
+      fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'services.ts:normalizeImagePath',message:'path in/out (slash path)',data:{path,base,baseWithSlash,out,useEncoded},timestamp:Date.now(),hypothesisId:'H1,H2'})}).catch(()=>{});
     }
+    // #endregion
     return out;
   }
-  if (path.startsWith('/') && (base === '' || base === '/')) {
-    return encodeAssetUrl(path);
-  }
   if (path.startsWith(baseWithSlash) || path === base) {
-    return encodeAssetUrl(path);
+    return encodeIfNeeded(path);
   }
   if (path.startsWith('/')) {
     const result = base === '' || base === '/' ? path : base + path;
-    return encodeAssetUrl(result);
+    out = encodeIfNeeded(result);
+    // #region agent log
+    if (path.includes('visual-identity')) {
+      fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'services.ts:normalizeImagePath',message:'path in/out (slash+base)',data:{path,base,result,out,useEncoded},timestamp:Date.now(),hypothesisId:'H1,H2'})}).catch(()=>{});
+    }
+    // #endregion
+    return out;
   }
   const result = baseWithSlash + path;
-  return encodeAssetUrl(result);
+  out = encodeIfNeeded(result);
+  // #region agent log
+  if (path.includes('visual-identity')) {
+    fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'services.ts:normalizeImagePath',message:'path in/out (relative)',data:{path,base,baseWithSlash,out,useEncoded},timestamp:Date.now(),hypothesisId:'H1,H2'})}).catch(()=>{});
+  }
+  // #endregion
+  return out;
 }
 
 // Helper to resolve image path with fallback
@@ -128,7 +145,15 @@ export const services: Service[] = (() => {
         projectsGridBackground: service.projectsGridBackground,
         homeIntro: service.homeIntro,
         soundCloudUrl: service.soundCloudUrl,
-        projects: serviceProjects.map(project => ({
+        projects: serviceProjects.map(project => {
+          const rawGallery = project.galleryImages || [];
+          const normalizedGallery = normalizeImagePaths(rawGallery);
+          // #region agent log
+          if (project.slug === 'brand-hug-me') {
+            fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'services.ts:services map',message:'brand-hug-me gallery from content',data:{slug:project.slug,rawGallery,normalizedGallery},timestamp:Date.now(),hypothesisId:'H3,H4'})}).catch(()=>{});
+          }
+          // #endregion
+          return {
           title: project.title,
           location: project.location,
           year: project.year,
@@ -138,10 +163,14 @@ export const services: Service[] = (() => {
           slug: project.slug,
           description: project.description,
           barColor: project.barColor,
-          galleryImages: normalizeImagePaths(project.galleryImages || []),
+          galleryImages: normalizedGallery,
           galleryVideos: normalizeVideoPaths(project.galleryVideos || []),
-          galleryBackground: project.galleryBackground
-        }))
+          galleryBackground: project.galleryBackground,
+          tags: project.tags || [],
+          keywords: project.keywords || [],
+          toolsUsed: project.toolsUsed || []
+        };
+        })
       };
     });
   } catch (error) {
@@ -174,6 +203,9 @@ export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor
       galleryImages: normalizeImagePaths(project.galleryImages || []),
       galleryVideos: normalizeVideoPaths(project.galleryVideos || []),
       galleryBackground: project.galleryBackground,
+      tags: project.tags || [],
+      keywords: project.keywords || [],
+      toolsUsed: project.toolsUsed || [],
       serviceSlug: service?.slug || project.service,
       serviceColor: project.barColor || service?.infoColor || '#000000'
     };
@@ -185,27 +217,48 @@ export const getServiceBySlug = (slug: string): Service | undefined => {
 };
 
 export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string; serviceColor: string; serviceTitle: string; heroImage: string }) | undefined => {
-  // First try to find in services array (for backward compatibility)
+  // Always load from markdown so tags/keywords are current
+  const allProjectsFromContent = loadProjects();
+  const projectContent = allProjectsFromContent.find(p => p.slug === slug);
+
+  // First try to find in services array (for resolved images and bar colors)
   for (const service of services) {
     const project = service.projects.find(p => p.slug === slug);
-    if (project) {
+    if (project && projectContent) {
       return {
         ...project,
-        heroImage: project.heroImage || project.image, // Fallback to image if heroImage not set
+        heroImage: project.heroImage || project.image,
         galleryImages: project.galleryImages || [],
         galleryVideos: project.galleryVideos || [],
         galleryBackground: project.galleryBackground,
+        tags: projectContent.tags ?? project.tags ?? [],
+        keywords: projectContent.keywords ?? project.keywords ?? [],
+        toolsUsed: projectContent.toolsUsed ?? project.toolsUsed ?? [],
         serviceSlug: service.slug,
-        serviceColor: project.barColor || service.infoColor, // Use project's barColor if set
+        serviceColor: project.barColor || service.infoColor,
+        serviceTitle: service.title
+      };
+    }
+    if (project) {
+      // Content not found but project in services (legacy) – still attach tags/keywords from content if we have them
+      const content = allProjectsFromContent.find(p => p.slug === slug);
+      return {
+        ...project,
+        heroImage: project.heroImage || project.image,
+        galleryImages: project.galleryImages || [],
+        galleryVideos: project.galleryVideos || [],
+        galleryBackground: project.galleryBackground,
+        tags: content?.tags ?? project.tags ?? [],
+        keywords: content?.keywords ?? project.keywords ?? [],
+        toolsUsed: content?.toolsUsed ?? project.toolsUsed ?? [],
+        serviceSlug: service.slug,
+        serviceColor: project.barColor || service.infoColor,
         serviceTitle: service.title
       };
     }
   }
   
-  // If not found, search all projects directly from markdown
-  const allProjectsFromContent = loadProjects();
-  const projectContent = allProjectsFromContent.find(p => p.slug === slug);
-  
+  // If not found in services, use markdown-only
   if (projectContent) {
     // Find the matching service
     const matchingService = services.find(s => s.slug === projectContent.service);
@@ -224,11 +277,14 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
       galleryImages: normalizeImagePaths(projectContent.galleryImages || []),
       galleryVideos: normalizeVideoPaths(projectContent.galleryVideos || []),
       galleryBackground: projectContent.galleryBackground,
+      tags: projectContent.tags || [],
+      keywords: projectContent.keywords || [],
+      toolsUsed: projectContent.toolsUsed || [],
       serviceSlug: service?.slug || projectContent.service,
       serviceColor: projectContent.barColor || service?.infoColor || '#000000',
       serviceTitle: service?.title || 'Project'
     };
   }
-  
+
   return undefined;
 };

@@ -12,6 +12,17 @@ galleryImages:
 galleryBackground: "#302f2f"
 order: 1
 featured: false
+tags:
+  - brand
+  - visual identity
+  - fragrance
+  - Zadig & Voltaire
+keywords:
+  - HIM & HER
+  - sandalwood
+  - duality
+  - packaging
+toolsUsed: []
 ---
 
 ZADIG & VOLTAIRE

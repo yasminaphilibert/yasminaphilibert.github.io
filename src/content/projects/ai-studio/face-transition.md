@@ -18,6 +18,18 @@ galleryImages:
 galleryBackground: "#141414"
 order: 2
 featured: false
+tags:
+  - AI
+  - identity
+  - liminal
+  - portrait
+keywords:
+  - transformation
+  - face
+  - interface
+  - MidJourney
+toolsUsed:
+  - MidJourney
 ---
 
 LIMINAL FACE exists between states.
@@ -31,5 +43,3 @@ It is no longer about expression.
 It is about presence under construction.
 
 LIMINAL FACE explores identity as a liminal condition a moment where the human form becomes programmable, observable, and continuously redefined.
-
-Generated with MidJourney

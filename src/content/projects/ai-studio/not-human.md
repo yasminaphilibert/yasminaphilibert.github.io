@@ -18,6 +18,18 @@ galleryImages:
 galleryBackground: "#d6bec0"
 order: 1
 featured: false
+tags:
+  - AI
+  - body
+  - identity
+  - intervention
+keywords:
+  - future human
+  - surface
+  - formatted
+  - optimized
+toolsUsed: 
+  - Generated with MidJourney
 ---
 
 FVTVR HUMAN explores the body as something prepared, formatted, and made ready.
@@ -32,5 +44,3 @@ These figures exist in a state of readiness — calibrated for a world where the
 
 FVTVR HUMAN imagines identity not as something given,
 but as something continuously configured.
-
-Generated with MidJourney
