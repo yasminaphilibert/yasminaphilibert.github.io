@@ -77,11 +77,6 @@ function normalizeImagePath(path: string): string {
   let out: string;
   if (path.startsWith('/') && (base === '' || base === '/')) {
     out = encodeIfNeeded(path);
-    // #region agent log
-    if (path.includes('visual-identity')) {
-      fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'services.ts:normalizeImagePath',message:'path in/out (slash path)',data:{path,base,baseWithSlash,out,useEncoded},timestamp:Date.now(),hypothesisId:'H1,H2'})}).catch(()=>{});
-    }
-    // #endregion
     return out;
   }
   if (path.startsWith(baseWithSlash) || path === base) {
@@ -90,20 +85,10 @@ function normalizeImagePath(path: string): string {
   if (path.startsWith('/')) {
     const result = base === '' || base === '/' ? path : base + path;
     out = encodeIfNeeded(result);
-    // #region agent log
-    if (path.includes('visual-identity')) {
-      fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'services.ts:normalizeImagePath',message:'path in/out (slash+base)',data:{path,base,result,out,useEncoded},timestamp:Date.now(),hypothesisId:'H1,H2'})}).catch(()=>{});
-    }
-    // #endregion
     return out;
   }
   const result = baseWithSlash + path;
   out = encodeIfNeeded(result);
-  // #region agent log
-  if (path.includes('visual-identity')) {
-    fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'services.ts:normalizeImagePath',message:'path in/out (relative)',data:{path,base,baseWithSlash,out,useEncoded},timestamp:Date.now(),hypothesisId:'H1,H2'})}).catch(()=>{});
-  }
-  // #endregion
   return out;
 }
 
@@ -148,11 +133,6 @@ export const services: Service[] = (() => {
         projects: serviceProjects.map(project => {
           const rawGallery = project.galleryImages || [];
           const normalizedGallery = normalizeImagePaths(rawGallery);
-          // #region agent log
-          if (project.slug === 'brand-hug-me') {
-            fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'services.ts:services map',message:'brand-hug-me gallery from content',data:{slug:project.slug,rawGallery,normalizedGallery},timestamp:Date.now(),hypothesisId:'H3,H4'})}).catch(()=>{});
-          }
-          // #endregion
           return {
           title: project.title,
           location: project.location,

@@ -34,7 +34,7 @@ toolsUsed:
 
 LIMINAL FACE exists between states.
 
-The figures are captured at the threshold of transformation where identity is no longer fixed, but suspended. The surface splits, duplicates, and overlays itself, creating a controlled distance between the internal self and the external image.
+The figures are captured at the threshold of transformation — where identity is no longer fixed, but suspended. The surface splits, duplicates, and overlays itself, creating a controlled distance between the internal self and the external image.
 
 The face becomes a transitional structure.
 Not a representation, but an interface.
@@ -42,4 +42,4 @@ Not a representation, but an interface.
 It is no longer about expression.
 It is about presence under construction.
 
-LIMINAL FACE explores identity as a liminal condition a moment where the human form becomes programmable, observable, and continuously redefined.
+LIMINAL FACE explores identity as a liminal condition — a moment where the human form becomes programmable, observable, and continuously redefined.

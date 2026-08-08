@@ -10,5 +10,4 @@ order: 1
 homeIntro: ""
 ---
 
-AI-driven visual creation blending tools and craft to keep the work human and story-led.
-Crafting distinctive visual systems that communicate brand essence across all touchpoints.
+AI-driven visual creation — blending tools and craft to keep the work human and story-led.

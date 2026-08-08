@@ -10,4 +10,4 @@ homeIntro: ""
 soundCloudUrl: "https://soundcloud.com/yasyntha"
 ---
 
-DJ & producer for 10 years—shaping mood and bringing ideas to life across music production and sound design.
+DJ & producer for 10 years — shaping mood and bringing ideas to life across music production and sound design.

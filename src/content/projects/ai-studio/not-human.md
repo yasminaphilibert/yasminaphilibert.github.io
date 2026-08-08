@@ -28,8 +28,8 @@ keywords:
   - surface
   - formatted
   - optimized
-toolsUsed: 
-  - Generated with MidJourney
+toolsUsed:
+  - MidJourney
 ---
 
 FVTVR HUMAN explores the body as something prepared, formatted, and made ready.

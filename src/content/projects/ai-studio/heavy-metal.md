@@ -34,11 +34,9 @@ toolsUsed:
 
 PRESSURE CORE explores matter at the moment of internal stress.
 
-Rigid surfaces hold unstable interiors. Chrome shells contain soft, volatile substance tension exists not on the surface, but within. The object becomes a container of force, preserving a state that cannot remain stable indefinitely.
+Rigid surfaces hold unstable interiors. Chrome shells contain soft, volatile substance — tension exists not on the surface, but within. The object becomes a container of force, preserving a state that cannot remain stable indefinitely.
 
 The forms appear frozen between integrity and collapse.
 Between protection and exposure.
 
-PRESSURE CORE examines material as a condition of compression where structure exists only as long as it can resist what it contains.
-
-Generated with MidJourney
+PRESSURE CORE examines material as a condition of compression — where structure exists only as long as it can resist what it contains.

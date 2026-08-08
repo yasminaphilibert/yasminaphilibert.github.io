@@ -22,8 +22,8 @@ keywords:
   - sound
   - motion
 toolsUsed:
-  - Premier Pro 
-  - After Effect
+  - Premiere Pro
+  - After Effects
   - Camera Sony Alpha 7 III
 
 ---
@@ -56,7 +56,5 @@ It is a state.
 
 A slow, intimate trance where color replaces touch,
 and sound becomes the only way to see.
-
-Optional closing line (perfect for campaign end card)
 
 Desire has no beginning. Only a rhythm.

@@ -1,11 +1,11 @@
 ---
-siteName: "Marcus Chen"
+siteName: "YΛSYNTHΛ"
 tagline: "Creative Direction & Design"
-email: "hello@marcuschen.com"
+email: "yasynthamusic@gmail.com"
 socialLinks:
-  linkedin: "https://linkedin.com/in/marcuschen"
-  instagram: "https://instagram.com/marcuschen"
-  behance: "https://behance.net/marcuschen"
+  linkedin: "https://linkedin.com/in/yasminaphilibert"
+  instagram: "https://www.instagram.com/yasyntha/"
+  behance: ""
 ---
 
-Personal portfolio showcasing work in visual identity, graphic design, and sound engineering.
+Personal portfolio showcasing work in visual identity, visual art, AI studio, and sound.

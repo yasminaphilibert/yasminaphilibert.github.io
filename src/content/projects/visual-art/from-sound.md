@@ -25,8 +25,8 @@ keywords:
   - YΛSYNTHΛ
   - generative
 toolsUsed:
-  - Premier Pro 
-  - After Effect
+  - Premiere Pro
+  - After Effects
   - Camera Arri Amira Look 5210
   - Lens Sony Ciné Alta 50 mm
   - Vibrator Exciter Type 4808 - Brüel & Kjær
@@ -41,19 +41,19 @@ YΛSYNTHΛ - Āpodhātu
 A Research Manifesto on Vibration
 
 This project originates from a personal research into sound as a generative force.
-Through cymatic experimentation, vibration is observed not as an effect, but as an origin the moment where sound becomes form.
+Through cymatic experimentation, vibration is observed not as an effect, but as an origin — the moment where sound becomes form.
 
 When sound enters water, matter responds.
 Invisible waves organize themselves into structures, revealing rhythm, repetition, and order.
-What appears abstract is in fact precise governed by frequency and time.
+What appears abstract is in fact precise — governed by frequency and time.
 
 This research is rooted in the observation of patterns repeating across all scales:
 breath and waves, heartbeat and rhythm, micro-universe and cosmos.
 Life reveals itself as vibration in motion.
 
 In this work, sound and image are inseparable.
-They are two expressions of the same phenomenon, one heard, the other revealed.
-The forms are not designed they emerge.
+They are two expressions of the same phenomenon — one heard, the other revealed.
+The forms are not designed — they emerge.
 
 From Sound to Matter is a manifesto:
 a declaration that what shapes matter also shapes us.

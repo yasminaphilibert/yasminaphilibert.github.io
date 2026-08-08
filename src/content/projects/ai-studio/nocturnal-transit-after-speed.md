@@ -57,7 +57,7 @@ toolsUsed:
 
 OTTOLINGER × MARINE SERRE — Future System
 
-This project exists in transit spaces underground corridors, parking structures, infrastructures designed for movement, not rest.
+This project exists in transit spaces — underground corridors, parking structures, infrastructures designed for movement, not rest.
 The body passes through them as a signal.
 
 AI-generated silhouettes merge OTTOLINGER’s deconstructed tension with Marine Serre’s lunar mesh, producing garments that feel engineered rather than styled.

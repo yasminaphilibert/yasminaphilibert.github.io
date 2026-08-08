@@ -33,7 +33,7 @@ toolsUsed:
 ---
 
 
-GLASS SKIN imagines the body as a vessel something that holds, preserves, and contains.
+GLASS SKIN imagines the body as a vessel — something that holds, preserves, and contains.
 
 The surface appears smooth and uninterrupted, but something exists beneath it.
 A suspended core. A protected interior. A presence that cannot fully emerge.
@@ -41,7 +41,7 @@ A suspended core. A protected interior. A presence that cannot fully emerge.
 The outer layer remains calm, almost neutral, while the internal element carries density, heat, and tension.
 What matters is not the exterior form, but what it protects.
 
-These identities exist in a state of containment balanced between exposure and preservation.
+These identities exist in a state of containment — balanced between exposure and preservation.
 Nothing escapes. Everything is held.
 
 GLASS SKIN explores the moment where the body becomes enclosure,

@@ -7,7 +7,7 @@ socialLinks:
     url: "https://linkedin.com/in/yasminaphilibert"
     enabled: true
   - platform: "instagram"
-    url: "https://www.instagram.com/YΛSYNTHΛ/"
+    url: "https://www.instagram.com/yasyntha/"
     enabled: true
   - platform: "linktree"
     url: "https://linktr.ee/YASYNTHA"

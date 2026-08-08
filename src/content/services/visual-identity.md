@@ -9,4 +9,4 @@ order: 2
 homeIntro: ""
 ---
 
-Brand strategy, visual direction, and storytelling building identities that feel consistent and true, on print and digital.
+Brand strategy, visual direction, and storytelling — building identities that feel consistent and true, on print and digital.

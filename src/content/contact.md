@@ -9,5 +9,5 @@ infoBarColor: "#ffb4ec"
 alternativeContactTitle: "Or reach out directly"
 heroBackgroundColor: "#5953aa"
 formBackgroundColor: "#5953aa"
-backToHomeBackgroundColor:rgb(54, 62, 136)"
+backToHomeBackgroundColor: "rgb(54, 62, 136)"
 ---

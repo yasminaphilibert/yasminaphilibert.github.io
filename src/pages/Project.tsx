@@ -1,5 +1,4 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -11,13 +10,6 @@ const Project = () => {
   const { slug } = useParams<{ slug: string }>();
   const project = slug ? getProjectBySlug(slug) : null;
 
-  // #region agent log
-  useEffect(() => {
-    if (project?.slug === 'brand-hug-me' && project.galleryImages) {
-      fetch('http://127.0.0.1:7243/ingest/b32c6150-3c17-4e8e-8357-c31558c24e40',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Project.tsx',message:'gallery props at render',data:{slug:project.slug,galleryImages:project.galleryImages,firstSrc:project.galleryImages[0]},timestamp:Date.now(),hypothesisId:'H5'})}).catch(()=>{});
-    }
-  }, [project?.slug, project?.galleryImages]);
-  // #endregion
   
   // Find next project within the same service
   const service = project ? getServiceBySlug(project.serviceSlug) : null;

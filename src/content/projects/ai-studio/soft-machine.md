@@ -37,16 +37,14 @@ toolsUsed:
 CHRØME SOFT MACHINE explores a new state of being, where the body is no longer fixed, but continuously reshaped.
 
 Chrome is no longer rigid or industrial.
-It behaves like a living material elastic, adaptive, almost biological.
+It behaves like a living material — elastic, adaptive, almost biological.
 
 Features appear altered, extended, refined beyond natural proportion.
 The familiar becomes unfamiliar.
 The human becomes something else.
 
 These identities do not belong to the present.
-They exist in transition between organic origin and synthetic evolution.
+They exist in transition — between organic origin and synthetic evolution.
 
 CHRØME SOFT MACHINE imagines a future where beauty is no longer inherited,
 but constructed.
-
-Generated with MidJourney

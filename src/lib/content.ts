@@ -305,13 +305,13 @@ export function getSiteConfig(): SiteConfig {
   const configPath = Object.keys(configFile)[0];
   if (!configPath) {
     return {
-      siteName: 'Marcus Chen',
+      siteName: 'YΛSYNTHΛ',
       tagline: 'Creative Direction & Design',
-      email: 'hello@marcuschen.com',
+      email: 'yasynthamusic@gmail.com',
       socialLinks: {
-        linkedin: 'https://linkedin.com',
-        instagram: 'https://instagram.com',
-        behance: 'https://behance.net'
+        linkedin: 'https://linkedin.com/in/yasminaphilibert',
+        instagram: 'https://www.instagram.com/yasyntha/',
+        behance: ''
       }
     };
   }
