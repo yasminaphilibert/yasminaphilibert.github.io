@@ -56,19 +56,23 @@ const Media = ({
   // The Video component will handle the fallback
 
   if (isVideo) {
-    // Extract height classes from className to apply to container
-    const heightMatch = className?.match(/h-\[[\w\d]+vh\]|h-\[[\w\d]+px\]|h-\d+/);
-    const heightClass = heightMatch ? heightMatch[0] : "";
-    
+    // Height belongs on the wrapper, not on the <video>. Match responsive
+    // variants too — grabbing only the first match dropped the `md:` height and
+    // left a dangling `md:` prefix in the class list.
+    const HEIGHT_CLASS = /(?:[a-z0-9]+:)?h-(?:\[[^\]]+\]|\d+|full|screen|auto)/g;
+    const heightClasses = className?.match(HEIGHT_CLASS)?.join(" ") ?? "";
+
     return (
       <div className={cn("w-full", containerClassName)}>
-        <div className={cn("w-full", heightClass || "h-full")}>
+        <div className={cn("w-full", heightClasses || "h-full")}>
           <Video
             src={normalizedSrc}
             poster={videoPoster}
             alt={alt}
-            className={cn(className.replace(/h-\[[\w\d]+vh\]|h-\[[\w\d]+px\]|h-\d+/g, ""), "w-full h-full")}
-            aspectRatio={aspectRatio}
+            className={cn(className?.replace(HEIGHT_CLASS, ""), "w-full h-full")}
+            // Without an explicit ratio the video should fill the height the
+            // caller asked for; Video's own default is a square crop.
+            aspectRatio={aspectRatio ?? "auto"}
             autoplay={autoplay}
             loop={loop}
             muted={muted}

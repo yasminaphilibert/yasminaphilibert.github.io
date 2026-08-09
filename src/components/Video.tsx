@@ -30,44 +30,88 @@ const Video = ({
   const srcUrl = normalizePublicAssetPath(src);
   const posterUrl = poster ? normalizePublicAssetPath(poster) : undefined;
 
+  // Everything ships as H.264/AAC MP4, the one format every browser and every
+  // iOS version decodes. The site previously served VP9/WebM only, which Safari
+  // and pre-17.4 iOS simply refuse. Content still names files by their original
+  // extension, so resolve to the .mp4 sibling here.
+  const mp4Url = srcUrl.replace(/\.(mp4|webm|mov|avi|mkv)$/i, ".mp4");
+
   const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const [isPlaying, setIsPlaying] = useState(autoplay);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Load video when in viewport (lazy), and trigger load on mount so hero videos start immediately
+  // Kick off loading once the video is near the viewport. Deliberately one-shot:
+  // load() rewinds and re-buffers, so re-firing it on every scroll past would
+  // interrupt playback that is already underway.
   useEffect(() => {
     const el = containerRef.current;
-    if (!el) return;
+    const video = videoRef.current;
+    if (!el || !video) return;
+
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      // Only nudge a video the browser hasn't begun buffering. Calling load()
+      // on one that already has data aborts it and re-downloads from zero.
+      if (video.readyState === 0) video.load();
+    };
+
+    // A media element can reach a usable readyState before React has its
+    // handlers on it, and then no further event ever fires — which left the
+    // video sitting at opacity-0 behind a spinner while it was fully buffered.
+    // Seed from readyState and also listen natively.
+    const sync = () => {
+      if (video.readyState >= 2) setIsLoaded(true);
+    };
+    sync();
+    video.addEventListener("loadeddata", sync);
+    video.addEventListener("canplay", sync);
+
+    if (typeof IntersectionObserver === "undefined") {
+      start();
+      return () => {
+        video.removeEventListener("loadeddata", sync);
+        video.removeEventListener("canplay", sync);
+      };
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && videoRef.current) {
-            videoRef.current.load();
-          }
-        });
+        if (entries.some((entry) => entry.isIntersecting)) {
+          start();
+          observer.disconnect();
+        }
       },
-      { rootMargin: "50px", threshold: 0.1 }
+      { rootMargin: "200px", threshold: 0 }
     );
     observer.observe(el);
-    // Hero videos: trigger load immediately so we don't wait for observer callback
-    const t = requestAnimationFrame(() => {
-      if (videoRef.current) videoRef.current.load();
-    });
     return () => {
-      observer.unobserve(el);
-      cancelAnimationFrame(t);
+      observer.disconnect();
+      video.removeEventListener("loadeddata", sync);
+      video.removeEventListener("canplay", sync);
     };
-  }, []);
+  }, [srcUrl]);
 
-  // Handle video loaded
+  // Enough of the video is buffered to show a frame.
   const handleLoadedData = () => {
     setIsLoaded(true);
+    setHasError(false);
     if (autoplay && videoRef.current) {
       videoRef.current.play().catch(() => {
-        // Autoplay failed, user interaction required
+        // Autoplay blocked (unmuted autoplay is refused on mobile) — the
+        // controls are there for the user to start it.
       });
     }
+  };
+
+  // If every <source> fails, reveal the element anyway. Leaving it at opacity-0
+  // behind a spinner is what made a broken video look like one that never loads.
+  const handleError = () => {
+    setIsLoaded(true);
+    setHasError(true);
   };
 
   // Handle play/pause
@@ -105,30 +149,46 @@ const Video = ({
 
       {/* Video element with full controls */}
       <video
+        key={srcUrl}
         ref={videoRef}
         className={cn(
           "w-full h-full object-cover transition-opacity duration-300",
           isLoaded ? "opacity-100" : "opacity-0"
         )}
         poster={posterUrl}
-        preload="auto"
+        // "auto" on a phone means eagerly pulling tens of megabytes over
+        // cellular before the user has asked for anything. Metadata is enough
+        // to render the first frame and wire up the scrubber.
+        preload="metadata"
         playsInline={playsInline}
         muted={muted}
         loop={loop}
         controls={controls} // Provides: play/pause, mute, volume, fullscreen, progress
         onLoadedData={handleLoadedData}
-        onError={() => {}}
+        onError={handleError}
         onPlay={handlePlay}
         onPause={handlePause}
       >
-        {/* WebM only - best compression for web */}
-        <source src={srcUrl.replace(/\.(mp4|mov|avi|mkv)$/i, ".webm")} type="video/webm" />
-        <source src={srcUrl} type="video/webm" />
+        {/* Some browsers report a dead source only on the <source>, not on the
+            media element, so listen on both. */}
+        <source src={mp4Url} type="video/mp4" onError={handleError} />
         Your browser does not support the video tag.
       </video>
 
+      {/* Nothing decodable: keep the poster up rather than a dead black box. */}
+      {hasError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/60 px-6 text-center">
+          <a
+            href={mp4Url}
+            className="text-sm text-white underline underline-offset-4"
+          >
+            This video can’t play here — open it directly
+          </a>
+        </div>
+      )}
+
       {/* Play button overlay for non-autoplay videos (only show if controls are disabled) */}
-      {!autoplay && !isPlaying && isLoaded && !controls && (
+      {!autoplay && !isPlaying && isLoaded && !controls && !hasError && (
         <button
           onClick={() => videoRef.current?.play()}
           className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors z-10"

@@ -14,10 +14,12 @@ This guide explains how to optimize videos for your portfolio while maintaining 
 
 ## Video Optimization Strategy
 
-### 1. Multiple Formats
-We provide two formats for maximum browser compatibility:
-- **WebM (VP9)**: Best compression, smaller file size
-- **MP4 (H.264)**: Universal fallback, works everywhere
+### 1. One Format: MP4
+- **MP4 (H.264 + AAC)**: the only format that plays everywhere, including
+  Safari and every iOS version. This is what the site ships.
+- **WebM (VP9)**: compresses better, but Safari and iOS before 17.4 refuse it.
+  The site was WebM-only for a while and no video played on an iPhone, so WebM
+  is no longer published. Don't reintroduce it as the sole format.
 
 ### 2. Compression Settings
 
@@ -99,7 +101,7 @@ galleryVideos:
 The Video component will automatically:
 - Lazy load videos (only when in viewport)
 - Show poster image before loading
-- Provide WebM and MP4 sources for best compatibility
+- Resolve any video path to its `.mp4` sibling before requesting it
 - Handle play/pause controls
 
 ## Quality vs File Size
@@ -150,8 +152,15 @@ ffmpeg -i input.mp4 -ss 00:00:01 -vframes 1 -q:v 2 poster.jpg
 
 **Videos not loading:**
 - Check file paths in markdown (should start with `public/videos/`)
-- Ensure both `.webm` and `.mp4` versions exist
+- Ensure the `.mp4` exists — whatever extension the markdown names, the player
+  requests the `.mp4`
 - Check browser console for errors
+
+**Videos return 200 but never play (especially on the live site):**
+- Fetch the file directly and look at the first line. If it reads
+  `version https://git-lfs.github.com/spec/v1`, you're being served a Git LFS
+  pointer, not a video. Videos must be plain git objects — see `.gitattributes`.
+  The deploy workflow fails the build if a pointer ever reaches `dist/videos/`.
 
 **Video shows 0:00 duration / black screen when opened directly:**
 - The WebM file likely has missing or corrupt metadata (duration not written, or non-streamable encoding).

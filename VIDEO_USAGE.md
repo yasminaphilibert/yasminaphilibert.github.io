@@ -1,12 +1,29 @@
 # Using Videos in Your Portfolio
 
-You can now use videos (`.webm` or `.mp4`) anywhere you would normally use images! The system automatically detects video files and renders them appropriately.
+You can use videos anywhere you would normally use images. The system automatically detects video files and renders them appropriately.
 
 ## Supported Video Formats
 
-- `.webm` (recommended - best compression)
-- `.mp4` (universal fallback)
-- `.mov`, `.avi`, `.mkv` (will be converted to webm/mp4)
+**Every video must exist as an H.264/AAC `.mp4` in `public/videos/`.** That is the
+only format Safari and every iOS version can decode; the site shipped VP9/WebM
+only for a while and no video played on an iPhone.
+
+You may still *write* `.webm`, `.mov`, `.avi` or `.mkv` in the markdown — the
+player swaps the extension for `.mp4` when building the URL — but the `.mp4` is
+what actually gets served, so it has to be there.
+
+Encode with:
+
+```bash
+ffmpeg -i input.mov -c:v libx264 -profile:v high -pix_fmt yuv420p -crf 23 \
+  -preset medium -c:a aac -b:a 128k -movflags +faststart output.mp4
+```
+
+`-movflags +faststart` is not optional: without it the whole file must download
+before playback starts, which on a phone looks exactly like a broken video.
+
+Keep each file under **100 MB** — GitHub rejects larger files, and the videos are
+plain git objects (deliberately not Git LFS; see `.gitattributes`).
 
 ## Where You Can Use Videos
 

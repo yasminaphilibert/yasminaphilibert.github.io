@@ -16,6 +16,26 @@ export function normalizePublicAssetPath(path: string): string {
 }
 
 /**
+ * encodeURIComponent is built for query-string values, so it also escapes
+ * characters that are perfectly legal inside a path segment (RFC 3986
+ * sub-delims). Restoring them is not cosmetic: a filename containing a comma
+ * became %2C, and static servers that match paths without decoding sub-delims —
+ * `vite preview` among them — answered with the SPA fallback instead of the
+ * image. Every server accepts these literally; only some accept them escaped.
+ *
+ * `+` and `;` stay escaped: some servers read a literal `+` as a space, or
+ * truncate a segment at `;` treating the rest as path parameters.
+ */
+const PATH_SAFE_ESCAPES: [RegExp, string][] = [
+  [/%2C/g, ","],
+  [/%3A/g, ":"],
+  [/%40/g, "@"],
+  [/%24/g, "$"],
+  [/%26/g, "&"],
+  [/%3D/g, "="],
+];
+
+/**
  * Encode path for use in src/href so Unicode filenames work on GitHub Pages and strict servers.
  * e.g. /videos/Yasyntha-Ākāsadhātu.webm -> /videos/Yasyntha-%C4%80k%C4%81sadh%C4%81tu.webm
  */
@@ -24,7 +44,14 @@ export function encodeAssetUrl(path: string): string {
   try {
     const encoded = path
       .split("/")
-      .map((segment) => (segment ? encodeURIComponent(segment) : ""))
+      .map((segment) => {
+        if (!segment) return "";
+        let out = encodeURIComponent(segment);
+        for (const [pattern, char] of PATH_SAFE_ESCAPES) {
+          out = out.replace(pattern, char);
+        }
+        return out;
+      })
       .join("/");
     // Avoid leading double slash: "/videos/x" -> "//videos/x" -> "/videos/x"
     return encoded.replace(/^\/+/, "/");
