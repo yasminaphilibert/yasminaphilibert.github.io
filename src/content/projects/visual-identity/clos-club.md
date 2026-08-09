@@ -5,7 +5,7 @@ service: "visual-identity"
 location: "Barcelona, Spain"
 year: "2026"
 heroImage: "public/images/services/visual-identity/clos-club/26-worn-well-lived-in.webp"
-heroImagePosition: "center top"
+heroImagePosition: "center 6%"
 thumbnailImage: "public/images/services/visual-identity/clos-club/01-dont-stay-they-travel.webp"
 galleryBackground: "#141210"
 order: 4
