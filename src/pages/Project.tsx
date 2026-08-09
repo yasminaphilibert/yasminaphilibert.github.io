@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Media from "@/components/Media";
 import CompareSlider from "@/components/CompareSlider";
-import PosterMagazine from "@/components/PosterMagazine";
+import PosterFlipbook from "@/components/PosterFlipbook";
 import Video from "@/components/Video";
 import { getProjectBySlug, services, getServiceBySlug } from "@/data/services";
 
@@ -136,8 +136,8 @@ const Project = () => {
           </div>
         </motion.section>
 
-        {/* The campaign as a magazine — click the right page to turn it. Wider
-            than the comparison section because a spread is two pages across. */}
+        {/* The campaign as a magazine. Wider than the comparison section
+            because a spread is two pages across. */}
         {project.magazinePages && project.magazinePages.length > 0 && (
           <motion.section
             initial={{ opacity: 0, y: 20 }}
@@ -150,10 +150,10 @@ const Project = () => {
               <p className="text-xs font-medium uppercase tracking-wider text-white/70 mb-8 md:mb-10">
                 The issue
                 <span className="ml-3 normal-case tracking-normal text-white/50">
-                  click a page to turn it
+                  drag a corner, or click the arrows
                 </span>
               </p>
-              <PosterMagazine pages={project.magazinePages} label={project.title} />
+              <PosterFlipbook pages={project.magazinePages} label={project.title} />
             </div>
           </motion.section>
         )}

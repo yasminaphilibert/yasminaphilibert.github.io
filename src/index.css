@@ -202,69 +202,32 @@
   }
 }
 
-/* ── Magazine flip-book (PosterMagazine.tsx) ──
-   Plain classes rather than Tailwind 3D utilities, so the effect doesn't depend
-   on this Tailwind version's transform feature set. Outside @layer so the leaf
-   transition isn't stripped as unused. */
-.book-scene {
-  perspective: 2200px;
+/* ── Magazine flip-book (PosterFlipbook.tsx) ──
+   The curl geometry and its shadows are drawn by StPageFlip on a canvas, so
+   there is nothing to style here but the page itself. Outside @layer so these
+   are not stripped as unused — the markup comes from the library. */
+.flip-host {
+  perspective: 2000px;
 }
-.preserve-3d {
-  transform-style: preserve-3d;
+.flip-page {
+  position: relative;
+  background: #141210;
+  overflow: hidden;
 }
-.backface-hidden {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+.flip-page img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
 }
-.book-leaf {
-  transform-origin: left center;
-  transition: transform 0.9s cubic-bezier(0.35, 0.1, 0.2, 1);
-}
-
-/* Paper bows as it turns — it never stays a flat plane. The leaf element owns
-   rotateY, so the bow lives on an inner wrapper to keep the two off the same
-   property. */
-@keyframes leaf-bow {
-  0%, 100% { transform: scaleX(1) skewY(0deg); }
-  35% { transform: scaleX(0.975) skewY(0.5deg); }
-  65% { transform: scaleX(0.975) skewY(-0.5deg); }
-}
-.leaf-turning .leaf-bow {
-  animation: leaf-bow 0.9s cubic-bezier(0.35, 0.1, 0.2, 1);
-}
-
-/* Light rolling off the sheet: a soft band that sweeps across the face while it
-   moves, brightest as the page passes through the vertical. */
-@keyframes leaf-sheen {
-  0% { opacity: 0; transform: translateX(-40%); }
-  40% { opacity: 0.55; }
-  100% { opacity: 0; transform: translateX(45%); }
-}
-.leaf-turning .leaf-sheen {
-  animation: leaf-sheen 0.9s cubic-bezier(0.35, 0.1, 0.2, 1);
-}
-
-/* The shadow a lifted leaf throws across the spread underneath. A standing page
-   darkens BOTH neighbours around the spine, not one side, so this is a band
-   centred on the fold that widens and deepens as the page passes the vertical.
-*/
-@keyframes leaf-cast {
-  0% { opacity: 0; transform: scaleX(0.55); }
-  45% { opacity: 1; transform: scaleX(1.25); }
-  100% { opacity: 0; transform: scaleX(0.5); }
-}
-.leaf-cast {
-  transform-origin: center;
-  animation: leaf-cast 0.9s cubic-bezier(0.35, 0.1, 0.2, 1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .book-leaf {
-    transition: none;
-  }
-  .leaf-turning .leaf-bow,
-  .leaf-turning .leaf-sheen,
-  .leaf-cast {
-    animation: none;
-  }
+.flip-page-no {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.75rem;
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.55);
+  pointer-events: none;
 }
