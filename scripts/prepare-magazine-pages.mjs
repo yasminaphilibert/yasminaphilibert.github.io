@@ -43,7 +43,7 @@ import { join } from 'node:path';
 const SRC = '/Users/christiandimitri/Documents/Github/pocs/closclub-ai-os/brand/posters';
 const OUT = 'public/images/services/visual-identity/clos-club';
 
-const W = 1024, H = 1397;
+const W = 1024, H = 1399;
 
 // Widest baked-in frame worth believing. Real ones run 2-12px; anything past
 // this is pale scenery, and cropping it would cut into the photograph.
@@ -89,19 +89,41 @@ const PAGES = [
 /**
  * Width of the pale baked-in border on each edge, in pixels.
  *
- * Walks inward one line at a time and keeps going while the line is both light
- * and near-flat — a frame is uniform, a photograph is not. Stops at MAX_FRAME.
+ * A frame line is near-white and near-flat; a photograph is neither. The catch
+ * is that the OUTERMOST line is usually an anti-aliased blend of the frame and
+ * whatever was outside it, so it is neither white enough nor flat enough to
+ * pass. An earlier version stopped at the first line that failed, so a single
+ * soft edge pixel row hid the entire frame behind it.
+ *
+ * So the scan tolerates gaps: it keeps looking for up to GAP further lines after
+ * a failure, and trims to the deepest frame line it found. It then swallows the
+ * soft transition line beyond that, which is bright but not clean white.
  */
 async function detectFrame(file) {
   const { data, info } = await sharp(file).greyscale().raw().toBuffer({ resolveWithObject: true });
   const { width: w, height: h } = info;
   const px = (x, y) => data[y * w + x];
-  const flatAndLight = vals => {
+  const GAP = 2;
+
+  const lineStats = vals => {
     const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
     const sd = Math.sqrt(vals.reduce((a, b) => a + (b - mean) ** 2, 0) / vals.length);
-    return sd < 16 && mean > 120;
+    return { mean, sd };
   };
-  const walk = line => { let i = 0; while (i < MAX_FRAME && flatAndLight(line(i))) i++; return i; };
+
+  const walk = line => {
+    let depth = 0;
+    for (let i = 0; i < MAX_FRAME; i++) {
+      const { mean, sd } = lineStats(line(i));
+      if (mean > 150 && sd < 25) depth = i + 1;
+      else if (i - depth >= GAP) break;
+    }
+    if (depth === 0) return 0;
+    // The blend row just inside the frame: still bright, no longer clean.
+    while (depth < MAX_FRAME && lineStats(line(depth)).mean > 130) depth++;
+    return depth;
+  };
+
   const row = y => Array.from({ length: w }, (_, x) => px(x, y));
   const col = x => Array.from({ length: h }, (_, y) => px(x, y));
   return {

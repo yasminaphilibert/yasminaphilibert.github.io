@@ -30,7 +30,7 @@ interface PosterMagazineProps {
  * `turned` — the number of leaves already flipped — is the only state; the
  * whole spread derives from it.
  */
-const PosterMagazine = ({ pages, label = "", pageRatio = 1024 / 1397, className }: PosterMagazineProps) => {
+const PosterMagazine = ({ pages, label = "", pageRatio = 1024 / 1399, className }: PosterMagazineProps) => {
   const srcs = useMemo(() => pages.map(normalizePublicAssetPath), [pages]);
   // Leaf i shows page 2i+1 on its front and page 2i+2 on its back, so the very
   // first page sits under every leaf as the left half of the opening spread.
