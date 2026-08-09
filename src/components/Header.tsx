@@ -9,14 +9,22 @@ const Header = () => {
 
   return (
     <motion.header 
-      className="rounded-b-[2rem] px-6 py-3 md:px-12 md:py-4 overflow-hidden"
+      // Every page pulls its first section up by -mt-8 so the rounded bottom
+      // overlaps it. The header was static, so that section painted *over* the
+      // header and ate the bottom 20px of the lockup. It has to sit on top.
+      className="relative z-20 rounded-b-[2rem] px-6 py-3 md:px-12 md:py-4 overflow-hidden"
       style={{ backgroundColor: navbar.bgColor || undefined }}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-3 items-center">
+        {/* Equal thirds starved the centre column: the lockup is wider than a
+            third of a phone screen, so it spilled over the menu button and got
+            worse the narrower the device. Let the mark take the width it needs
+            and split whatever is left between the two sides — that keeps it
+            optically centred without ever crowding the button. */}
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
           {/* Left Section */}
           <div className="flex items-center">
             {/* Tagline - Left (Desktop only) */}
@@ -75,15 +83,17 @@ const Header = () => {
           </div>
 
           {/* Logo - Center */}
-          <div className="flex justify-center">
+          <div className="flex justify-center min-w-0">
             <Link
               to="/"
-              className="flex items-center flex-shrink-0 min-w-0"
+              className="flex items-center min-w-0"
             >
               <img
                 src={`${import.meta.env.BASE_URL}yasyntha_lockup.png`}
                 alt="Yasyntha"
-                className="h-20 md:h-32 w-auto"
+                // max-w-full is the backstop: on a very narrow phone the mark
+                // gives up height rather than pushing into the menu button.
+                className="h-14 sm:h-16 md:h-32 w-auto max-w-full object-contain"
               />
             </Link>
           </div>
