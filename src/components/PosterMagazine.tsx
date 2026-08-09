@@ -128,10 +128,10 @@ const PosterMagazine = ({ pages, label = "", pageRatio = 1024 / 1399, className 
           is actually turning — see .leaf-turning in index.css. */}
       <div
         aria-hidden
-        className="leaf-sheen pointer-events-none absolute -inset-y-[8%] -left-1/4 w-1/2 opacity-0"
+        className="leaf-sheen pointer-events-none absolute inset-y-0 -left-1/4 w-1/2 opacity-0"
         style={{
           background:
-            "linear-gradient(115deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.32) 44%, rgba(255,255,255,0.55) 55%, rgba(255,255,255,0) 100%)",
+            "linear-gradient(105deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 45%, rgba(255,255,255,0.55) 55%, rgba(255,255,255,0) 100%)",
         }}
       />
     </div>
@@ -211,11 +211,9 @@ const PosterMagazine = ({ pages, label = "", pageRatio = 1024 / 1399, className 
                     cursor: isTurned ? "w-resize" : "e-resize",
                   }}
                 >
-                  {/* The oblique lift. rotateY belongs to the leaf, so the tilt
-                      the sheet takes while it swings lives on its own element —
-                      see .leaf-lift in index.css for why it cannot simply be a
-                      tilted rotation axis. */}
-                  <div className="leaf-lift preserve-3d absolute inset-0">
+                  {/* The bow. rotateY belongs to the leaf, so the flex the paper
+                      takes while it swings has to live on its own element. */}
+                  <div className="leaf-bow preserve-3d absolute inset-0">
                     <div className="backface-hidden absolute inset-0 overflow-hidden rounded-r-sm">
                       {page(leaf.front, leaf.frontNo, "right", i === 0)}
                     </div>
