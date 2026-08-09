@@ -81,6 +81,34 @@ const PosterMagazine = ({ pages, label = "", pageRatio = 1024 / 1399, className 
   const spread = `${pageRatio * 2} / 1`;
   const single = `${pageRatio} / 1`;
 
+  /**
+   * A bound sheet doesn't meet the spine at a right angle — it curves into it.
+   * So the gutter is not one ramp but three things: a hard crease at the fold,
+   * a wide falloff as the paper bends away from the light, and a thin highlight
+   * where the sheet turns back up to flat. Mirrored per side.
+   */
+  const gutter = (side: "left" | "right") => (
+    <>
+      <div
+        aria-hidden
+        className={cn("absolute inset-y-0 w-[18%]", side === "left" ? "right-0" : "left-0")}
+        style={{
+          background: `linear-gradient(to ${side === "left" ? "left" : "right"},
+            rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.40) 12%, rgba(0,0,0,0.18) 34%,
+            rgba(0,0,0,0.06) 62%, rgba(0,0,0,0) 100%)`,
+        }}
+      />
+      <div
+        aria-hidden
+        className={cn("absolute inset-y-0 w-[7%]", side === "left" ? "right-[15%]" : "left-[15%]")}
+        style={{
+          background: `linear-gradient(to ${side === "left" ? "left" : "right"},
+            rgba(255,255,255,0) 0%, rgba(255,255,255,0.07) 55%, rgba(255,255,255,0) 100%)`,
+        }}
+      />
+    </>
+  );
+
   const page = (src: string, pageNo: number, side: "left" | "right", eager = false) => (
     <div className="relative h-full w-full overflow-hidden bg-[#141210]">
       <img
@@ -95,13 +123,16 @@ const PosterMagazine = ({ pages, label = "", pageRatio = 1024 / 1399, className 
         style={{ textAlign: side === "left" ? "left" : "right" }}>
         {pageNo}
       </span>
-      {/* Pages darken toward the gutter, which is what makes the fold read. */}
+      {gutter(side)}
+      {/* Light rolling off the sheet as it moves. Only animates on the leaf that
+          is actually turning — see .leaf-turning in index.css. */}
       <div
         aria-hidden
-        className={cn(
-          "absolute inset-y-0 w-10",
-          side === "left" ? "right-0 bg-gradient-to-l from-black/30 to-transparent" : "left-0 bg-gradient-to-r from-black/40 to-transparent"
-        )}
+        className="leaf-sheen pointer-events-none absolute inset-y-0 -left-1/4 w-1/2 opacity-0"
+        style={{
+          background:
+            "linear-gradient(105deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 45%, rgba(255,255,255,0.55) 55%, rgba(255,255,255,0) 100%)",
+        }}
       />
     </div>
   );
@@ -112,13 +143,7 @@ const PosterMagazine = ({ pages, label = "", pageRatio = 1024 / 1399, className 
       <p className="font-display text-2xl font-light leading-tight text-white/90">
         Wear it. Love it.<br />Pass it on.
       </p>
-      <div
-        aria-hidden
-        className={cn(
-          "absolute inset-y-0 w-10",
-          side === "left" ? "right-0 bg-gradient-to-l from-black/30 to-transparent" : "left-0 bg-gradient-to-r from-black/40 to-transparent"
-        )}
-      />
+      {gutter(side)}
     </div>
   );
 
@@ -154,6 +179,20 @@ const PosterMagazine = ({ pages, label = "", pageRatio = 1024 / 1399, className 
               {endPaper("right")}
             </div>
 
+            {/* The shadow a standing page throws into the gutter, across both
+                halves. Keyed on the turn so it replays each time. */}
+            {moving >= 0 && (
+              <div
+                key={`cast-${moving}-${turned}`}
+                aria-hidden
+                className="leaf-cast pointer-events-none absolute inset-0 z-[999] opacity-0"
+                style={{
+                  background:
+                    "linear-gradient(to right, rgba(0,0,0,0) 20%, rgba(0,0,0,0.10) 36%, rgba(0,0,0,0.42) 50%, rgba(0,0,0,0.10) 64%, rgba(0,0,0,0) 80%)",
+                }}
+              />
+            )}
+
             {leaves.map((leaf, i) => {
               const isTurned = i < turned;
               return (
@@ -162,21 +201,28 @@ const PosterMagazine = ({ pages, label = "", pageRatio = 1024 / 1399, className 
                   type="button"
                   aria-label={isTurned ? `Turn back to page ${leaf.frontNo}` : `Turn to page ${leaf.frontNo + 1}`}
                   onClick={() => goTo(isTurned ? i : i + 1)}
-                  className="book-leaf preserve-3d absolute inset-y-0 right-0 w-1/2"
+                  className={cn(
+                    "book-leaf preserve-3d absolute inset-y-0 right-0 w-1/2",
+                    i === moving && "leaf-turning"
+                  )}
                   style={{
                     transform: isTurned ? "rotateY(-180deg)" : "rotateY(0deg)",
                     zIndex: i === moving ? n + 2 : isTurned ? i + 1 : n - i,
                     cursor: isTurned ? "w-resize" : "e-resize",
                   }}
                 >
-                  <div className="backface-hidden absolute inset-0 overflow-hidden rounded-r-sm">
-                    {page(leaf.front, leaf.frontNo, "right", i === 0)}
-                  </div>
-                  <div
-                    className="backface-hidden absolute inset-0 overflow-hidden rounded-l-sm"
-                    style={{ transform: "rotateY(180deg)" }}
-                  >
-                    {leaf.back ? page(leaf.back, leaf.frontNo + 1, "left") : endPaper("left")}
+                  {/* The bow. rotateY belongs to the leaf, so the flex the paper
+                      takes while it swings has to live on its own element. */}
+                  <div className="leaf-bow preserve-3d absolute inset-0">
+                    <div className="backface-hidden absolute inset-0 overflow-hidden rounded-r-sm">
+                      {page(leaf.front, leaf.frontNo, "right", i === 0)}
+                    </div>
+                    <div
+                      className="backface-hidden absolute inset-0 overflow-hidden rounded-l-sm"
+                      style={{ transform: "rotateY(180deg)" }}
+                    >
+                      {leaf.back ? page(leaf.back, leaf.frontNo + 1, "left") : endPaper("left")}
+                    </div>
                   </div>
                 </button>
               );
