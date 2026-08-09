@@ -221,24 +221,35 @@
   transition: transform 0.9s cubic-bezier(0.35, 0.1, 0.2, 1);
 }
 
-/* Paper bows as it turns — it never stays a flat plane. The leaf element owns
-   rotateY, so the bow lives on an inner wrapper to keep the two off the same
-   property. */
-@keyframes leaf-bow {
-  0%, 100% { transform: scaleX(1) skewY(0deg); }
-  35% { transform: scaleX(0.975) skewY(0.5deg); }
-  65% { transform: scaleX(0.975) skewY(-0.5deg); }
+/* Nobody turns a page square-on. The sheet lifts at the outer corner first and
+   the fold runs at an angle to the spine, so the page sweeps obliquely and only
+   settles parallel as it lands.
+
+   This has to peak mid-turn and return to zero, because both resting states are
+   flat — tilting the rotation axis itself would leave the turned page sitting
+   several degrees off the spread. The leaf element owns rotateY; the oblique
+   lift lives on an inner wrapper, pivoting at the spine so the free edge is the
+   one that travels. */
+@keyframes leaf-lift {
+  0% { transform: rotateZ(0deg) rotateX(0deg) scaleX(1); }
+  25% { transform: rotateZ(-2.4deg) rotateX(2.4deg) scaleX(0.986); }
+  50% { transform: rotateZ(-3.2deg) rotateX(3deg) scaleX(0.972); }
+  75% { transform: rotateZ(-2deg) rotateX(1.8deg) scaleX(0.986); }
+  100% { transform: rotateZ(0deg) rotateX(0deg) scaleX(1); }
 }
-.leaf-turning .leaf-bow {
-  animation: leaf-bow 0.9s cubic-bezier(0.35, 0.1, 0.2, 1);
+.leaf-lift {
+  transform-origin: left center;
+}
+.leaf-turning .leaf-lift {
+  animation: leaf-lift 0.9s cubic-bezier(0.35, 0.1, 0.2, 1);
 }
 
-/* Light rolling off the sheet: a soft band that sweeps across the face while it
-   moves, brightest as the page passes through the vertical. */
+/* Light rolling off the sheet: a raking band, travelling on the diagonal to
+   match the oblique fold rather than straight across. */
 @keyframes leaf-sheen {
-  0% { opacity: 0; transform: translateX(-40%); }
+  0% { opacity: 0; transform: translate3d(-45%, 9%, 0) rotate(-5deg); }
   40% { opacity: 0.55; }
-  100% { opacity: 0; transform: translateX(45%); }
+  100% { opacity: 0; transform: translate3d(50%, -9%, 0) rotate(-5deg); }
 }
 .leaf-turning .leaf-sheen {
   animation: leaf-sheen 0.9s cubic-bezier(0.35, 0.1, 0.2, 1);
@@ -249,9 +260,9 @@
    centred on the fold that widens and deepens as the page passes the vertical.
 */
 @keyframes leaf-cast {
-  0% { opacity: 0; transform: scaleX(0.55); }
-  45% { opacity: 1; transform: scaleX(1.25); }
-  100% { opacity: 0; transform: scaleX(0.5); }
+  0% { opacity: 0; transform: scaleX(0.55) skewX(0deg); }
+  45% { opacity: 1; transform: scaleX(1.25) skewX(-2.5deg); }
+  100% { opacity: 0; transform: scaleX(0.5) skewX(0deg); }
 }
 .leaf-cast {
   transform-origin: center;
@@ -262,7 +273,7 @@
   .book-leaf {
     transition: none;
   }
-  .leaf-turning .leaf-bow,
+  .leaf-turning .leaf-lift,
   .leaf-turning .leaf-sheen,
   .leaf-cast {
     animation: none;
