@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Media from "@/components/Media";
 import CompareSlider from "@/components/CompareSlider";
+import PosterMagazine from "@/components/PosterMagazine";
 import Video from "@/components/Video";
 import { getProjectBySlug, services, getServiceBySlug } from "@/data/services";
 
@@ -134,6 +135,28 @@ const Project = () => {
             </div>
           </div>
         </motion.section>
+
+        {/* The campaign as a magazine — click the right page to turn it. Wider
+            than the comparison section because a spread is two pages across. */}
+        {project.magazinePages && project.magazinePages.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="w-full px-6 py-12 md:px-12 md:py-16"
+            style={project.galleryBackground ? { backgroundColor: project.galleryBackground } : undefined}
+          >
+            <div className="max-w-6xl mx-auto">
+              <p className="text-xs font-medium uppercase tracking-wider text-white/70 mb-8 md:mb-10">
+                The issue
+                <span className="ml-3 normal-case tracking-normal text-white/50">
+                  click a page to turn it
+                </span>
+              </p>
+              <PosterMagazine pages={project.magazinePages} label={project.title} />
+            </div>
+          </motion.section>
+        )}
 
         {/* Model comparison: each poster is a sheet you click to turn. Single
             column and narrower than the gallery grid — at half width the posters'

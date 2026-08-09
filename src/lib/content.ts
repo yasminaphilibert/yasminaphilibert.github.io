@@ -52,6 +52,7 @@ export interface ProjectContent {
   keywords?: string[];
   toolsUsed?: string[];
   comparisonPairs?: ComparisonPair[]; // Optional before/after slider pairs
+  magazinePages?: string[]; // Optional page-turning magazine, in reading order
 }
 
 export interface SiteConfig {
@@ -396,6 +397,7 @@ export function loadProjects(serviceSlug?: string): ProjectContent[] {
             }))
             .filter(p => p.left !== '' && p.right !== '')
         : [],
+      magazinePages: Array.isArray(data.magazinePages) ? (data.magazinePages as string[]) : [],
     };
     
     if (!serviceSlug || project.service === serviceSlug) {

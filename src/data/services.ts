@@ -40,6 +40,7 @@ export interface Project {
   keywords?: string[];
   toolsUsed?: string[];
   comparisonPairs?: ComparisonPair[]; // Optional before/after slider pairs
+  magazinePages?: string[]; // Optional page-turning magazine, in reading order
 }
 
 export interface Service {
@@ -163,6 +164,7 @@ export const services: Service[] = (() => {
           keywords: project.keywords || [],
           toolsUsed: project.toolsUsed || [],
           comparisonPairs: normalizeComparisonPairs(project.comparisonPairs),
+          magazinePages: normalizeImagePaths(project.magazinePages || []),
         };
         })
       };
@@ -201,6 +203,7 @@ export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor
       keywords: project.keywords || [],
       toolsUsed: project.toolsUsed || [],
       comparisonPairs: normalizeComparisonPairs(project.comparisonPairs),
+      magazinePages: normalizeImagePaths(project.magazinePages || []),
       serviceSlug: service?.slug || project.service,
       serviceColor: project.barColor || service?.infoColor || '#000000'
     };
@@ -230,6 +233,7 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
         keywords: projectContent.keywords ?? project.keywords ?? [],
         toolsUsed: projectContent.toolsUsed ?? project.toolsUsed ?? [],
         comparisonPairs: project.comparisonPairs ?? normalizeComparisonPairs(projectContent.comparisonPairs),
+        magazinePages: project.magazinePages ?? normalizeImagePaths(projectContent.magazinePages || []),
         serviceSlug: service.slug,
         serviceColor: project.barColor || service.infoColor,
         serviceTitle: service.title
@@ -248,6 +252,7 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
         keywords: content?.keywords ?? project.keywords ?? [],
         toolsUsed: content?.toolsUsed ?? project.toolsUsed ?? [],
         comparisonPairs: project.comparisonPairs ?? normalizeComparisonPairs(content?.comparisonPairs),
+        magazinePages: project.magazinePages ?? normalizeImagePaths(content?.magazinePages || []),
         serviceSlug: service.slug,
         serviceColor: project.barColor || service.infoColor,
         serviceTitle: service.title
@@ -278,6 +283,7 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
       keywords: projectContent.keywords || [],
       toolsUsed: projectContent.toolsUsed || [],
       comparisonPairs: normalizeComparisonPairs(projectContent.comparisonPairs),
+      magazinePages: normalizeImagePaths(projectContent.magazinePages || []),
       serviceSlug: service?.slug || projectContent.service,
       serviceColor: projectContent.barColor || service?.infoColor || '#000000',
       serviceTitle: service?.title || 'Project'

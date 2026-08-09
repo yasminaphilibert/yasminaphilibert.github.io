@@ -201,3 +201,27 @@
     text-wrap: balance;
   }
 }
+
+/* ── Magazine flip-book (PosterMagazine.tsx) ──
+   Plain classes rather than Tailwind 3D utilities, so the effect doesn't depend
+   on this Tailwind version's transform feature set. Outside @layer so the leaf
+   transition isn't stripped as unused. */
+.book-scene {
+  perspective: 2200px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.book-leaf {
+  transform-origin: left center;
+  transition: transform 0.9s cubic-bezier(0.35, 0.1, 0.2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .book-leaf {
+    transition: none;
+  }
+}
