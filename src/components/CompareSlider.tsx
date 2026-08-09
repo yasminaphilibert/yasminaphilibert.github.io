@@ -12,7 +12,6 @@ interface CompareSliderProps {
   /** Load immediately rather than lazily — use for the first pair only. */
   eager?: boolean;
   className?: string;
-  labelClassName?: string;
 }
 
 const clamp = (n: number) => Math.min(100, Math.max(0, n));
@@ -37,7 +36,6 @@ const CompareSlider = ({
   aspectRatio = "1520 / 1024",
   eager = false,
   className,
-  labelClassName,
 }: CompareSliderProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const clipRef = useRef<HTMLDivElement>(null);
@@ -46,7 +44,6 @@ const CompareSlider = ({
   const tweenRef = useRef<number | null>(null);
   const widthRef = useRef(0);
   const shownRef = useRef(true); // true = top sheet down, showing `left`
-  const hintRef = useRef<HTMLSpanElement>(null);
 
   const paint = useCallback(() => {
     rafRef.current = null;
@@ -129,8 +126,6 @@ const CompareSlider = ({
       `${alt ? alt + ": " : ""}showing version ${shownRef.current ? "one" : "two"}. ` +
         `Activate to turn the page to version ${shownRef.current ? "two" : "one"}.`
     );
-    // The prompt has done its job the moment they turn the first page.
-    hintRef.current?.classList.add("opacity-0");
     rollTo(shownRef.current ? 100 : 0);
   }, [rollTo, alt]);
 
@@ -142,9 +137,6 @@ const CompareSlider = ({
 
   const left = normalizePublicAssetPath(leftSrc);
   const right = normalizePublicAssetPath(rightSrc);
-  const chip =
-    labelClassName ??
-    "bg-black/55 text-white/90 backdrop-blur-sm";
 
   return (
     <div
@@ -191,9 +183,9 @@ const CompareSlider = ({
         />
       </div>
 
-      {/* Affordance: a dog-eared corner that lifts on hover, plus a prompt that
-          retires after the first turn. Without these the card looks like a
-          static poster and nobody discovers the second version. */}
+      {/* Affordance: a dog-eared corner that lifts on hover. It is the only
+          prompt on the card — the instruction lives once above the set rather
+          than repeated over every poster. */}
       <div
         aria-hidden
         className="pointer-events-none absolute bottom-0 right-0 z-30 h-10 w-10 transition-transform duration-300 ease-out group-hover:scale-125 md:h-14 md:w-14"
@@ -204,17 +196,6 @@ const CompareSlider = ({
           boxShadow: "-3px -3px 8px rgba(0,0,0,0.28)",
         }}
       />
-      <span
-        ref={hintRef}
-        aria-hidden
-        className={cn(
-          "pointer-events-none absolute bottom-3 right-12 z-30 rounded px-2 py-1 text-[10px] font-medium uppercase tracking-wider transition-opacity duration-500 md:bottom-4 md:right-16 md:text-xs",
-          chip
-        )}
-      >
-        click to turn
-      </span>
-
       {/* The page curl. Sits just left of the fold and shows the UNDERSIDE of the
           top sheet: a mirrored sliver of the same image, shaded like a cylinder.
           Geometry — a mirrored <img> of width W at left L renders image column
