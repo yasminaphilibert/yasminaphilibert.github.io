@@ -227,3 +227,54 @@
 .flip-host {
   overflow: hidden;
 }
+
+/* Depth, drawn on a pseudo-element so the page element's own layout is never
+   touched — that is what broke it last time.
+   A bound sheet does not lie flat: it curves into the spine, so the fold gets a
+   crease and a wide falloff, and the outer edge lifts slightly. The library tags
+   each page --left or --right, which is what tells us where its spine is. */
+.flip-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Base bump: both edges roll away from the light a little. */
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.16) 0%,
+    rgba(0, 0, 0, 0) 9%,
+    rgba(255, 255, 255, 0.03) 50%,
+    rgba(0, 0, 0, 0) 91%,
+    rgba(0, 0, 0, 0.16) 100%
+  );
+}
+
+/* Spine on the right. */
+.flip-page.--left::after {
+  background:
+    linear-gradient(to left, rgba(255, 255, 255, 0) 11%, rgba(255, 255, 255, 0.055) 17%, rgba(255, 255, 255, 0) 26%),
+    linear-gradient(
+      to left,
+      rgba(0, 0, 0, 0.58) 0%,
+      rgba(0, 0, 0, 0.34) 4%,
+      rgba(0, 0, 0, 0.16) 11%,
+      rgba(0, 0, 0, 0.05) 22%,
+      rgba(0, 0, 0, 0) 38%
+    ),
+    linear-gradient(to right, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0) 8%);
+}
+
+/* Spine on the left. */
+.flip-page.--right::after {
+  background:
+    linear-gradient(to right, rgba(255, 255, 255, 0) 11%, rgba(255, 255, 255, 0.055) 17%, rgba(255, 255, 255, 0) 26%),
+    linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.58) 0%,
+      rgba(0, 0, 0, 0.34) 4%,
+      rgba(0, 0, 0, 0.16) 11%,
+      rgba(0, 0, 0, 0.05) 22%,
+      rgba(0, 0, 0, 0) 38%
+    ),
+    linear-gradient(to left, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0) 8%);
+}
