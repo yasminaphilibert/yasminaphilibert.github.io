@@ -6,7 +6,7 @@ interface PosterMagazineProps {
   pages: string[];
   /** Names the work for screen readers, e.g. the project title. */
   label?: string;
-  /** Page shape. Must match the encoded assets so nothing letterboxes twice. */
+  /** Page shape. Must match the encoded assets exactly, or object-cover crops again. */
   pageRatio?: number;
   className?: string;
 }
@@ -30,7 +30,7 @@ interface PosterMagazineProps {
  * `turned` — the number of leaves already flipped — is the only state; the
  * whole spread derives from it.
  */
-const PosterMagazine = ({ pages, label = "", pageRatio = 1024 / 1365, className }: PosterMagazineProps) => {
+const PosterMagazine = ({ pages, label = "", pageRatio = 1024 / 1388, className }: PosterMagazineProps) => {
   const srcs = useMemo(() => pages.map(normalizePublicAssetPath), [pages]);
   // Leaf i shows page 2i+1 on its front and page 2i+2 on its back, so the very
   // first page sits under every leaf as the left half of the opening spread.
@@ -141,7 +141,10 @@ const PosterMagazine = ({ pages, label = "", pageRatio = 1024 / 1365, className 
               aria-label="Previous page"
               onClick={() => goTo(turned - 1)}
               disabled={turned === 0}
-              className="absolute inset-y-0 left-0 w-1/2 cursor-w-resize overflow-hidden rounded-l-sm disabled:cursor-default"
+              // A hair past half: at odd container widths two exact halves round
+              // apart and leave a hairline of background down the fold. The
+              // overlap sits under the leaves, so it is never visible.
+              className="absolute inset-y-0 left-0 w-[50.2%] cursor-w-resize overflow-hidden rounded-l-sm disabled:cursor-default"
             >
               {page(srcs[0], 1, "left", true)}
             </button>
