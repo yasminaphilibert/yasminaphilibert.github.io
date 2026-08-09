@@ -20,9 +20,11 @@ import { join } from 'node:path';
 const SRC = '/Users/christiandimitri/Documents/Github/pocs/closclub-ai-os/brand/posters/recontext';
 const OUT = 'public/images/services/visual-identity/beirut-served';
 
+// The published folders are deliberately named version-a/version-b rather than
+// after the models — the page credits neither, so the URLs must not either.
 const SETS = [
-  { from: '02-orange-flatlay-gptimage', to: 'gptimage' },
-  { from: '01-orange-flatlay-nanobanana', to: 'nanobanana' },
+  { from: '02-orange-flatlay-gptimage', to: 'version-a' },
+  { from: '01-orange-flatlay-nanobanana', to: 'version-b' },
 ];
 
 // source index -> web basename, identical in both sets so pairs match by name

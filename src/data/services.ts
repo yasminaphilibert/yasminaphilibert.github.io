@@ -40,8 +40,6 @@ export interface Project {
   keywords?: string[];
   toolsUsed?: string[];
   comparisonPairs?: ComparisonPair[]; // Optional before/after slider pairs
-  comparisonLeftLabel?: string;
-  comparisonRightLabel?: string;
 }
 
 export interface Service {
@@ -165,8 +163,6 @@ export const services: Service[] = (() => {
           keywords: project.keywords || [],
           toolsUsed: project.toolsUsed || [],
           comparisonPairs: normalizeComparisonPairs(project.comparisonPairs),
-          comparisonLeftLabel: project.comparisonLeftLabel,
-          comparisonRightLabel: project.comparisonRightLabel
         };
         })
       };
@@ -205,8 +201,6 @@ export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor
       keywords: project.keywords || [],
       toolsUsed: project.toolsUsed || [],
       comparisonPairs: normalizeComparisonPairs(project.comparisonPairs),
-      comparisonLeftLabel: project.comparisonLeftLabel,
-      comparisonRightLabel: project.comparisonRightLabel,
       serviceSlug: service?.slug || project.service,
       serviceColor: project.barColor || service?.infoColor || '#000000'
     };
@@ -236,8 +230,6 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
         keywords: projectContent.keywords ?? project.keywords ?? [],
         toolsUsed: projectContent.toolsUsed ?? project.toolsUsed ?? [],
         comparisonPairs: project.comparisonPairs ?? normalizeComparisonPairs(projectContent.comparisonPairs),
-        comparisonLeftLabel: projectContent.comparisonLeftLabel ?? project.comparisonLeftLabel,
-        comparisonRightLabel: projectContent.comparisonRightLabel ?? project.comparisonRightLabel,
         serviceSlug: service.slug,
         serviceColor: project.barColor || service.infoColor,
         serviceTitle: service.title
@@ -256,8 +248,6 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
         keywords: content?.keywords ?? project.keywords ?? [],
         toolsUsed: content?.toolsUsed ?? project.toolsUsed ?? [],
         comparisonPairs: project.comparisonPairs ?? normalizeComparisonPairs(content?.comparisonPairs),
-        comparisonLeftLabel: content?.comparisonLeftLabel ?? project.comparisonLeftLabel,
-        comparisonRightLabel: content?.comparisonRightLabel ?? project.comparisonRightLabel,
         serviceSlug: service.slug,
         serviceColor: project.barColor || service.infoColor,
         serviceTitle: service.title
@@ -288,8 +278,6 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
       keywords: projectContent.keywords || [],
       toolsUsed: projectContent.toolsUsed || [],
       comparisonPairs: normalizeComparisonPairs(projectContent.comparisonPairs),
-      comparisonLeftLabel: projectContent.comparisonLeftLabel,
-      comparisonRightLabel: projectContent.comparisonRightLabel,
       serviceSlug: service?.slug || projectContent.service,
       serviceColor: projectContent.barColor || service?.infoColor || '#000000',
       serviceTitle: service?.title || 'Project'

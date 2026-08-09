@@ -148,7 +148,7 @@ const Project = () => {
           >
             <div className="max-w-4xl mx-auto">
               <p className="text-xs font-medium uppercase tracking-wider text-white/70 mb-8 md:mb-10">
-                {project.comparisonLeftLabel} &nbsp;/&nbsp; {project.comparisonRightLabel}
+                Two renderings
                 <span className="ml-3 normal-case tracking-normal text-white/50">
                   click to turn the page
                 </span>
@@ -166,8 +166,6 @@ const Project = () => {
                     <CompareSlider
                       leftSrc={pair.left}
                       rightSrc={pair.right}
-                      leftLabel={project.comparisonLeftLabel}
-                      rightLabel={project.comparisonRightLabel}
                       alt={pair.label}
                       // Rest with the top sheet down; click turns the page.
                       initial={100}

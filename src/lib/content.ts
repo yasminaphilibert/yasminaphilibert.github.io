@@ -52,8 +52,6 @@ export interface ProjectContent {
   keywords?: string[];
   toolsUsed?: string[];
   comparisonPairs?: ComparisonPair[]; // Optional before/after slider pairs
-  comparisonLeftLabel?: string;
-  comparisonRightLabel?: string;
 }
 
 export interface SiteConfig {
@@ -398,8 +396,6 @@ export function loadProjects(serviceSlug?: string): ProjectContent[] {
             }))
             .filter(p => p.left !== '' && p.right !== '')
         : [],
-      comparisonLeftLabel: data.comparisonLeftLabel as string | undefined,
-      comparisonRightLabel: data.comparisonRightLabel as string | undefined
     };
     
     if (!serviceSlug || project.service === serviceSlug) {

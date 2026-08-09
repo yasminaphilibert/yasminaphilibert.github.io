@@ -4,41 +4,39 @@ slug: "beirut-served"
 service: "visual-identity"
 location: "Barcelona, Spain"
 year: "2026"
-heroImage: "public/images/services/visual-identity/beirut-served/nanobanana/06-sunset.webp"
-thumbnailImage: "public/images/services/visual-identity/beirut-served/nanobanana/01-kabis-w-bess.webp"
+heroImage: "public/images/services/visual-identity/beirut-served/version-b/06-sunset.webp"
+thumbnailImage: "public/images/services/visual-identity/beirut-served/version-b/01-kabis-w-bess.webp"
 galleryBackground: "#c2410c"
 order: 3
 featured: false
-comparisonLeftLabel: "gptimg"
-comparisonRightLabel: "nanobanana"
 comparisonPairs:
   - label: "KABIS W BESS"
-    left: "public/images/services/visual-identity/beirut-served/gptimage/01-kabis-w-bess.webp"
-    right: "public/images/services/visual-identity/beirut-served/nanobanana/01-kabis-w-bess.webp"
+    left: "public/images/services/visual-identity/beirut-served/version-a/01-kabis-w-bess.webp"
+    right: "public/images/services/visual-identity/beirut-served/version-b/01-kabis-w-bess.webp"
   - label: "YA SALAM"
-    left: "public/images/services/visual-identity/beirut-served/gptimage/02-ya-salam.webp"
-    right: "public/images/services/visual-identity/beirut-served/nanobanana/02-ya-salam.webp"
+    left: "public/images/services/visual-identity/beirut-served/version-a/02-ya-salam.webp"
+    right: "public/images/services/visual-identity/beirut-served/version-b/02-ya-salam.webp"
   - label: "5PM CHEZ TETA"
-    left: "public/images/services/visual-identity/beirut-served/gptimage/03-5pm-chez-teta.webp"
-    right: "public/images/services/visual-identity/beirut-served/nanobanana/03-5pm-chez-teta.webp"
+    left: "public/images/services/visual-identity/beirut-served/version-a/03-5pm-chez-teta.webp"
+    right: "public/images/services/visual-identity/beirut-served/version-b/03-5pm-chez-teta.webp"
   - label: "RIHET EL ARZ"
-    left: "public/images/services/visual-identity/beirut-served/gptimage/04-rihet-el-arz.webp"
-    right: "public/images/services/visual-identity/beirut-served/nanobanana/04-rihet-el-arz.webp"
+    left: "public/images/services/visual-identity/beirut-served/version-a/04-rihet-el-arz.webp"
+    right: "public/images/services/visual-identity/beirut-served/version-b/04-rihet-el-arz.webp"
   - label: "TAHT EL TIN"
-    left: "public/images/services/visual-identity/beirut-served/gptimage/05-taht-el-tin.webp"
-    right: "public/images/services/visual-identity/beirut-served/nanobanana/05-taht-el-tin.webp"
+    left: "public/images/services/visual-identity/beirut-served/version-a/05-taht-el-tin.webp"
+    right: "public/images/services/visual-identity/beirut-served/version-b/05-taht-el-tin.webp"
   - label: "SUNSET"
-    left: "public/images/services/visual-identity/beirut-served/gptimage/06-sunset.webp"
-    right: "public/images/services/visual-identity/beirut-served/nanobanana/06-sunset.webp"
+    left: "public/images/services/visual-identity/beirut-served/version-a/06-sunset.webp"
+    right: "public/images/services/visual-identity/beirut-served/version-b/06-sunset.webp"
   - label: "LIMO NA NA MICH MAAROUF"
-    left: "public/images/services/visual-identity/beirut-served/gptimage/07-limo-nana-mich-maarouf.webp"
-    right: "public/images/services/visual-identity/beirut-served/nanobanana/07-limo-nana-mich-maarouf.webp"
+    left: "public/images/services/visual-identity/beirut-served/version-a/07-limo-nana-mich-maarouf.webp"
+    right: "public/images/services/visual-identity/beirut-served/version-b/07-limo-nana-mich-maarouf.webp"
   - label: "GHAZEL EL BANAT"
-    left: "public/images/services/visual-identity/beirut-served/gptimage/08-ghazel-el-banat.webp"
-    right: "public/images/services/visual-identity/beirut-served/nanobanana/08-ghazel-el-banat.webp"
+    left: "public/images/services/visual-identity/beirut-served/version-a/08-ghazel-el-banat.webp"
+    right: "public/images/services/visual-identity/beirut-served/version-b/08-ghazel-el-banat.webp"
   - label: "MEDITERRANEAN KISS"
-    left: "public/images/services/visual-identity/beirut-served/gptimage/09-medita-nerean-kiss.webp"
-    right: "public/images/services/visual-identity/beirut-served/nanobanana/09-medita-nerean-kiss.webp"
+    left: "public/images/services/visual-identity/beirut-served/version-a/09-medita-nerean-kiss.webp"
+    right: "public/images/services/visual-identity/beirut-served/version-b/09-medita-nerean-kiss.webp"
 tags:
   - brand
   - packaging
@@ -50,8 +48,6 @@ keywords:
   - packaging
   - model comparison
 toolsUsed:
-  - Nano Banana 2
-  - GPT Image 2
   - SeedVR2
 ---
 
@@ -63,6 +59,6 @@ Every poster is signed the same way: BEIRUT, SERVED.
 
 ---
 
-The series doubles as a controlled comparison. Each layout was handed to two image models with identical inputs, and the results sit on top of each other here — drag to wipe between them.
+The series doubles as a controlled comparison. Each layout was resolved twice from identical inputs, and the two results sit on top of each other here — click to turn the page between them.
 
-The differences are not subtle once you look: the two models disagree about how much of the editorial column survives, how the light falls across the tray, and how legible the small print stays.
+The differences are not subtle once you look: how much of the editorial column survives, how the light falls across the tray, and how legible the small print stays.

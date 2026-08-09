@@ -4,8 +4,6 @@ import { cn, normalizePublicAssetPath } from "@/lib/utils";
 interface CompareSliderProps {
   leftSrc: string;
   rightSrc: string;
-  leftLabel?: string;
-  rightLabel?: string;
   alt?: string;
   /** Fold position at rest, 0-100. 100 = top sheet fully down. */
   initial?: number;
@@ -34,8 +32,6 @@ const clamp = (n: number) => Math.min(100, Math.max(0, n));
 const CompareSlider = ({
   leftSrc,
   rightSrc,
-  leftLabel = "A",
-  rightLabel = "B",
   alt = "",
   initial = 100,
   aspectRatio = "1520 / 1024",
@@ -50,7 +46,6 @@ const CompareSlider = ({
   const tweenRef = useRef<number | null>(null);
   const widthRef = useRef(0);
   const shownRef = useRef(true); // true = top sheet down, showing `left`
-  const labelRef = useRef<HTMLSpanElement>(null);
   const hintRef = useRef<HTMLSpanElement>(null);
 
   const paint = useCallback(() => {
@@ -131,18 +126,13 @@ const CompareSlider = ({
     root?.setAttribute("aria-pressed", String(!shownRef.current));
     root?.setAttribute(
       "aria-label",
-      `${alt ? alt + ": " : ""}showing ${shownRef.current ? leftLabel : rightLabel}. ` +
-        `Activate to turn the page to ${shownRef.current ? rightLabel : leftLabel}.`
+      `${alt ? alt + ": " : ""}showing version ${shownRef.current ? "one" : "two"}. ` +
+        `Activate to turn the page to version ${shownRef.current ? "two" : "one"}.`
     );
-    // Only one sheet is visible at a time, so only one name may be shown —
-    // otherwise the hidden model's label sits on top of the visible poster.
-    if (labelRef.current) {
-      labelRef.current.textContent = shownRef.current ? leftLabel : rightLabel;
-    }
     // The prompt has done its job the moment they turn the first page.
     hintRef.current?.classList.add("opacity-0");
     rollTo(shownRef.current ? 100 : 0);
-  }, [rollTo, alt, leftLabel, rightLabel]);
+  }, [rollTo, alt]);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key !== "Enter" && e.key !== " " && e.key !== "Spacebar") return;
@@ -167,13 +157,13 @@ const CompareSlider = ({
       role="button"
       tabIndex={0}
       aria-pressed={false}
-      aria-label={`${alt ? alt + ": " : ""}showing ${leftLabel}. Activate to turn the page to ${rightLabel}.`}
+      aria-label={`${alt ? alt + ": " : ""}showing version one. Activate to turn the page to version two.`}
       onClick={turn}
       onKeyDown={onKeyDown}
     >
       <img
         src={left}
-        alt={alt ? `${alt} — ${leftLabel}` : leftLabel}
+        alt={alt}
         width={1520}
         height={1024}
         draggable={false}
@@ -182,6 +172,8 @@ const CompareSlider = ({
         className="absolute inset-0 h-full w-full object-cover"
       />
 
+      {/* The alternate rendering of the same subject. Its alt is empty because
+          the root's aria-label already describes what is on screen. */}
       <div
         ref={clipRef}
         className="absolute inset-0"
@@ -189,7 +181,7 @@ const CompareSlider = ({
       >
         <img
           src={right}
-          alt={alt ? `${alt} — ${rightLabel}` : rightLabel}
+          alt=""
           width={1520}
           height={1024}
           draggable={false}
@@ -198,18 +190,6 @@ const CompareSlider = ({
           className="absolute inset-0 h-full w-full object-cover"
         />
       </div>
-
-      {/* Which sheet you are looking at now — one name, swapped on turn. */}
-      <span
-        ref={labelRef}
-        aria-hidden
-        className={cn(
-          "pointer-events-none absolute bottom-3 left-3 z-30 rounded px-2 py-1 text-[10px] font-medium uppercase tracking-wider md:bottom-4 md:left-4 md:text-xs",
-          chip
-        )}
-      >
-        {leftLabel}
-      </span>
 
       {/* Affordance: a dog-eared corner that lifts on hover, plus a prompt that
           retires after the first turn. Without these the card looks like a
