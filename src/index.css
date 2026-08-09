@@ -206,11 +206,12 @@
    The curl geometry and its shadows are drawn by StPageFlip on a canvas, so
    there is nothing to style here but the page itself. Outside @layer so these
    are not stripped as unused — the markup comes from the library. */
-.flip-host {
-  perspective: 2000px;
-}
+/* The page is styled exactly as the press kit styles it — background and clip,
+   nothing else. An earlier version added `position: relative` so a page number
+   could be pinned inside it; the library positions these itself, and pages then
+   rendered outside the book and over the rest of the page. Do not add layout
+   properties here. */
 .flip-page {
-  position: relative;
   background: #141210;
   overflow: hidden;
 }
@@ -222,12 +223,7 @@
   user-select: none;
   -webkit-user-drag: none;
 }
-.flip-page-no {
-  position: absolute;
-  bottom: 0.5rem;
-  right: 0.75rem;
-  font-size: 9px;
-  font-variant-numeric: tabular-nums;
-  color: rgba(255, 255, 255, 0.55);
-  pointer-events: none;
+/* A backstop for the same failure: whatever the book does, it stays in its box. */
+.flip-host {
+  overflow: hidden;
 }

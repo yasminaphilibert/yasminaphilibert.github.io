@@ -47,10 +47,9 @@ type FlipBookProps = {
 };
 const FlipBook = HTMLFlipBook as unknown as React.ComponentType<FlipBookProps>;
 
-const Page = forwardRef<HTMLDivElement, { src: string; pageNo: number }>(({ src, pageNo }, ref) => (
+const Page = forwardRef<HTMLDivElement, { src: string }>(({ src }, ref) => (
   <div className="flip-page" ref={ref}>
     <img src={src} alt="" draggable={false} />
-    <span className="flip-page-no">{pageNo}</span>
   </div>
 ));
 Page.displayName = "Page";
@@ -74,12 +73,15 @@ const PosterFlipbook = ({ pages, label = "", pageRatio = 1024 / 1399, className 
     const w = Math.floor(single ? available : available / 2);
     const h = Math.round(w / pageRatio);
     setDim(prev => {
-      if (prev && prev.w === w && prev.h === h) return prev;
-      const next = { w, h };
-      dimRef.current = next;
-      return next;
+      // Every size change remounts the book, and a rapid destroy/create cycle —
+      // a scrollbar appearing, a rounding wobble — is a good way to end up with
+      // orphaned pages. Only react to a change worth reacting to.
+      if (prev && Math.abs(prev.w - w) < 8) return prev;
+      return { w, h };
     });
   }, [pageRatio]);
+
+  useEffect(() => { dimRef.current = dim; }, [dim]);
 
   useLayoutEffect(() => {
     measure();
@@ -127,8 +129,8 @@ const PosterFlipbook = ({ pages, label = "", pageRatio = 1024 / 1399, className 
       {dim && (
         // Remount on resize: StPageFlip reads its dimensions at construction.
         <FlipBook key={`${dim.w}x${dim.h}`} ref={bookRef} width={dim.w} height={dim.h}>
-          {srcs.map((src, i) => (
-            <Page key={src} src={src} pageNo={i + 1} />
+          {srcs.map(src => (
+            <Page key={src} src={src} />
           ))}
         </FlipBook>
       )}
