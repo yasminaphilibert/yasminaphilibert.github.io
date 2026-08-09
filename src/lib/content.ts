@@ -24,6 +24,14 @@ export interface ServiceContent {
   description: string;
 }
 
+// A single before/after pair for the comparison slider. Same subject rendered
+// two ways; `left` and `right` are image paths, `label` names the subject.
+export interface ComparisonPair {
+  label: string;
+  left: string;
+  right: string;
+}
+
 export interface ProjectContent {
   title: string;
   slug: string;
@@ -43,6 +51,9 @@ export interface ProjectContent {
   tags?: string[];
   keywords?: string[];
   toolsUsed?: string[];
+  comparisonPairs?: ComparisonPair[]; // Optional before/after slider pairs
+  comparisonLeftLabel?: string;
+  comparisonRightLabel?: string;
 }
 
 export interface SiteConfig {
@@ -375,7 +386,20 @@ export function loadProjects(serviceSlug?: string): ProjectContent[] {
       description: descriptionParagraphs,
       tags: Array.isArray(data.tags) ? (data.tags as string[]) : (data.tags != null ? [String(data.tags)] : []),
       keywords: Array.isArray(data.keywords) ? (data.keywords as string[]) : (data.keywords != null ? [String(data.keywords)] : []),
-      toolsUsed: Array.isArray(data.toolsUsed) ? (data.toolsUsed as string[]) : (data.toolsUsed != null && String(data.toolsUsed).trim() !== '' && String(data.toolsUsed) !== '[]' ? [String(data.toolsUsed)] : [])
+      toolsUsed: Array.isArray(data.toolsUsed) ? (data.toolsUsed as string[]) : (data.toolsUsed != null && String(data.toolsUsed).trim() !== '' && String(data.toolsUsed) !== '[]' ? [String(data.toolsUsed)] : []),
+      // Drop any pair the frontmatter parser didn't fully resolve rather than
+      // emitting an <img src="">. Mirrors the socialLinks handling in the footer.
+      comparisonPairs: Array.isArray(data.comparisonPairs)
+        ? (data.comparisonPairs as Array<Record<string, unknown>>)
+            .map(p => ({
+              label: (p.label as string) || '',
+              left: (p.left as string) || '',
+              right: (p.right as string) || ''
+            }))
+            .filter(p => p.left !== '' && p.right !== '')
+        : [],
+      comparisonLeftLabel: data.comparisonLeftLabel as string | undefined,
+      comparisonRightLabel: data.comparisonRightLabel as string | undefined
     };
     
     if (!serviceSlug || project.service === serviceSlug) {

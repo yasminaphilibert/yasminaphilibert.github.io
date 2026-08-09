@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Media from "@/components/Media";
+import CompareSlider from "@/components/CompareSlider";
 import Video from "@/components/Video";
 import { getProjectBySlug, services, getServiceBySlug } from "@/data/services";
 
@@ -133,6 +134,56 @@ const Project = () => {
             </div>
           </div>
         </motion.section>
+
+        {/* Model comparison: each poster is a sheet you click to turn. Single
+            column and narrower than the gallery grid — at half width the posters'
+            fine print stops being readable, which is the point of comparing them. */}
+        {project.comparisonPairs && project.comparisonPairs.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="w-full px-6 py-12 md:px-12 md:py-16"
+            style={project.galleryBackground ? { backgroundColor: project.galleryBackground } : undefined}
+          >
+            <div className="max-w-4xl mx-auto">
+              <p className="text-xs font-medium uppercase tracking-wider text-white/70 mb-8 md:mb-10">
+                {project.comparisonLeftLabel} &nbsp;/&nbsp; {project.comparisonRightLabel}
+                <span className="ml-3 normal-case tracking-normal text-white/50">
+                  click to turn the page
+                </span>
+              </p>
+              <div className="grid grid-cols-1 gap-10 md:gap-14">
+                {project.comparisonPairs.map((pair, index) => (
+                  <motion.figure
+                    key={`compare-${index}`}
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.06 }}
+                    className="m-0"
+                  >
+                    <CompareSlider
+                      leftSrc={pair.left}
+                      rightSrc={pair.right}
+                      leftLabel={project.comparisonLeftLabel}
+                      rightLabel={project.comparisonRightLabel}
+                      alt={pair.label}
+                      // Rest with the top sheet down; click turns the page.
+                      initial={100}
+                      eager={index === 0}
+                    />
+                    {pair.label && (
+                      <figcaption className="mt-3 text-xs font-medium uppercase tracking-wider text-white/70">
+                        {pair.label}
+                      </figcaption>
+                    )}
+                  </motion.figure>
+                ))}
+              </div>
+            </div>
+          </motion.section>
+        )}
 
         {/* Gallery Images and Videos Grid */}
         {((project.galleryImages && project.galleryImages.length > 0) || 

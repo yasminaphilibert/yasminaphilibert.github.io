@@ -7,7 +7,7 @@ heroImage: "public/images/services/visual-art/page_54.png"
 thumbnailImage: "public/images/services/visual-art/page_54.png"
 projectsGridBackground: "#634056"
 
-order: 2
+order: 3
 homeIntro: ""
 ---
 

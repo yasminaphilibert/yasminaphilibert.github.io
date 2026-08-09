@@ -1,4 +1,5 @@
 import { loadServices, loadProjects, getServiceBySlugFromContent, getProjectBySlugFromContent } from '@/lib/content';
+import type { ComparisonPair } from '@/lib/content';
 import { encodeAssetUrl } from '@/lib/utils';
 
 // Fallback images for when content images aren't available yet
@@ -38,6 +39,9 @@ export interface Project {
   tags?: string[];
   keywords?: string[];
   toolsUsed?: string[];
+  comparisonPairs?: ComparisonPair[]; // Optional before/after slider pairs
+  comparisonLeftLabel?: string;
+  comparisonRightLabel?: string;
 }
 
 export interface Service {
@@ -106,6 +110,17 @@ function normalizeImagePaths(paths: string[]): string[] {
   return paths.map(path => normalizeImagePath(path));
 }
 
+// Normalize the image paths inside comparison pairs. normalizeImagePath is NOT
+// idempotent in production (it URL-encodes), so each pair must pass through here
+// exactly once — see the getProjectBySlug branches below.
+function normalizeComparisonPairs(pairs?: ComparisonPair[]): ComparisonPair[] {
+  return (pairs || []).map(p => ({
+    label: p.label,
+    left: normalizeImagePath(p.left),
+    right: normalizeImagePath(p.right)
+  }));
+}
+
 // Helper to normalize video paths (same as images)
 function normalizeVideoPaths(paths: string[]): string[] {
   return paths.map(path => normalizeImagePath(path));
@@ -148,7 +163,10 @@ export const services: Service[] = (() => {
           galleryBackground: project.galleryBackground,
           tags: project.tags || [],
           keywords: project.keywords || [],
-          toolsUsed: project.toolsUsed || []
+          toolsUsed: project.toolsUsed || [],
+          comparisonPairs: normalizeComparisonPairs(project.comparisonPairs),
+          comparisonLeftLabel: project.comparisonLeftLabel,
+          comparisonRightLabel: project.comparisonRightLabel
         };
         })
       };
@@ -186,6 +204,9 @@ export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor
       tags: project.tags || [],
       keywords: project.keywords || [],
       toolsUsed: project.toolsUsed || [],
+      comparisonPairs: normalizeComparisonPairs(project.comparisonPairs),
+      comparisonLeftLabel: project.comparisonLeftLabel,
+      comparisonRightLabel: project.comparisonRightLabel,
       serviceSlug: service?.slug || project.service,
       serviceColor: project.barColor || service?.infoColor || '#000000'
     };
@@ -214,6 +235,9 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
         tags: projectContent.tags ?? project.tags ?? [],
         keywords: projectContent.keywords ?? project.keywords ?? [],
         toolsUsed: projectContent.toolsUsed ?? project.toolsUsed ?? [],
+        comparisonPairs: project.comparisonPairs ?? normalizeComparisonPairs(projectContent.comparisonPairs),
+        comparisonLeftLabel: projectContent.comparisonLeftLabel ?? project.comparisonLeftLabel,
+        comparisonRightLabel: projectContent.comparisonRightLabel ?? project.comparisonRightLabel,
         serviceSlug: service.slug,
         serviceColor: project.barColor || service.infoColor,
         serviceTitle: service.title
@@ -231,6 +255,9 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
         tags: content?.tags ?? project.tags ?? [],
         keywords: content?.keywords ?? project.keywords ?? [],
         toolsUsed: content?.toolsUsed ?? project.toolsUsed ?? [],
+        comparisonPairs: project.comparisonPairs ?? normalizeComparisonPairs(content?.comparisonPairs),
+        comparisonLeftLabel: content?.comparisonLeftLabel ?? project.comparisonLeftLabel,
+        comparisonRightLabel: content?.comparisonRightLabel ?? project.comparisonRightLabel,
         serviceSlug: service.slug,
         serviceColor: project.barColor || service.infoColor,
         serviceTitle: service.title
@@ -260,6 +287,9 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
       tags: projectContent.tags || [],
       keywords: projectContent.keywords || [],
       toolsUsed: projectContent.toolsUsed || [],
+      comparisonPairs: normalizeComparisonPairs(projectContent.comparisonPairs),
+      comparisonLeftLabel: projectContent.comparisonLeftLabel,
+      comparisonRightLabel: projectContent.comparisonRightLabel,
       serviceSlug: service?.slug || projectContent.service,
       serviceColor: projectContent.barColor || service?.infoColor || '#000000',
       serviceTitle: service?.title || 'Project'
