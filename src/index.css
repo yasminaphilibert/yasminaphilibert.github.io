@@ -182,13 +182,6 @@
     @apply overflow-hidden rounded-[1.4rem];
   }
 
-  /* The lockup and the favicon mark only exist as dark chrome renders. Tinting
-     keeps their liquid-metal shading, where flattening them to a pink
-     silhouette all but disappeared against the paper ground. */
-  .logo-pink {
-    filter: brightness(1.6) sepia(1) saturate(4) hue-rotate(280deg);
-  }
-
   .link-cta {
     @apply inline-block text-[13px] font-semibold uppercase tracking-[0.18em] text-ink/75
            transition-colors duration-300 hover:text-ink;

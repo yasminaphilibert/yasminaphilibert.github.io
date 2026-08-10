@@ -25,12 +25,14 @@ const About = () => {
 
             <div className="md:col-span-6">
               <div className="flex items-center gap-4 md:gap-5">
-                {/* Decorative — the name is right beside it as text. */}
+                {/* Decorative — the name is right beside it as text. Sized well
+                    above the heading: the chrome shading is what carries the
+                    pink, and at thumbnail size it dissolves against the panel. */}
                 <img
-                  src={`${import.meta.env.BASE_URL}favicon-512x512.png`}
+                  src={`${import.meta.env.BASE_URL}yasyntha_logo.png`}
                   alt=""
                   aria-hidden="true"
-                  className="logo-pink h-12 md:h-14 w-auto flex-shrink-0"
+                  className="h-16 md:h-28 w-auto flex-shrink-0"
                 />
                 <h1 className="display-heading text-[2.1rem] md:text-[3.2rem]">{about.title}</h1>
               </div>

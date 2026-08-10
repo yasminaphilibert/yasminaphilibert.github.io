@@ -60,6 +60,17 @@ const Footer = (_props: FooterProps) => {
   
   return (
     <footer className="w-full pb-5 md:pb-8">
+      {/* Sits on the paper rather than inside the blush band below, where a
+          pink wordmark would have had nothing to read against. */}
+      <div className="mx-5 md:mx-8 mb-6 md:mb-8 flex justify-center">
+        <img
+          src={`${import.meta.env.BASE_URL}yasyntha_wordmark.png`}
+          alt=""
+          aria-hidden="true"
+          className="h-14 md:h-20 w-auto object-contain"
+        />
+      </div>
+
       <section className="mx-5 md:mx-8 card-surface bg-blush px-7 py-14 md:px-14 md:py-20">
         <div className="max-w-[1240px] mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-10">
           <div>

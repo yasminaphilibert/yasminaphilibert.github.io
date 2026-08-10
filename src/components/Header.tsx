@@ -22,7 +22,7 @@ const Header = () => {
           <img
             src={`${import.meta.env.BASE_URL}yasyntha_lockup.png`}
             alt="Yasyntha"
-            className="logo-pink h-12 sm:h-14 md:h-16 w-auto max-w-full object-contain"
+            className="h-12 sm:h-14 md:h-16 w-auto max-w-full object-contain"
           />
         </Link>
 
