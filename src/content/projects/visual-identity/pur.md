@@ -10,10 +10,10 @@ galleryBackground: "#241b2e"
 order: 0
 featured: false
 comparisonPairs:
-  - label: "LUCIDITY — SUPPLEMENT FACTS & DIRECTIONS"
+  - label: "LUCIDITY"
     left: "public/images/services/visual-identity/pur/compare/lucidity-before.webp"
     right: "public/images/services/visual-identity/pur/compare/lucidity-after.webp"
-  - label: "SNOOZ — SUPPLEMENT FACTS & DIRECTIONS"
+  - label: "SNOOZ"
     left: "public/images/services/visual-identity/pur/compare/snooz-before.webp"
     right: "public/images/services/visual-identity/pur/compare/snooz-after.webp"
 galleryImages:
