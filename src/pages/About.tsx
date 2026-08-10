@@ -24,7 +24,16 @@ const About = () => {
             </div>
 
             <div className="md:col-span-6">
-              <h1 className="display-heading text-[2.1rem] md:text-[3.2rem]">{about.title}</h1>
+              <div className="flex items-center gap-4 md:gap-5">
+                {/* Decorative — the name is right beside it as text. */}
+                <img
+                  src={`${import.meta.env.BASE_URL}favicon-512x512.png`}
+                  alt=""
+                  aria-hidden="true"
+                  className="logo-pink h-12 md:h-14 w-auto flex-shrink-0"
+                />
+                <h1 className="display-heading text-[2.1rem] md:text-[3.2rem]">{about.title}</h1>
+              </div>
               <div className="mt-8 space-y-6">
                 {about.introParagraphs.map((paragraph, index) => (
                   <p key={index} className="body-copy text-base md:text-lg font-medium">

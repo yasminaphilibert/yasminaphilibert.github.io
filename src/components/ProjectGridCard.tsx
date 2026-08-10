@@ -1,10 +1,8 @@
-import { useState, SyntheticEvent } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import Media from "./Media";
+import TileMedia from "./TileMedia";
 import Label from "./Label";
 import { tintFor } from "@/lib/palette";
-import { snapToTileRatio, TILE_RATIOS } from "@/lib/projects";
 
 interface ProjectGridCardProps {
   title: string;
@@ -18,15 +16,6 @@ interface ProjectGridCardProps {
 }
 
 const ProjectGridCard = ({ title, location, year, image, slug, index, tint }: ProjectGridCardProps) => {
-  // The tile takes its shape from the image, snapped to one of a few standard
-  // ratios. Dimensions are only known once the file loads, so it starts on the
-  // landscape default and settles when the image arrives.
-  const [ratio, setRatio] = useState<string>(TILE_RATIOS[2].css);
-  const adoptImageShape = (event: SyntheticEvent<HTMLImageElement>) => {
-    const { naturalWidth, naturalHeight } = event.currentTarget;
-    setRatio(snapToTileRatio(naturalWidth, naturalHeight).css);
-  };
-
   return (
     <motion.article
       initial={{ opacity: 0, y: 16 }}
@@ -41,21 +30,10 @@ const ProjectGridCard = ({ title, location, year, image, slug, index, tint }: Pr
         style={{ backgroundColor: tint ?? tintFor(index) }}
         aria-label={`Go to ${title}`}
       >
-        <Media
+        <TileMedia
           src={image}
           alt={title}
           className="w-full h-full transition-transform duration-[850ms] ease-out group-hover:scale-[1.035]"
-          // Fills the tile: because the tile already matches the image's shape
-          // closely, this crops a few percent at most rather than beheading
-          // the portrait shots the way a fixed box did.
-          objectFit="cover"
-          containerClassName="media-frame"
-          containerStyle={{ aspectRatio: ratio }}
-          onLoad={adoptImageShape}
-          autoplay={false}
-          loop={true}
-          muted={true}
-          controls={true}
         />
 
         <div className="px-1.5 pt-5 pb-1">

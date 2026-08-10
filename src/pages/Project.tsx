@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Media from "@/components/Media";
+import TileMedia from "@/components/TileMedia";
 import CompareSlider from "@/components/CompareSlider";
 import PosterFlipbook from "@/components/PosterFlipbook";
 import Video from "@/components/Video";
@@ -203,7 +204,9 @@ const Project = () => {
           >
             <Label className="pb-3 border-b border-ink/20">Gallery</Label>
 
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Tiles vary in height, so the columns pack them rather than
+                lining rows up and leaving gaps under the shorter ones. */}
+            <div className="mt-6 columns-1 md:columns-2 gap-4">
               {project.galleryImages?.map((media, index) => (
                 <motion.div
                   key={`media-${index}`}
@@ -211,18 +214,12 @@ const Project = () => {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: Math.min(index, 3) * 0.08 }}
-                  className="card-surface bg-blush p-4"
+                  className="card-surface bg-blush p-4 break-inside-avoid mb-4"
                 >
-                  <Media
+                  <TileMedia
                     src={media}
                     alt={`${project.title} gallery ${index + 1}`}
                     className="w-full h-full transition-transform duration-[850ms] ease-out hover:scale-[1.035]"
-                    aspectRatio="square"
-                    containerClassName="media-frame aspect-square"
-                    autoplay={false}
-                    loop={true}
-                    muted={false}
-                    controls={true}
                   />
                 </motion.div>
               ))}
@@ -237,12 +234,14 @@ const Project = () => {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: Math.min(index, 3) * 0.08 }}
-                    className="card-surface bg-lilac p-4"
+                    className="card-surface bg-lilac p-4 break-inside-avoid mb-4"
                   >
                     <Video
                       src={video}
                       poster={posterPath}
                       alt={`${project.title} video ${index + 1}`}
+                      // Every gallery video is 1080x1080, so square is their
+                      // own shape and crops nothing.
                       aspectRatio="square"
                       className="media-frame"
                       autoplay={false}
