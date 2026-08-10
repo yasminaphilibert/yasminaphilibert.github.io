@@ -48,14 +48,13 @@ toolsUsed:
   - GPT Image
   - Nano Banana Pro
   - Kling
-  - Seed Audio
 ---
 
 PUR is a functional-mushroom gummy in two halves. LUCIDITY is the morning one — Lion's Mane and Cordyceps, CBD and CBG, a label that runs yellow through orange into red. SNOOZ is the other end of the day — a five-mushroom immunity blend, CBD and CBN, mauve deepening to midnight. Laid side by side the eight printed panels are one continuous gradient, and the lilac the day label ends on is the mauve the night label starts from.
 
 The brand was drawn in 2022 and then stalled, because everything below the headline had been generated rather than written. The disclaimer had decayed into *"THESE STATEMENTS RAVE NOT BEEN EVALSATEO BY TRE FOOD & OBUG ASMONSTRATION."* The nutrition panel described capsules — hypromellose, microcrystalline cellulose — on a product whose own front says thirty vegan gummies. Four of SNOOZ's five mushrooms carried one copy-pasted line. LUCIDITY, the daytime SKU, promised that its Cordyceps would suppress your immune system.
 
-So the labels were rebuilt before anything else was made: every panel re-set, real Latin names, structure-and-function claims tied to the actual disclaimer, and arithmetic that closes — thirty milligrams of CBD across fifteen servings is the four hundred and fifty the container claims. Only then did the packaging get built, and the film after that: sunrise, a gummy falling, dusk, both jars on the same stone, narrated over a score that warms at dawn and cools into the night.
+So the labels were rebuilt before anything else was made: every panel re-set, real Latin names, structure-and-function claims tied to the actual disclaimer, and arithmetic that closes — thirty milligrams of CBD across fifteen servings is the four hundred and fifty the container claims. Only then did the packaging get built, and the film after that: sunrise, a gummy falling, dusk, both jars on the same stone, over a score that warms at dawn and cools into the night.
 
 ---
 
