@@ -33,9 +33,9 @@ const Work = () => {
             <Label>{allProjects.length} projects</Label>
           </div>
 
-          <div className="mt-6 columns-1 md:columns-2 gap-4">
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             {allProjects.map((project, index) => (
-              <div key={project.slug} className="break-inside-avoid mb-4">
+              <div key={project.slug}>
                 <ProjectGridCard
                   title={project.title}
                   location={project.location}

@@ -22,22 +22,28 @@ const ProjectGridCard = ({ title, location, year, image, slug, index, tint }: Pr
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.55, delay: Math.min(index, 3) * 0.06 }}
-      className="w-full"
+      className="w-full h-full"
     >
+      {/* h-full on both: a title that wraps to two lines would otherwise make
+          its tint block taller than its neighbour's in the same row. */}
       <Link
         to={`/project/${slug}`}
-        className="group block card-surface p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/60"
+        className="group block h-full card-surface p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/60"
         style={{ backgroundColor: tint ?? tintFor(index) }}
         aria-label={`Go to ${title}`}
       >
         <Media
           src={image}
           alt={title}
-          className="w-full h-auto transition-transform duration-[850ms] ease-out group-hover:scale-[1.035]"
-          containerClassName="media-frame"
-          // Images keep their own proportions in the masonry column; a video has
-          // no intrinsic height to give the column, so it gets a fixed ratio.
-          aspectRatio="video"
+          // One box for every card so the grid lines up — natural proportions
+          // ranged 169px to 455px and left the rows ragged. Fitted, not
+          // cropped, so nothing is cut off; 4:3 because eight of the
+          // seventeen thumbnails sit between 1.37 and 1.79 and land snugly in
+          // it. The five portrait ones render narrower, with tint at the
+          // sides. The frame is transparent, so that tint is the card's own.
+          className="w-full h-full transition-transform duration-[850ms] ease-out group-hover:scale-[1.035]"
+          objectFit="contain"
+          containerClassName="media-frame aspect-[4/3]"
           autoplay={false}
           loop={true}
           muted={true}

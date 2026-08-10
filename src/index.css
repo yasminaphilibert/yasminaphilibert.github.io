@@ -175,8 +175,11 @@
     @apply rounded-[2rem];
   }
 
+  /* Fitted media leaves a margin at the top and bottom or the sides. Left
+     transparent so the card's own tint fills it and the image reads as a
+     print on a mat; a grey ground here just looked like a gap. */
   .media-frame {
-    @apply overflow-hidden rounded-[1.4rem] bg-ink/10;
+    @apply overflow-hidden rounded-[1.4rem];
   }
 
   .link-cta {
