@@ -9,14 +9,6 @@ thumbnailImage: "public/images/services/visual-identity/pur/thumb-pur.webp"
 galleryBackground: "#241b2e"
 order: 0
 featured: false
-magazinePages:
-  - "public/images/services/visual-identity/pur/pages/01-daily-balance.webp"
-  - "public/images/services/visual-identity/pur/pages/02-powered-by-nature.webp"
-  - "public/images/services/visual-identity/pur/pages/03-rest-reset-replenish.webp"
-  - "public/images/services/visual-identity/pur/pages/04-night-flat-lay.webp"
-  - "public/images/services/visual-identity/pur/pages/05-in-the-basket.webp"
-  - "public/images/services/visual-identity/pur/pages/06-lucidity-packaging.webp"
-  - "public/images/services/visual-identity/pur/pages/07-snooz-packaging.webp"
 comparisonPairs:
   - label: "LUCIDITY — SUPPLEMENT FACTS & DIRECTIONS"
     left: "public/images/services/visual-identity/pur/compare/lucidity-before.webp"
@@ -25,14 +17,21 @@ comparisonPairs:
     left: "public/images/services/visual-identity/pur/compare/snooz-before.webp"
     right: "public/images/services/visual-identity/pur/compare/snooz-after.webp"
 galleryImages:
+  - "public/images/services/visual-identity/pur/07-day-and-night.webp"
   - "public/images/services/visual-identity/pur/01-lucidity-jar.webp"
   - "public/images/services/visual-identity/pur/02-lucidity-carton.webp"
   - "public/images/services/visual-identity/pur/03-lucidity-duo.webp"
   - "public/images/services/visual-identity/pur/04-snooz-jar.webp"
   - "public/images/services/visual-identity/pur/05-snooz-carton.webp"
   - "public/images/services/visual-identity/pur/06-snooz-duo.webp"
-  - "public/images/services/visual-identity/pur/07-day-and-night.webp"
   - "public/images/services/visual-identity/pur/08-gummies.webp"
+  - "public/images/services/visual-identity/pur/plates/01-lucidity-packaging.webp"
+  - "public/images/services/visual-identity/pur/plates/02-snooz-packaging.webp"
+  - "public/images/services/visual-identity/pur/plates/03-daily-balance.webp"
+  - "public/images/services/visual-identity/pur/plates/04-powered-by-nature.webp"
+  - "public/images/services/visual-identity/pur/plates/05-rest-reset-replenish.webp"
+  - "public/images/services/visual-identity/pur/plates/06-night-flat-lay.webp"
+  - "public/images/services/visual-identity/pur/plates/07-in-the-basket.webp"
 tags:
   - brand
   - packaging
@@ -58,4 +57,4 @@ So the labels were rebuilt before anything else was made: every panel re-set, re
 
 ---
 
-Drag the corner of any spread to turn it. Click either comparison to see what the fine print used to say.
+Click either comparison to see what the fine print used to say.
