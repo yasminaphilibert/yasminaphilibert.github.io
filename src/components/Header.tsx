@@ -39,8 +39,10 @@ const Header = () => {
           ))}
         </ul>
 
-        <div className="hidden md:block text-right">
-          <Label>{navbar.tagline[0]}</Label>
+        {/* All four disciplines, as the old bar listed them — inline here so the
+            pill stays one line tall, stacked in the drawer on mobile. */}
+        <div className="hidden lg:block text-right">
+          <Label>{navbar.tagline.join(" · ")}</Label>
         </div>
 
         <div className="md:hidden">
