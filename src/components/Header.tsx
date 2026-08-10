@@ -16,11 +16,14 @@ const Header = () => {
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <nav className="flex items-center justify-between gap-4 rounded-full bg-ink/[0.06] px-5 py-3 md:px-7 md:py-4">
-        <Link
-          to="/"
-          className="text-base md:text-lg font-bold tracking-[-0.01em] text-ink whitespace-nowrap"
-        >
-          {navbar.logo || "YΛSYNTHΛ"}
+        <Link to="/" className="flex items-center min-w-0">
+          {/* max-w-full is the backstop: on a very narrow phone the mark gives
+              up height rather than pushing into the menu button. */}
+          <img
+            src={`${import.meta.env.BASE_URL}yasyntha_lockup.png`}
+            alt="Yasyntha"
+            className="h-8 sm:h-9 md:h-11 w-auto max-w-full object-contain"
+          />
         </Link>
 
         <ul className="hidden md:flex items-center gap-7 lg:gap-9">
