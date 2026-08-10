@@ -8,6 +8,7 @@ import Media from "@/components/Media";
 import Label from "@/components/Label";
 import { getServiceBySlug, services } from "@/data/services";
 import { tintFor } from "@/lib/palette";
+import { sortByNewest } from "@/lib/projects";
 
 const Service = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -30,6 +31,7 @@ const Service = () => {
 
   // Each service keeps the same tint wherever it appears.
   const tint = tintFor(services.findIndex((s) => s.slug === service.slug));
+  const projects = sortByNewest(service.projects);
 
   return (
     <div className="min-h-screen bg-paper text-ink">
@@ -86,11 +88,11 @@ const Service = () => {
         <section className="mt-16 md:mt-20 pb-4">
           <div className="flex items-baseline justify-between gap-4 pb-3 border-b border-ink/20">
             <Label>Selected projects</Label>
-            <Label>{service.projects.length} projects</Label>
+            <Label>{projects.length} projects</Label>
           </div>
 
           <div className="mt-6 columns-1 md:columns-2 gap-4">
-            {service.projects.map((project, index) => (
+            {projects.map((project, index) => (
               <div key={project.slug} className="break-inside-avoid mb-4">
                 <ProjectGridCard
                   title={project.title}

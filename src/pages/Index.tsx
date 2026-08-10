@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import Label from "@/components/Label";
 import { services, getAllProjects } from "@/data/services";
 import { getIndexContent } from "@/lib/content";
+import { sortByNewest } from "@/lib/projects";
 
 const HOME_PROJECT_COUNT = 6;
 
@@ -23,7 +24,7 @@ const splitHeading = (heading: string) => {
 
 const Index = () => {
   const indexContent = getIndexContent();
-  const projects = getAllProjects().slice(0, HOME_PROJECT_COUNT);
+  const projects = sortByNewest(getAllProjects()).slice(0, HOME_PROJECT_COUNT);
   const { lead, accent } = splitHeading(indexContent.heroTitle || "");
 
   return (

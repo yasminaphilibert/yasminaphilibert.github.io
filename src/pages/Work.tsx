@@ -5,9 +5,10 @@ import ProjectGridCard from "@/components/ProjectGridCard";
 import Label from "@/components/Label";
 import { getAllProjects } from "@/data/services";
 import { getWorkContent } from "@/lib/content";
+import { sortByNewest } from "@/lib/projects";
 
 const Work = () => {
-  const allProjects = getAllProjects();
+  const allProjects = sortByNewest(getAllProjects());
   const workContent = getWorkContent();
 
   return (
