@@ -54,7 +54,7 @@ const Project = () => {
             objectPosition={project.heroImagePosition}
             autoplay={false}
             loop={true}
-            muted={false}
+            muted={project.heroMuted ?? false}
             controls={true}
           />
         </motion.div>

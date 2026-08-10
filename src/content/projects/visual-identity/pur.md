@@ -5,6 +5,7 @@ service: "visual-identity"
 location: "Barcelona, Spain"
 year: "2022 — 2026"
 heroImage: "public/videos/pur-campaign.mp4"
+heroMuted: true
 thumbnailImage: "public/images/services/visual-identity/pur/thumb-pur.webp"
 galleryBackground: "#241b2e"
 order: 0

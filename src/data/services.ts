@@ -30,6 +30,7 @@ export interface Project {
   image: string; // Thumbnail image for cards/lists
   heroImage: string; // Hero image for detail page
   heroImagePosition?: string; // Optional object-position for hero image
+  heroMuted?: boolean; // Hero video plays silent when true
   slug: string;
   description: string[];
   barColor?: string; // Optional custom bar color
@@ -154,6 +155,7 @@ export const services: Service[] = (() => {
           image: resolveImage(project.thumbnailImage || project.heroImage, project.slug),
           heroImage: resolveImage(project.heroImage, project.slug),
           heroImagePosition: project.heroImagePosition,
+          heroMuted: project.heroMuted,
           slug: project.slug,
           description: project.description,
           barColor: project.barColor,
@@ -193,6 +195,7 @@ export const getAllProjects = (): (Project & { serviceSlug: string; serviceColor
       image: resolveImage(project.thumbnailImage || project.heroImage, project.slug),
       heroImage: resolveImage(project.heroImage, project.slug),
       heroImagePosition: project.heroImagePosition,
+      heroMuted: project.heroMuted,
       slug: project.slug,
       description: project.description,
       barColor: project.barColor,
@@ -273,6 +276,7 @@ export const getProjectBySlug = (slug: string): (Project & { serviceSlug: string
       image: resolveImage(projectContent.thumbnailImage || projectContent.heroImage, projectContent.slug),
       heroImage: resolveImage(projectContent.heroImage, projectContent.slug),
       heroImagePosition: projectContent.heroImagePosition,
+      heroMuted: projectContent.heroMuted,
       slug: projectContent.slug,
       description: projectContent.description,
       barColor: projectContent.barColor,
