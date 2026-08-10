@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode, SyntheticEvent } from "react";
 import Video from "./Video";
 import { cn, normalizePublicAssetPath } from "@/lib/utils";
 
@@ -18,7 +18,10 @@ interface MediaProps {
   poster?: string;
   // Container props
   containerClassName?: string;
+  containerStyle?: CSSProperties;
   children?: ReactNode;
+  /** Images only — lets a caller read the natural dimensions once loaded. */
+  onLoad?: (event: SyntheticEvent<HTMLImageElement>) => void;
 }
 
 /**
@@ -38,7 +41,9 @@ const Media = ({
   controls = true, // Full controls: play/pause, mute, volume, fullscreen
   poster,
   containerClassName,
+  containerStyle,
   children,
+  onLoad,
 }: MediaProps) => {
   // Normalize paths so public/videos/... -> /videos/... (required for production)
   const normalizedSrc = normalizePublicAssetPath(src);
@@ -63,7 +68,7 @@ const Media = ({
     const heightClasses = className?.match(HEIGHT_CLASS)?.join(" ") ?? "";
 
     return (
-      <div className={cn("w-full", containerClassName)}>
+      <div className={cn("w-full", containerClassName)} style={containerStyle}>
         <div className={cn("w-full", heightClasses || "h-full")}>
           <Video
             src={normalizedSrc}
@@ -86,12 +91,13 @@ const Media = ({
 
   // Render as image (encoding for Unicode filenames is done in services.ts)
   return (
-    <div className={cn("w-full overflow-hidden", containerClassName)}>
+    <div className={cn("w-full overflow-hidden", containerClassName)} style={containerStyle}>
       <img
         src={normalizedSrc}
         alt={alt}
         className={cn("w-full h-full", `object-${objectFit}`, className)}
         style={objectPosition ? { objectPosition } : undefined}
+        onLoad={onLoad}
       />
       {children}
     </div>

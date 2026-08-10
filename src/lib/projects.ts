@@ -17,3 +17,31 @@ const latestYear = (year: string) => {
 
 export const sortByNewest = <T extends { year: string }>(projects: T[]): T[] =>
   [...projects].sort((a, b) => latestYear(b.year) - latestYear(a.year));
+
+/**
+ * The shapes a thumbnail tile is allowed to take.
+ *
+ * Thumbnails arrive at seventeen different proportions, which made the grid
+ * look accidental. Each one is rounded to the nearest shape here instead, so
+ * the tiles read as a set. The image then fills its tile — no empty margins —
+ * at the cost of a small centre crop where the two do not quite agree.
+ */
+export const TILE_RATIOS = [
+  { name: "portrait", value: 3 / 4, css: "3 / 4" },
+  { name: "square", value: 1, css: "1 / 1" },
+  { name: "landscape", value: 4 / 3, css: "4 / 3" },
+  { name: "wide", value: 16 / 9, css: "16 / 9" },
+] as const;
+
+/** The tile a thumbnail sits in. Falls back to landscape before it loads. */
+export const snapToTileRatio = (width: number, height: number) => {
+  if (!width || !height) return TILE_RATIOS[2];
+  const ratio = width / height;
+  // Compared on a log scale: proportions are multiplicative, so 16:9 is no
+  // further from 4:3 than 4:3 is from 1:1, which a plain difference gets wrong.
+  return TILE_RATIOS.reduce((best, candidate) =>
+    Math.abs(Math.log(ratio / candidate.value)) < Math.abs(Math.log(ratio / best.value))
+      ? candidate
+      : best
+  );
+};

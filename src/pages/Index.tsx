@@ -60,9 +60,9 @@ const Index = () => {
             </Link>
           </div>
 
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="mt-6 columns-1 md:columns-2 gap-4 [column-fill:balance]">
             {projects.map((project, index) => (
-              <div key={project.slug}>
+              <div key={project.slug} className="break-inside-avoid mb-4">
                 <ProjectGridCard
                   title={project.title}
                   location={project.location}

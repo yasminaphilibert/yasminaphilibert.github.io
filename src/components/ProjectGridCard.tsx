@@ -1,8 +1,10 @@
+import { useState, SyntheticEvent } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Media from "./Media";
 import Label from "./Label";
 import { tintFor } from "@/lib/palette";
+import { snapToTileRatio, TILE_RATIOS } from "@/lib/projects";
 
 interface ProjectGridCardProps {
   title: string;
@@ -16,34 +18,40 @@ interface ProjectGridCardProps {
 }
 
 const ProjectGridCard = ({ title, location, year, image, slug, index, tint }: ProjectGridCardProps) => {
+  // The tile takes its shape from the image, snapped to one of a few standard
+  // ratios. Dimensions are only known once the file loads, so it starts on the
+  // landscape default and settles when the image arrives.
+  const [ratio, setRatio] = useState<string>(TILE_RATIOS[2].css);
+  const adoptImageShape = (event: SyntheticEvent<HTMLImageElement>) => {
+    const { naturalWidth, naturalHeight } = event.currentTarget;
+    setRatio(snapToTileRatio(naturalWidth, naturalHeight).css);
+  };
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.55, delay: Math.min(index, 3) * 0.06 }}
-      className="w-full h-full"
+      className="w-full"
     >
-      {/* h-full on both: a title that wraps to two lines would otherwise make
-          its tint block taller than its neighbour's in the same row. */}
       <Link
         to={`/project/${slug}`}
-        className="group block h-full card-surface p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/60"
+        className="group block card-surface p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/60"
         style={{ backgroundColor: tint ?? tintFor(index) }}
         aria-label={`Go to ${title}`}
       >
         <Media
           src={image}
           alt={title}
-          // One box for every card so the grid lines up — natural proportions
-          // ranged 169px to 455px and left the rows ragged. Fitted, not
-          // cropped, so nothing is cut off; 4:3 because eight of the
-          // seventeen thumbnails sit between 1.37 and 1.79 and land snugly in
-          // it. The five portrait ones render narrower, with tint at the
-          // sides. The frame is transparent, so that tint is the card's own.
           className="w-full h-full transition-transform duration-[850ms] ease-out group-hover:scale-[1.035]"
-          objectFit="contain"
-          containerClassName="media-frame aspect-[4/3]"
+          // Fills the tile: because the tile already matches the image's shape
+          // closely, this crops a few percent at most rather than beheading
+          // the portrait shots the way a fixed box did.
+          objectFit="cover"
+          containerClassName="media-frame"
+          containerStyle={{ aspectRatio: ratio }}
+          onLoad={adoptImageShape}
           autoplay={false}
           loop={true}
           muted={true}
