@@ -1,6 +1,6 @@
 import { useState, SyntheticEvent } from "react";
 import Media from "./Media";
-import { snapToTileRatio, TILE_RATIOS } from "@/lib/projects";
+import { snapToTileRatio, DEFAULT_TILE_RATIO } from "@/lib/projects";
 
 interface TileMediaProps {
   src: string;
@@ -23,7 +23,7 @@ interface TileMediaProps {
  * starts on the landscape default and settles as the image arrives.
  */
 const TileMedia = ({ src, alt, className, containerClassName }: TileMediaProps) => {
-  const [ratio, setRatio] = useState<string>(TILE_RATIOS[2].css);
+  const [ratio, setRatio] = useState<string>(DEFAULT_TILE_RATIO.css);
 
   const adoptImageShape = (event: SyntheticEvent<HTMLImageElement>) => {
     const { naturalWidth, naturalHeight } = event.currentTarget;
