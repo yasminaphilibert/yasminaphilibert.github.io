@@ -19,6 +19,11 @@ export default {
         megna: ["'Megna Regular'", "serif"],
       },
       colors: {
+        paper: "#F1ECE3",
+        ink: "#1A1720",
+        blush: "#F6C9DE",
+        lilac: "#D3CAE9",
+        sand: "#E7DBC8",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -3,118 +3,77 @@ import { motion } from "framer-motion";
 import { Menu } from "lucide-react";
 import { getNavbarContent } from "@/lib/content";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import Label from "./Label";
 
 const Header = () => {
   const navbar = getNavbarContent();
 
   return (
-    <motion.header 
-      // Every page pulls its first section up by -mt-8 so the rounded bottom
-      // overlaps it. The header was static, so that section painted *over* the
-      // header and ate the bottom 20px of the lockup. It has to sit on top.
-      className="relative z-20 rounded-b-[2rem] px-6 py-3 md:px-12 md:py-4 overflow-hidden"
-      style={{ backgroundColor: navbar.bgColor || undefined }}
-      initial={{ y: -100, opacity: 0 }}
+    <motion.header
+      className="relative z-20 container-custom pt-5 md:pt-7"
+      initial={{ y: -24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <div className="max-w-7xl mx-auto">
-        {/* Equal thirds starved the centre column: the lockup is wider than a
-            third of a phone screen, so it spilled over the menu button and got
-            worse the narrower the device. Let the mark take the width it needs
-            and split whatever is left between the two sides — that keeps it
-            optically centred without ever crowding the button. */}
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-          {/* Left Section */}
-          <div className="flex items-center">
-            {/* Tagline - Left (Desktop only) */}
-            <div className="text-sm font-medium text-primary-foreground hidden md:block">
-              {navbar.tagline.map((line, index) => (
-                <span key={index}>
-                  {line}
-                  {index < navbar.tagline.length - 1 && <br />}
-                </span>
-              ))}
-            </div>
+      <nav className="flex items-center justify-between gap-4 rounded-full bg-ink/[0.06] px-5 py-3 md:px-7 md:py-4">
+        <Link
+          to="/"
+          className="text-base md:text-lg font-bold tracking-[-0.01em] text-ink whitespace-nowrap"
+        >
+          {navbar.logo || "YΛSYNTHΛ"}
+        </Link>
 
-            {/* Mobile Menu Button - Left (Mobile only) */}
-            <div className="md:hidden">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <button 
-                    className="p-2 text-primary-foreground hover:opacity-70 transition-opacity duration-200"
-                    aria-label="Open menu"
-                  >
-                    <Menu className="h-6 w-6" />
-                  </button>
-                </SheetTrigger>
-                <SheetContent 
-                  side="right" 
-                  className="w-[300px] sm:w-[400px]"
-                  style={{ backgroundColor: navbar.bgColor || undefined }}
-                >
-                  <div className="flex flex-col gap-8 mt-8">
-                    {/* Tagline - Mobile */}
-                    <div className="text-sm font-medium text-primary-foreground">
-                      {navbar.tagline.map((line, index) => (
-                        <span key={index}>
-                          {line}
-                          {index < navbar.tagline.length - 1 && <br />}
-                        </span>
-                      ))}
-                    </div>
+        <ul className="hidden md:flex items-center gap-7 lg:gap-9">
+          {navbar.navLinks.map((link) => (
+            <li key={link.path}>
+              <Link
+                to={link.path}
+                className="text-[14px] font-semibold text-ink/80 hover:text-ink transition-colors duration-200 whitespace-nowrap"
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
 
-                    {/* Navigation Links - Mobile */}
-                    <nav className="flex flex-col gap-6">
-                      {navbar.navLinks.map((link) => (
-                        <Link 
-                          key={link.path}
-                          to={link.path} 
-                          className="text-lg font-medium text-primary-foreground hover:opacity-70 transition-opacity duration-200"
-                        >
-                          {link.label}
-                        </Link>
-                      ))}
-                    </nav>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
-          </div>
-
-          {/* Logo - Center */}
-          <div className="flex justify-center min-w-0">
-            <Link
-              to="/"
-              className="flex items-center min-w-0"
-            >
-              <img
-                src={`${import.meta.env.BASE_URL}yasyntha_lockup.png`}
-                alt="Yasyntha"
-                // max-w-full is the backstop: on a very narrow phone the mark
-                // gives up height rather than pushing into the menu button.
-                className="h-14 sm:h-16 md:h-32 w-auto max-w-full object-contain"
-              />
-            </Link>
-          </div>
-
-          {/* Right Section */}
-          <div className="flex items-center justify-end">
-            {/* Navigation - Right (Desktop only) */}
-            <nav className="hidden md:flex items-center gap-4 md:gap-6 lg:gap-8">
-              {navbar.navLinks.map((link) => (
-                <Link 
-                  key={link.path}
-                  to={link.path} 
-                  className="text-sm font-medium text-primary-foreground hover:opacity-70 transition-opacity duration-200 whitespace-nowrap"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
+        <div className="hidden md:block text-right">
+          <Label>{navbar.tagline[0]}</Label>
         </div>
-      </div>
+
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <button
+                className="p-1.5 text-ink hover:opacity-70 transition-opacity duration-200"
+                aria-label="Open menu"
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-paper border-ink/10">
+              <div className="flex flex-col gap-10 mt-10">
+                <div className="flex flex-col gap-1">
+                  {navbar.tagline.map((line) => (
+                    <Label key={line}>{line}</Label>
+                  ))}
+                </div>
+
+                <nav className="flex flex-col gap-5">
+                  {navbar.navLinks.map((link) => (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      className="display-heading text-2xl hover:opacity-70 transition-opacity duration-200"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </nav>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </nav>
     </motion.header>
   );
 };

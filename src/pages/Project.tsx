@@ -6,52 +6,50 @@ import Media from "@/components/Media";
 import CompareSlider from "@/components/CompareSlider";
 import PosterFlipbook from "@/components/PosterFlipbook";
 import Video from "@/components/Video";
-import { getProjectBySlug, services, getServiceBySlug } from "@/data/services";
+import Label from "@/components/Label";
+import { getProjectBySlug, getServiceBySlug } from "@/data/services";
 
 const Project = () => {
   const { slug } = useParams<{ slug: string }>();
   const project = slug ? getProjectBySlug(slug) : null;
 
-  
   // Find next project within the same service
   const service = project ? getServiceBySlug(project.serviceSlug) : null;
   const projectsInService = service?.projects || [];
-  const currentIndex = projectsInService.findIndex(p => p.slug === slug);
+  const currentIndex = projectsInService.findIndex((p) => p.slug === slug);
   const nextProject = projectsInService[(currentIndex + 1) % projectsInService.length];
-  const nextProjectColor = service?.infoColor || "#6BCB77";
 
   if (!project || !service) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-paper text-ink">
         <Header />
-        <main className="py-20">
-          <div className="max-w-7xl mx-auto px-6">
-            <p className="text-muted-foreground">Project not found.</p>
-            <Link to="/" className="text-foreground underline underline-offset-4 mt-4 inline-block">
-              Return home
-            </Link>
-          </div>
+        <main className="container-custom py-24">
+          <h1 className="display-heading text-[2rem] md:text-[3rem]">Project not found.</h1>
+          <Link to="/" className="link-cta mt-6">
+            Return home &rarr;
+          </Link>
         </main>
+        <Footer />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-paper text-ink">
       <Header />
-      
-      <main>
-        {/* Hero Media (Image or Video) */}
+
+      <main className="container-custom">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          className="w-full"
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65 }}
+          className="mt-4 card-surface bg-lilac p-4 md:p-5"
         >
           <Media
             src={project.heroImage}
             alt={project.title}
-            className="w-full h-[50vh] md:h-[70vh] transition-transform duration-700 ease-out hover:scale-105"
+            className="w-full h-[46vh] md:h-[64vh]"
+            containerClassName="media-frame"
             objectPosition={project.heroImagePosition}
             autoplay={false}
             loop={true}
@@ -60,78 +58,72 @@ const Project = () => {
           />
         </motion.div>
 
-        {/* Project Info Section */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="w-full px-6 py-12 md:px-12 md:py-16 rounded-b-[2rem] overflow-hidden"
-          style={{ backgroundColor: project.serviceColor }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="mt-4 card-surface bg-sand px-7 py-12 md:px-12 md:py-16"
         >
-          <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-12 gap-8 md:gap-12">
-              {/* Category - Left */}
-              <div className="md:col-span-2">
-                <span className="text-sm text-black/70 break-words">{project.serviceTitle}</span>
+          <div className="grid md:grid-cols-12 gap-8 md:gap-12">
+            <div className="md:col-span-2">
+              <Label>{project.serviceTitle}</Label>
+            </div>
+
+            <div className="md:col-span-6 min-w-0">
+              <h1 className="display-heading text-[1.9rem] md:text-[3rem] break-words">{project.title}</h1>
+              <div className="mt-7 space-y-5">
+                {project.description.map((paragraph, index) => (
+                  <p key={index} className="body-copy text-base md:text-lg font-medium break-words">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            <div className="md:col-span-4 space-y-8">
+              <div className="space-y-1.5">
+                <Label>{project.location}</Label>
+                <Label>{project.year}</Label>
               </div>
 
-              {/* Title & Description - Center */}
-              <div className="md:col-span-6 min-w-0">
-                <h1 className="font-display text-xl md:text-4xl font-medium text-black mb-6 break-words">
-                  {project.title}
-                </h1>
-                <div className="space-y-4">
-                  {project.description.map((paragraph, index) => (
-                    <p key={index} className="text-sm md:text-2xl text-black/80 leading-relaxed break-words">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
-              </div>
-
-              {/* Location, Year, Tags & Keywords - Right */}
-              <div className="md:col-span-4 space-y-8">
+              {project.tags && project.tags.length > 0 && (
                 <div>
-                  <p className="text-sm text-black/70 break-words">{project.location}</p>
-                  <p className="text-sm text-black/70 break-words">{project.year}</p>
+                  <Label className="mb-3">Tags</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag, i) => (
+                      <span
+                        key={i}
+                        className="text-sm font-medium text-ink px-3 py-1.5 rounded-full bg-ink/10 break-words"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                {(project.tags && project.tags.length > 0) && (
-                  <div>
-                    <p className="text-xs font-medium text-black/60 uppercase tracking-wider mb-2">Tags</p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag, i) => (
-                        <span key={i} className="text-sm text-black/80 px-2.5 py-1 rounded-md bg-black/10 break-words">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+              )}
+
+              {project.keywords && project.keywords.length > 0 && (
+                <div>
+                  <Label className="mb-3">Keywords</Label>
+                  <p className="text-sm font-medium text-ink/80 break-words">{project.keywords.join(", ")}</p>
+                </div>
+              )}
+
+              {project.toolsUsed && project.toolsUsed.length > 0 && (
+                <div>
+                  <Label className="mb-3">Tools used</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {project.toolsUsed.map((tool, i) => (
+                      <span
+                        key={i}
+                        className="text-sm font-medium text-ink px-3 py-1.5 rounded-full bg-ink/10 break-words"
+                      >
+                        {tool}
+                      </span>
+                    ))}
                   </div>
-                )}
-                {(project.keywords && project.keywords.length > 0) && (
-                  <div>
-                    <p className="text-xs font-medium text-black/60 uppercase tracking-wider mb-2">Keywords</p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.keywords.map((kw, i) => (
-                        <span key={i} className="text-sm text-black/70 break-words">
-                          {kw}{i < (project.keywords?.length ?? 0) - 1 ? ', ' : ''}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {(project.toolsUsed && project.toolsUsed.length > 0) && (
-                  <div>
-                    <p className="text-xs font-medium text-black/60 uppercase tracking-wider mb-2">Tools used</p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.toolsUsed.map((tool, i) => (
-                        <span key={i} className="text-sm text-black/80 px-2.5 py-1 rounded-md bg-black/10 break-words">
-                          {tool}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </motion.section>
@@ -142,14 +134,13 @@ const Project = () => {
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="w-full px-6 py-12 md:px-12 md:py-16"
-            style={project.galleryBackground ? { backgroundColor: project.galleryBackground } : undefined}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="py-16 md:py-20"
           >
             <div className="max-w-6xl mx-auto">
-              <p className="text-xs font-medium uppercase tracking-wider text-white/70 mb-8 md:mb-10">
+              <p className="label mb-8 md:mb-10">
                 The issue
-                <span className="ml-3 normal-case tracking-normal text-white/50">
+                <span className="ml-3 normal-case tracking-normal font-medium text-ink/60">
                   drag a corner, or click the arrows
                 </span>
               </p>
@@ -165,14 +156,13 @@ const Project = () => {
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="w-full px-6 py-12 md:px-12 md:py-16"
-            style={project.galleryBackground ? { backgroundColor: project.galleryBackground } : undefined}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="py-16 md:py-20"
           >
             <div className="max-w-4xl mx-auto">
-              <p className="text-xs font-medium uppercase tracking-wider text-white/70 mb-8 md:mb-10">
+              <p className="label mb-8 md:mb-10">
                 Two renderings
-                <span className="ml-3 normal-case tracking-normal text-white/50">
+                <span className="ml-3 normal-case tracking-normal font-medium text-ink/60">
                   click to turn the page
                 </span>
               </p>
@@ -194,11 +184,7 @@ const Project = () => {
                       initial={100}
                       eager={index === 0}
                     />
-                    {pair.label && (
-                      <figcaption className="mt-3 text-xs font-medium uppercase tracking-wider text-white/70">
-                        {pair.label}
-                      </figcaption>
-                    )}
+                    {pair.label && <figcaption className="label mt-4">{pair.label}</figcaption>}
                   </motion.figure>
                 ))}
               </div>
@@ -207,105 +193,97 @@ const Project = () => {
         )}
 
         {/* Gallery Images and Videos Grid */}
-        {((project.galleryImages && project.galleryImages.length > 0) || 
+        {((project.galleryImages && project.galleryImages.length > 0) ||
           (project.galleryVideos && project.galleryVideos.length > 0)) && (
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="w-full px-6 py-12 md:px-12 md:py-16"
-            style={project.galleryBackground ? { backgroundColor: project.galleryBackground } : undefined}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="py-16 md:py-20"
           >
-            <div className="max-w-7xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-10 lg:gap-12 justify-items-center">
-                {/* Render images and videos (mixed gallery) */}
-                {project.galleryImages?.map((media, index) => (
+            <Label className="pb-3 border-b border-ink/20">Gallery</Label>
+
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+              {project.galleryImages?.map((media, index) => (
+                <motion.div
+                  key={`media-${index}`}
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: Math.min(index, 3) * 0.08 }}
+                  className="card-surface bg-blush p-4"
+                >
+                  <Media
+                    src={media}
+                    alt={`${project.title} gallery ${index + 1}`}
+                    className="w-full h-full transition-transform duration-[850ms] ease-out hover:scale-[1.035]"
+                    aspectRatio="square"
+                    containerClassName="media-frame aspect-square"
+                    autoplay={false}
+                    loop={true}
+                    muted={false}
+                    controls={true}
+                  />
+                </motion.div>
+              ))}
+
+              {project.galleryVideos?.map((video, index) => {
+                // Generate poster image path (same name but .jpg extension)
+                const posterPath = video.replace(/\.(mp4|webm)$/, "_poster.jpg");
+                return (
                   <motion.div
-                    key={`media-${index}`}
-                    initial={{ opacity: 0, scale: 0.9 }}
+                    key={`video-${index}`}
+                    initial={{ opacity: 0, scale: 0.96 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className="w-full max-w-md md:max-w-lg lg:max-w-xl"
+                    transition={{ duration: 0.4, delay: Math.min(index, 3) * 0.08 }}
+                    className="card-surface bg-lilac p-4"
                   >
-                    <Media
-                      src={media}
-                      alt={`${project.title} gallery ${index + 1}`}
-                      className="w-full h-full transition-transform duration-700 ease-out hover:scale-105"
+                    <Video
+                      src={video}
+                      poster={posterPath}
+                      alt={`${project.title} video ${index + 1}`}
                       aspectRatio="square"
-                      containerClassName="rounded-lg overflow-hidden"
+                      className="media-frame"
                       autoplay={false}
                       loop={true}
                       muted={false}
                       controls={true}
                     />
                   </motion.div>
-                ))}
-                
-                {/* Render videos */}
-                {project.galleryVideos?.map((video, index) => {
-                  // Generate poster image path (same name but .jpg extension)
-                  const posterPath = video.replace(/\.(mp4|webm)$/, "_poster.jpg");
-                  return (
-                    <motion.div
-                      key={`video-${index}`}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: (project.galleryImages?.length || 0) * 0.1 + index * 0.1 }}
-                      className="w-full max-w-md md:max-w-lg lg:max-w-xl"
-                    >
-                      <Video
-                        src={video}
-                        poster={posterPath}
-                        alt={`${project.title} video ${index + 1}`}
-                        aspectRatio="square"
-                        autoplay={false}
-                        loop={true}
-                        muted={false}
-                        controls={true}
-                      />
-                    </motion.div>
-                  );
-                })}
-              </div>
+                );
+              })}
             </div>
           </motion.section>
         )}
 
-        {/* Navigation Footer */}
-        <div className="flex flex-col md:flex-row w-full overflow-hidden">
-          {/* Back to Service */}
-          <Link 
-            to={`/services/${project.serviceSlug}`} 
-            className="w-full md:w-1/3 lg:w-1/4 bg-foreground text-background px-6 py-8 md:px-12 md:py-10 md:rounded-br-[2rem] flex items-center"
+        <nav className="grid grid-cols-1 md:grid-cols-[1fr_1.6fr] gap-4 pb-4">
+          <Link
+            to={`/services/${project.serviceSlug}`}
+            className="card-surface bg-ink text-paper px-7 py-10 md:px-9 flex flex-col justify-end transition-opacity duration-300 hover:opacity-90"
           >
-            <span className="font-display text-lg md:text-2xl font-medium break-words">
-              Back to {project.serviceTitle}
+            <span className="label text-paper/70">Back to</span>
+            <span className="display-heading mt-3 text-[1.5rem] md:text-[2rem] text-paper break-words">
+              {project.serviceTitle}
             </span>
           </Link>
 
-          {/* Next Project */}
-          <Link 
+          <Link
             to={`/project/${nextProject.slug}`}
-            className="flex-1 px-6 py-8 md:px-12 md:py-10 rounded-b-[2rem] flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-            style={{ backgroundColor: nextProjectColor }}
+            className="card-surface bg-blush px-7 py-10 md:px-9 flex flex-col justify-end transition-transform duration-500 hover:-translate-y-1"
           >
-            <div className="flex items-center gap-4 md:gap-8 min-w-0">
-              <span className="font-display text-lg md:text-2xl font-medium text-white break-words">
-                Next: {nextProject.title}
-              </span>
+            <div className="flex items-baseline justify-between gap-4">
+              <Label>Next project</Label>
+              <Label>{nextProject.year}</Label>
             </div>
-            <div className="text-left md:text-right flex-shrink-0">
-              <p className="text-sm text-white/80">{nextProject.location}</p>
-              <p className="text-sm text-white/80">{nextProject.year}</p>
-            </div>
+            <span className="display-heading mt-3 text-[1.5rem] md:text-[2rem] break-words">
+              {nextProject.title}
+            </span>
           </Link>
-        </div>
-
-        {/* Footer */}
-        <Footer />
+        </nav>
       </main>
+
+      <Footer />
     </div>
   );
 };

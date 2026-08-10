@@ -5,7 +5,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProjectGridCard from "@/components/ProjectGridCard";
 import Media from "@/components/Media";
-import { getServiceBySlug } from "@/data/services";
+import Label from "@/components/Label";
+import { getServiceBySlug, services } from "@/data/services";
+import { tintFor } from "@/lib/palette";
 
 const Service = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -13,108 +15,96 @@ const Service = () => {
 
   if (!service) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-paper text-ink">
         <Header />
-        <main className="py-20">
-          <div className="max-w-7xl mx-auto px-6">
-            <p className="text-muted-foreground">Service not found.</p>
-            <Link to="/" className="text-foreground underline underline-offset-4 mt-4 inline-block">
-              Return home
-            </Link>
-          </div>
+        <main className="container-custom py-24">
+          <h1 className="display-heading text-[2rem] md:text-[3rem]">Service not found.</h1>
+          <Link to="/" className="link-cta mt-6">
+            Return home &rarr;
+          </Link>
         </main>
         <Footer />
       </div>
     );
   }
 
+  // Each service keeps the same tint wherever it appears.
+  const tint = tintFor(services.findIndex((s) => s.slug === service.slug));
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-paper text-ink">
       <Header />
-      
-      {/* Hero section - full width media (image or video) flush with header */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        className="w-full"
-      >
-        <Media
-          src={service.heroImage}
-          alt={service.title}
-          className="w-full h-[50vh] md:h-[60vh] transition-transform duration-700 ease-out hover:scale-105"
-          autoplay={false}
-          loop={true}
-          muted={false}
-          controls={true}
-        />
-        
-        {/* Colored info section */}
-        <div 
-          className="w-full px-6 py-10 md:px-12 md:py-14 rounded-b-[2rem] overflow-hidden"
-          style={{ backgroundColor: service.infoColor }}
+
+      <div className="container-custom">
+        <motion.section
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65 }}
+          className="mt-4 card-surface p-4 md:p-5"
+          style={{ backgroundColor: tint }}
         >
-          <div className="max-w-7xl mx-auto">
-            <Link 
-              to="/" 
-              className="inline-flex items-center gap-2 text-black/60 hover:text-black transition-colors mb-6"
-            >
+          <Media
+            src={service.heroImage}
+            alt={service.title}
+            className="w-full h-[42vh] md:h-[56vh]"
+            containerClassName="media-frame"
+            autoplay={false}
+            loop={true}
+            muted={false}
+            controls={true}
+          />
+
+          <div className="px-2 md:px-4 pt-8 pb-3">
+            <Link to="/" className="inline-flex items-center gap-2 label hover:text-ink transition-colors">
               <ArrowLeft className="w-4 h-4 flex-shrink-0" />
-              <span className="text-sm break-words">Back to services</span>
+              Back to services
             </Link>
-            
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+
+            <div className="mt-6 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
               <div className="min-w-0">
-                <span className="text-sm text-black/60 block mb-2 break-words">{service.subtitle}</span>
-                <h1 className="service-card-title font-megna text-2xl md:text-5xl lg:text-6xl font-black text-black break-words">
-                  {service.title}
-                </h1>
+                <Label>{service.subtitle}</Label>
+                <h1 className="display-heading mt-3 text-[2rem] md:text-[3.2rem] break-words">{service.title}</h1>
               </div>
-              <div className="text-black/80 max-w-md text-sm md:text-lg break-words space-y-2">
-                <p>{service.description}</p>
-                {'soundCloudUrl' in service && service.soundCloudUrl && (
+
+              <div className="max-w-[46ch] space-y-4">
+                <p className="body-copy font-medium">{service.description}</p>
+                {"soundCloudUrl" in service && service.soundCloudUrl && (
                   <a
                     href={service.soundCloudUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block text-black font-medium underline underline-offset-2 hover:no-underline"
+                    className="link-cta"
                   >
-                    Listen on SoundCloud →
+                    Listen on SoundCloud &rarr;
                   </a>
                 )}
               </div>
             </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.section>
 
-      {/* Projects Grid - 2 columns */}
-      <main 
-        className="py-16 md:py-24"
-        style={service.projectsGridBackground ? { backgroundColor: service.projectsGridBackground } : undefined}
-      >
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="font-display text-2xl md:text-3xl font-medium mb-12"
-          >
-            Selected Projects
-          </motion.h2>
-          
-          <div className="grid md:grid-cols-2 gap-8 md:gap-10">
+        <section className="mt-16 md:mt-20 pb-4">
+          <div className="flex items-baseline justify-between gap-4 pb-3 border-b border-ink/20">
+            <Label>Selected projects</Label>
+            <Label>{service.projects.length} projects</Label>
+          </div>
+
+          <div className="mt-6 columns-1 md:columns-2 gap-4">
             {service.projects.map((project, index) => (
-              <ProjectGridCard
-                key={project.slug}
-                {...project}
-                index={index}
-                infoColor={project.barColor || service.infoColor}
-              />
+              <div key={project.slug} className="break-inside-avoid mb-4">
+                <ProjectGridCard
+                  title={project.title}
+                  location={project.location}
+                  year={project.year}
+                  image={project.image}
+                  slug={project.slug}
+                  index={index}
+                />
+              </div>
             ))}
           </div>
-        </div>
-      </main>
+        </section>
+      </div>
 
       <Footer />
     </div>

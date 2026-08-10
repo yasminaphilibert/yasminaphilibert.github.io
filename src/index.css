@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@400;500;600;700;800&display=swap');
 
 @font-face {
   font-family: 'Pergamon';
@@ -22,43 +22,41 @@
 
 @layer base {
   :root {
-    /* Core palette - inspired by A-Bureau */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 8%;
+    /* Restrained palette — paper, ink and three tints. See src/lib/palette.ts. */
+    --background: 43 30% 92%;   /* paper  #F1ECE3 */
+    --foreground: 260 16% 11%;  /* ink    #1A1720 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 8%;
+    --card: 43 30% 92%;
+    --card-foreground: 260 16% 11%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 8%;
+    --popover: 43 30% 92%;
+    --popover-foreground: 260 16% 11%;
 
-    /* Hot pink accent - signature color */
-    --primary: 330 100% 71%;
-    --primary-foreground: 0 0% 8%;
+    --primary: 330 68% 88%;     /* blush  #F6C9DE */
+    --primary-foreground: 260 16% 11%;
 
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 8%;
+    --secondary: 39 40% 85%;    /* sand   #E7DBC8 */
+    --secondary-foreground: 260 16% 11%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 39 40% 85%;
+    --muted-foreground: 260 10% 32%;
 
-    --accent: 330 100% 71%;
-    --accent-foreground: 0 0% 8%;
+    --accent: 258 41% 85%;      /* lilac  #D3CAE9 */
+    --accent-foreground: 260 16% 11%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 330 100% 71%;
+    --border: 260 12% 82%;
+    --input: 260 12% 82%;
+    --ring: 260 16% 11%;
 
-    --radius: 1.5rem;
+    --radius: 2rem;
 
     /* Custom properties */
-    --header-bg: 330 100% 71%;
     --header-radius: 2rem;
-    --card-radius: 1.25rem;
-    
+    --card-radius: 1.4rem;
+
     /* Typography */
     --font-display: 'Playfair Display', Georgia, serif;
     --font-body: 'Inter', system-ui, sans-serif;
@@ -135,64 +133,55 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 500;
+    font-weight: 800;
   }
 }
 
 @layer components {
-  .header-bar {
-    @apply bg-primary rounded-b-[2rem] px-6 py-6 md:px-12 md:py-8;
-  }
-
-  .logo-text {
-    font-family: var(--font-display);
-    @apply text-2xl md:text-3xl font-semibold tracking-tight text-primary-foreground;
-  }
-
-  .nav-link {
-    @apply text-sm font-medium text-primary-foreground underline underline-offset-4 
-           hover:opacity-70 transition-opacity duration-200;
-  }
-
-  .tagline {
-    @apply text-sm font-medium text-primary-foreground opacity-90;
-  }
-
-  .project-card {
-    @apply overflow-hidden rounded-[1.25rem] cursor-pointer;
-  }
-
-  .project-image {
-    @apply w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover 
-           transition-transform duration-700 ease-out group-hover:scale-105;
-  }
-
-  .project-title {
-    font-family: var(--font-display);
-    @apply text-xl md:text-2xl font-medium text-foreground 
-           underline underline-offset-4 decoration-1;
-  }
-
-  .project-meta {
-    @apply text-sm text-muted-foreground;
+  /* The page frame every route sits in. */
+  .container-custom {
+    @apply max-w-[1240px] mx-auto px-5 md:px-8;
   }
 
   .section-spacing {
-    @apply py-12 md:py-20;
+    @apply py-14 md:py-20;
   }
 
-  .container-custom {
-    @apply max-w-7xl mx-auto px-4 md:px-8;
+  /* Small uppercase caption. Bigger and darker than a typical eyebrow label so
+     it stays readable on all three tints — nothing on this site goes below 70%
+     ink. */
+  .label {
+    @apply block text-[12px] font-semibold uppercase tracking-[0.22em] text-ink/70;
   }
 
-  .service-card-title {
-    font-family: 'Megna Regular', serif;
-    font-weight: 900;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+  /* The italic serif that breaks up the bold uppercase headings. */
+  .serif-accent {
+    font-family: var(--font-display);
+    @apply italic font-medium normal-case tracking-[-0.01em];
+  }
+
+  /* Bold uppercase display heading. */
+  .display-heading {
+    font-family: var(--font-display);
+    @apply font-extrabold uppercase tracking-[-0.03em] leading-[0.98] text-ink;
+  }
+
+  /* Body copy: 16px floor, generous leading, 85% ink. */
+  .body-copy {
+    @apply text-base leading-[1.7] text-ink/85;
+  }
+
+  .card-surface {
+    @apply rounded-[2rem];
+  }
+
+  .media-frame {
+    @apply overflow-hidden rounded-[1.4rem] bg-ink/10;
+  }
+
+  .link-cta {
+    @apply inline-block text-[13px] font-semibold uppercase tracking-[0.18em] text-ink/75
+           transition-colors duration-300 hover:text-ink;
   }
 }
 

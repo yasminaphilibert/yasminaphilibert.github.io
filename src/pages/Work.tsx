@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProjectGridCard from "@/components/ProjectGridCard";
+import Label from "@/components/Label";
 import { getAllProjects } from "@/data/services";
 import { getWorkContent } from "@/lib/content";
 
@@ -11,80 +11,43 @@ const Work = () => {
   const workContent = getWorkContent();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-paper text-ink">
       <Header />
-      
-      {/* Hero Section */}
-      <motion.section 
-        className="-mt-8 pt-16 pb-12 px-6 md:px-12"
-        style={{ backgroundColor: workContent.heroBackgroundColor || '#F8F8F8' }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
-        <div className="max-w-7xl mx-auto">
-          <h1 className="font-display text-2xl md:text-6xl lg:text-7xl font-semibold text-secondary-foreground mb-4">
-            {workContent.title}
-          </h1>
-          <p className="text-sm md:text-xl text-secondary-foreground/80 max-w-2xl">
-            {workContent.subtitle}
-          </p>
-        </div>
-      </motion.section>
 
-      {/* Info Bar */}
-      <div 
-        className="py-6 px-6 md:px-12 rounded-b-[2rem]"
-        style={{ backgroundColor: workContent.infoBarColor || "#4ECDC4" }}
-      >
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
-          <span className="text-sm font-medium text-white">
-            {allProjects.length} Projects
-          </span>
-          <span className="text-sm font-medium text-white">
-            All Categories
-          </span>
-        </div>
-      </div>
+      <div className="container-custom">
+        <motion.section
+          className="mt-4 card-surface bg-lilac px-7 py-14 md:px-14 md:py-20"
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65 }}
+        >
+          <Label>Archive</Label>
+          <h1 className="display-heading mt-6 text-[2.1rem] md:text-[3.5rem]">{workContent.title}</h1>
+          <p className="body-copy mt-7 max-w-[52ch] text-lg font-medium">{workContent.subtitle}</p>
+        </motion.section>
 
-      {/* Projects Gallery */}
-      <section 
-        className="py-16 px-6 md:px-12"
-        style={{ backgroundColor: workContent.projectsBackgroundColor || '#FFFFFF' }}
-      >
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <section className="mt-16 md:mt-20 pb-4">
+          <div className="flex items-baseline justify-between gap-4 pb-3 border-b border-ink/20">
+            <Label>Selected work</Label>
+            <Label>{allProjects.length} projects</Label>
+          </div>
+
+          <div className="mt-6 columns-1 md:columns-2 gap-4">
             {allProjects.map((project, index) => (
-              <ProjectGridCard
-                key={project.slug}
-                title={project.title}
-                location={project.location}
-                year={project.year}
-                image={project.image}
-                slug={project.slug}
-                infoColor={project.serviceColor}
-                index={index}
-              />
+              <div key={project.slug} className="break-inside-avoid mb-4">
+                <ProjectGridCard
+                  title={project.title}
+                  location={project.location}
+                  year={project.year}
+                  image={project.image}
+                  slug={project.slug}
+                  index={index}
+                />
+              </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Back to Home */}
-      <section style={{ backgroundColor: workContent.backToHomeBackgroundColor || '#F5F5F5' }}>
-        <Link 
-          to="/"
-          className="block py-12 px-6 md:px-12 hover:bg-muted/80 transition-colors duration-300"
-        >
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <div>
-              <span className="text-sm text-muted-foreground block mb-2">Back to</span>
-              <span className="font-display text-2xl md:text-3xl font-semibold text-foreground">Home</span>
-            </div>
-            <span className="text-4xl text-muted-foreground">←</span>
-          </div>
-        </Link>
-      </section>
+        </section>
+      </div>
 
       <Footer />
     </div>

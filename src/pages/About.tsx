@@ -1,124 +1,86 @@
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Label from "@/components/Label";
 import { getAboutContent } from "@/lib/content";
 
 const About = () => {
   const about = getAboutContent();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-paper text-ink">
       <Header />
-      
-      {/* About Content Section - extends the header color */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        className="w-full px-6 py-16 md:px-12 md:py-24 -mt-8 rounded-b-[2rem]"
-        style={{ backgroundColor: about.backgroundColor || "hsl(330, 100%, 71%)" }}
-      >
-        <div className="max-w-7xl mx-auto">
+
+      <div className="container-custom">
+        <motion.section
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65 }}
+          className="mt-4 card-surface bg-lilac px-7 py-14 md:px-14 md:py-20"
+        >
           <div className="grid md:grid-cols-12 gap-8 md:gap-12">
-            {/* Label - Left */}
             <div className="md:col-span-2">
-              <span 
-                className="text-sm"
-                style={{ color: about.labelColor || "rgba(0, 0, 0, 0.6)" }}
-              >
-                {about.label}
-              </span>
+              <Label>{about.label}</Label>
             </div>
 
-            {/* Main Content - Center */}
             <div className="md:col-span-6">
-              <h1 
-                className="font-display text-xl md:text-4xl lg:text-5xl font-medium mb-8"
-                style={{ color: about.titleColor || "#000000" }}
-              >
-                {about.title}
-              </h1>
-              <div 
-                className="space-y-6 text-sm md:text-xl leading-relaxed"
-                style={{ color: about.textColor || "rgba(0, 0, 0, 0.7)" }}
-              >
+              <h1 className="display-heading text-[2.1rem] md:text-[3.2rem]">{about.title}</h1>
+              <div className="mt-8 space-y-6">
                 {about.introParagraphs.map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
+                  <p key={index} className="body-copy text-base md:text-lg font-medium">
+                    {paragraph}
+                  </p>
                 ))}
-                <p>{about.location}</p>
+                <p className="serif-accent text-xl md:text-2xl text-ink">{about.location}</p>
               </div>
             </div>
 
-            {/* Contact & Services - Right */}
             <div className="md:col-span-4 space-y-12">
               <div>
-                <h2 
-                  className="text-sm mb-4"
-                  style={{ color: about.labelColor || "rgba(0, 0, 0, 0.6)" }}
-                >
-                  Contact
-                </h2>
-                <a 
+                <Label className="mb-4">Contact</Label>
+                <a
                   href={`mailto:${about.email}`}
-                  className="underline underline-offset-4 hover:opacity-70 transition-opacity"
-                  style={{ color: about.linkColor || "#000000" }}
+                  className="text-base md:text-lg font-semibold text-ink underline underline-offset-[6px] decoration-ink/40 hover:decoration-ink transition-colors"
                 >
                   {about.email}
                 </a>
               </div>
-              
+
               <div>
-                <h2 
-                  className="text-sm mb-4"
-                  style={{ color: about.labelColor || "rgba(0, 0, 0, 0.6)" }}
-                >
-                  Services
-                </h2>
-                <ul 
-                  className="space-y-2"
-                  style={{ color: about.textColor || "rgba(0, 0, 0, 0.7)" }}
-                >
+                <Label className="mb-4">Services</Label>
+                <ul className="space-y-2.5">
                   {about.services.map((service, index) => (
-                    <li key={index}>{service}</li>
+                    <li key={index} className="text-base font-medium text-ink/85">
+                      {service}
+                    </li>
                   ))}
                 </ul>
               </div>
             </div>
           </div>
-        </div>
-      </motion.section>
+        </motion.section>
 
-      {/* Additional Info Section */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="w-full px-6 py-16 md:px-12 md:py-24"
-        style={{ backgroundColor: about.secondSectionBgColor || undefined }}
-      >
-        <div className="max-w-7xl mx-auto">
+        <motion.section
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="py-20 md:py-28"
+        >
           <div className="grid md:grid-cols-12 gap-8 md:gap-12">
             <div className="md:col-span-2">
+              <Label>{about.experienceLabel}</Label>
             </div>
             <div className="md:col-span-6">
-              <p 
-                className="text-sm md:text-lg leading-relaxed"
-                style={{ color: about.mutedTextColor || undefined }}
-              >
+              <p className="serif-accent text-[1.5rem] md:text-[2.2rem] leading-[1.2] text-ink">
                 {about.experienceText}
               </p>
             </div>
             <div className="md:col-span-4">
-              <p 
-                className="text-sm"
-                style={{ color: about.mutedTextColor || undefined }}
-              >
-                {about.experienceNote}
-              </p>
+              <p className="body-copy font-medium">{about.experienceNote}</p>
             </div>
           </div>
-        </div>
-      </motion.section>
+        </motion.section>
+      </div>
 
       <Footer />
     </div>

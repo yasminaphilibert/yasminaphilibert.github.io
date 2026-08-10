@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
 import Media from "./Media";
+import Label from "./Label";
+import { tintFor } from "@/lib/palette";
 
 interface ProjectGridCardProps {
   title: string;
@@ -10,59 +11,47 @@ interface ProjectGridCardProps {
   image: string;
   slug: string;
   index: number;
-  infoColor: string;
+  /** Overrides the rotation when a grid needs a fixed tint. */
+  tint?: string;
 }
 
-const ProjectGridCard = ({ title, location, year, image, slug, index, infoColor }: ProjectGridCardProps) => {
+const ProjectGridCard = ({ title, location, year, image, slug, index, tint }: ProjectGridCardProps) => {
   return (
     <motion.article
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{ duration: 0.55, delay: Math.min(index, 3) * 0.06 }}
       className="w-full"
     >
-      {/* Media container (image or video) - not clickable */}
-      <Media
-        src={image}
-        alt={title}
-        className="w-full h-[40vh] md:h-[50vh] transition-transform duration-700 ease-out hover:scale-105"
-        containerClassName="rounded-t-[1.5rem] overflow-hidden"
-        autoplay={false}
-        loop={true}
-        muted={true}
-        controls={true}
-      />
-
-      {/* Colored info bar - only title + arrow are clickable, arrow on the right */}
-      <div
-        className="w-full px-5 py-6 md:px-6 md:py-8 rounded-b-[1.5rem] overflow-hidden flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
-        style={{ backgroundColor: infoColor }}
+      <Link
+        to={`/project/${slug}`}
+        className="group block card-surface p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/60"
+        style={{ backgroundColor: tint ?? tintFor(index) }}
+        aria-label={`Go to ${title}`}
       >
-        <div className="min-w-0 flex-1">
-          <Link
-            to={`/project/${slug}`}
-            className="inline-flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-black/50 rounded"
-            aria-label={`Go to ${title}`}
-          >
-            <h3 className="font-display text-xl md:text-2xl font-medium text-black break-words min-w-0 transition-all duration-300 ease-in-out group-hover:scale-105">
-              {title}
-            </h3>
-          </Link>
-          <div className="flex items-center gap-4 text-sm text-black/70 flex-wrap mt-3">
-            <span className="break-words">{location}</span>
-            <span>•</span>
-            <span className="break-words">{year}</span>
+        <Media
+          src={image}
+          alt={title}
+          className="w-full h-auto transition-transform duration-[850ms] ease-out group-hover:scale-[1.035]"
+          containerClassName="media-frame"
+          // Images keep their own proportions in the masonry column; a video has
+          // no intrinsic height to give the column, so it gets a fixed ratio.
+          aspectRatio="video"
+          autoplay={false}
+          loop={true}
+          muted={true}
+          controls={true}
+        />
+
+        <div className="px-1.5 pt-5 pb-1">
+          <div className="flex items-baseline justify-between gap-4">
+            <h3 className="font-body text-base md:text-lg font-semibold text-ink break-words min-w-0">{title}</h3>
+            <Label className="flex-shrink-0">{year}</Label>
           </div>
+          {location ? <Label className="mt-2 text-ink/70">{location}</Label> : null}
         </div>
-        <Link
-          to={`/project/${slug}`}
-          className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-black/10 text-black transition-all duration-300 ease-in-out hover:scale-110 hover:bg-black hover:text-white flex-shrink-0 group focus:outline-none focus-visible:ring-2 focus-visible:ring-black/50 self-start sm:self-center"
-          aria-label={`Go to ${title}`}
-        >
-          <ArrowRight className="w-4 h-4 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
-        </Link>
-      </div>
+      </Link>
     </motion.article>
   );
 };

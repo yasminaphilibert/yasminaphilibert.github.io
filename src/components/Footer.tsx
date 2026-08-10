@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { Linkedin, Instagram } from "lucide-react";
-import { getFooterContent } from "@/lib/content";
+import { getFooterContent, getAboutContent } from "@/lib/content";
+import Label from "./Label";
 
 interface FooterProps {
+  /** Kept so existing call-sites type-check; the palette owns the colour now. */
   bgColor?: string;
 }
 
@@ -36,11 +38,11 @@ const SoundCloudIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const Footer = ({ bgColor }: FooterProps) => {
+const Footer = (_props: FooterProps) => {
   const footer = getFooterContent();
+  const about = getAboutContent();
   const currentYear = new Date().getFullYear();
-  const footerBgColor = bgColor || footer.bgColor || "#FF69B4";
-  
+
   const getSocialIcon = (platform: string) => {
     switch (platform.toLowerCase()) {
       case 'linkedin':
@@ -57,37 +59,47 @@ const Footer = ({ bgColor }: FooterProps) => {
   };
   
   return (
-    <footer 
-      className="w-full px-6 py-12 md:px-12 md:py-16 rounded-t-[2rem]"
-      style={{ backgroundColor: footerBgColor }}
-    >
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-        <p className="text-sm text-black/70">
-          © {footer.startYear}–{currentYear}. {footer.copyrightName}
-        </p>
-        
-        <div className="flex items-center gap-4">
-          {footer.socialLinks.map((social) => (
-            <a 
-              key={social.platform}
-              href={social.url} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-black/70 hover:text-black transition-colors"
-              aria-label={social.platform.charAt(0).toUpperCase() + social.platform.slice(1)}
+    <footer className="w-full pb-5 md:pb-8">
+      <section className="mx-5 md:mx-8 card-surface bg-blush px-7 py-14 md:px-14 md:py-20">
+        <div className="max-w-[1240px] mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-10">
+          <div>
+            <Label>Start something</Label>
+            <p className="display-heading mt-4 text-[2.4rem] md:text-[3.4rem]">Let's talk.</p>
+          </div>
+
+          <div className="flex flex-col gap-4 md:items-end">
+            <a
+              href={`mailto:${about.email}`}
+              className="text-base md:text-lg font-semibold text-ink underline underline-offset-[6px] decoration-ink/40 hover:decoration-ink transition-colors"
             >
-              {getSocialIcon(social.platform)}
+              {about.email}
             </a>
-          ))}
+            <div className="flex items-center gap-4">
+              {footer.socialLinks.map((social) => (
+                <a
+                  key={social.platform}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-ink/70 hover:text-ink transition-colors"
+                  aria-label={social.platform.charAt(0).toUpperCase() + social.platform.slice(1)}
+                >
+                  {getSocialIcon(social.platform)}
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
-        
-        <nav className="flex items-center gap-6">
+      </section>
+
+      <div className="container-custom mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <Label>
+          © {footer.startYear}–{currentYear}. {footer.copyrightName}
+        </Label>
+
+        <nav className="flex items-center gap-7">
           {footer.navLinks.map((link) => (
-            <Link 
-              key={link.path}
-              to={link.path} 
-              className="text-sm text-black/70 hover:text-black transition-colors"
-            >
+            <Link key={link.path} to={link.path} className="label hover:text-ink transition-colors">
               {link.label}
             </Link>
           ))}

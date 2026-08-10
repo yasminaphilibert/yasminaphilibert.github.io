@@ -1,6 +1,8 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Label from "@/components/Label";
 
 const NotFound = () => {
   const location = useLocation();
@@ -10,16 +12,21 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-1 flex items-center justify-center bg-muted">
-        <div className="text-center">
-          <h1 className="mb-4 text-4xl font-bold">404</h1>
-          <p className="mb-4 text-xl text-muted-foreground">Oops! Page not found</p>
-          <Link to="/" className="text-primary underline hover:text-primary/90">
-            Return to Home
+    <div className="min-h-screen flex flex-col bg-paper text-ink">
+      <Header />
+
+      <div className="container-custom flex-1">
+        <section className="mt-4 card-surface bg-sand px-7 py-20 md:px-14 md:py-28">
+          <Label>Error 404</Label>
+          <h1 className="display-heading mt-6 text-[2.4rem] md:text-[3.8rem] max-w-[18ch]">
+            This page <span className="serif-accent">went missing</span>
+          </h1>
+          <Link to="/" className="link-cta mt-8">
+            Return to home &rarr;
           </Link>
-        </div>
+        </section>
       </div>
+
       <Footer />
     </div>
   );
