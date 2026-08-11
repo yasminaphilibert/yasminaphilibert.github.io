@@ -4,7 +4,7 @@
 # Splits a video into 10.5-second segments
 # Usage: ./scripts/split-video-shorts.sh [input_video] [output_directory]
 
-INPUT_VIDEO="${1:-public/videos/Nodaleto - Love To Love You.webm}"
+INPUT_VIDEO="${1:-public/videos/Nodaleto-Love-To-Love-You-Black-Luxe.mp4}"
 OUTPUT_DIR="${2:-public/videos}"
 SEGMENT_DURATION=10.5
 
