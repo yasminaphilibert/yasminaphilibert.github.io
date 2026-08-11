@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Label from "@/components/Label";
+import EmailLinks from "@/components/EmailLinks";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -103,12 +104,11 @@ const Contact = () => {
                 {contact.alternativeContactTitle || "Or reach out directly"}
               </h2>
               <div className="mt-6 space-y-4">
-                <a
-                  href={`mailto:${contact.email}`}
-                  className="block text-lg font-semibold text-ink underline underline-offset-[6px] decoration-ink/40 hover:decoration-ink transition-colors"
-                >
-                  {contact.email}
-                </a>
+                <EmailLinks
+                  email={contact.email}
+                  musicEmail={contact.musicEmail}
+                  linkClassName="block text-lg"
+                />
                 <p className="body-copy text-lg font-medium">{contact.location}</p>
               </div>
             </motion.div>

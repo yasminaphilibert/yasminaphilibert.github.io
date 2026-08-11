@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Label from "@/components/Label";
+import EmailLinks from "@/components/EmailLinks";
 import { getAboutContent } from "@/lib/content";
 
 const About = () => {
@@ -49,12 +50,7 @@ const About = () => {
             <div className="md:col-span-4 space-y-12">
               <div>
                 <Label className="mb-4">Contact</Label>
-                <a
-                  href={`mailto:${about.email}`}
-                  className="text-base md:text-lg font-semibold text-ink underline underline-offset-[6px] decoration-ink/40 hover:decoration-ink transition-colors"
-                >
-                  {about.email}
-                </a>
+                <EmailLinks email={about.email} musicEmail={about.musicEmail} />
               </div>
 
               <div>

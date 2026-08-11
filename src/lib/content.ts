@@ -59,6 +59,7 @@ export interface SiteConfig {
   siteName: string;
   tagline: string;
   email: string;
+  musicEmail?: string;
   socialLinks: {
     linkedin: string;
     instagram: string;
@@ -70,6 +71,7 @@ export interface AboutContent {
   title: string;
   label: string;
   email: string;
+  musicEmail?: string;
   location: string;
   experienceLabel: string;
   introParagraphs: string[];
@@ -127,6 +129,7 @@ export interface ContactContent {
   infoBarText1: string;
   infoBarText2: string;
   email: string;
+  musicEmail?: string;
   location: string;
   infoBarColor?: string;
   alternativeContactTitle?: string;
@@ -317,7 +320,8 @@ export function getSiteConfig(): SiteConfig {
     return {
       siteName: 'YΛSYNTHΛ',
       tagline: 'Creative Direction & Design',
-      email: 'yasynthamusic@gmail.com',
+      email: 'yasminaphilibert@gmail.com',
+      musicEmail: 'yasynthamusic@gmail.com',
       socialLinks: {
         linkedin: 'https://linkedin.com/in/yasminaphilibert',
         instagram: 'https://www.instagram.com/yasyntha/',
@@ -514,6 +518,7 @@ export function getAboutContent(): AboutContent {
     title: data.title as string || defaultAbout.title,
     label: data.label as string || defaultAbout.label,
     email: data.email as string || defaultAbout.email,
+    musicEmail: data.musicEmail as string || defaultAbout.musicEmail,
     location: data.location as string || defaultAbout.location,
     experienceLabel: data.experienceLabel as string || defaultAbout.experienceLabel,
     introParagraphs,
@@ -665,7 +670,8 @@ export function getContactContent(): ContactContent {
     subtitle: "Have a project in mind? Let's create something amazing together.",
     infoBarText1: 'Available for freelance',
     infoBarText2: 'Based in Paris & Barcelona',
-    email: 'yasynthamusic@gmail.com',
+    email: 'yasminaphilibert@gmail.com',
+    musicEmail: 'yasynthamusic@gmail.com',
     location: 'Paris - Barcelona',
     infoBarColor: '#ffb4ec',
     alternativeContactTitle: 'Or reach out directly'
@@ -683,6 +689,7 @@ export function getContactContent(): ContactContent {
     infoBarText1: data.infoBarText1 !== undefined ? (data.infoBarText1 as string) : defaultContact.infoBarText1,
     infoBarText2: data.infoBarText2 !== undefined ? (data.infoBarText2 as string) : defaultContact.infoBarText2,
     email: data.email !== undefined ? (data.email as string) : defaultContact.email,
+    musicEmail: data.musicEmail !== undefined ? (data.musicEmail as string) : defaultContact.musicEmail,
     location: data.location !== undefined ? (data.location as string) : defaultContact.location,
     infoBarColor: data.infoBarColor !== undefined ? (data.infoBarColor as string) : defaultContact.infoBarColor,
     alternativeContactTitle: data.alternativeContactTitle !== undefined ? (data.alternativeContactTitle as string) : defaultContact.alternativeContactTitle,

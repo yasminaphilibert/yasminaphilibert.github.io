@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Linkedin, Instagram } from "lucide-react";
 import { getFooterContent, getAboutContent } from "@/lib/content";
 import Label from "./Label";
+import EmailLinks from "./EmailLinks";
 
 interface FooterProps {
   /** Kept so existing call-sites type-check; the palette owns the colour now. */
@@ -79,12 +80,11 @@ const Footer = (_props: FooterProps) => {
           </div>
 
           <div className="flex flex-col gap-4 md:items-end">
-            <a
-              href={`mailto:${about.email}`}
-              className="text-base md:text-lg font-semibold text-ink underline underline-offset-[6px] decoration-ink/40 hover:decoration-ink transition-colors"
-            >
-              {about.email}
-            </a>
+            <EmailLinks
+              email={about.email}
+              musicEmail={about.musicEmail}
+              align="right"
+            />
             <div className="flex items-center gap-4">
               {footer.socialLinks.map((social) => (
                 <a

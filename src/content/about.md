@@ -1,7 +1,8 @@
 ---
 title: "YΛSYNTHΛ"
 label: "About"
-email: "yasynthamusic@gmail.com"
+email: "yasminaphilibert@gmail.com"
+musicEmail: "yasynthamusic@gmail.com"
 location: "Based in Paris & Barcelona, working globally."
 experienceLabel: "Experience"
 backgroundColor: "#ffb4ec"
