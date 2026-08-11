@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code per-machine settings (launch.json is shared, this is not)
+.claude/settings.local.json
